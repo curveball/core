@@ -4,7 +4,10 @@ PATH:=./node_modules/.bin:$(PATH)
 build:
 	tsc
 
-
 .PHONY:test
 test:
 	mocha
+
+.PHONY:watch
+watch:
+	tsc --watch
