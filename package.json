@@ -6,7 +6,7 @@
   "scripts": {
     "prepublish": "make build",
     "test": "make test",
-    "tsc" : "tsc"
+    "tsc": "tsc"
   },
   "repository": {
     "type": "git",
@@ -26,8 +26,11 @@
   },
   "homepage": "https://github.com/evert/curveball#readme",
   "devDependencies": {
+    "@types/chai": "^4.1.4",
+    "@types/mocha": "^5.2.3",
     "chai": "^4.1.2",
     "mocha": "^5.2.0",
+    "ts-node": "^7.0.0",
     "typescript": "^2.9.2"
   }
 }
