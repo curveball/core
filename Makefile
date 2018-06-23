@@ -7,4 +7,4 @@ build:
 
 .PHONY:test
 test:
-	mocha
+	nyc mocha
