@@ -1,6 +1,7 @@
 import http from 'http';
 import Request from './request';
 import Headers from './headers';
+import url from 'url';
 
 export class NodeRequest implements Request {
 
@@ -32,7 +33,7 @@ export class NodeRequest implements Request {
    */
   get path(): string {
 
-    return new URL(this.requestTarget).pathname;
+    return url.parse(this.requestTarget).pathname;
 
   }
 
@@ -42,7 +43,7 @@ export class NodeRequest implements Request {
    * For example: GET
    */
   get method(): string {
-    
+
     return this.inner.method;
 
   }
