@@ -6,7 +6,7 @@ build:
 
 .PHONY:test
 test:
-	mocha
+	nyc mocha
 
 .PHONY:watch
 watch:
