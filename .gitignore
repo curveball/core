@@ -3,3 +3,6 @@
 
 # typescript output
 /dist
+
+# vim
+.*.swp
