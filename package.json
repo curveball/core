@@ -1,14 +1,14 @@
 {
-  "name": "placeholder",
+  "name": "curveball",
   "version": "0.0.1",
-  "description": "Placeholder is a framework writting in Typescript for Node.js",
+  "description": "Curveball is a framework writting in Typescript for Node.js",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/evert/placeholder.git"
+    "url": "git+https://github.com/evert/curveball.git"
   },
   "keywords": [
     "http",
@@ -20,9 +20,9 @@
   "author": "Evert Pot (https://evertpot.com/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/evert/placeholder/issues"
+    "url": "https://github.com/evert/curveball/issues"
   },
-  "homepage": "https://github.com/evert/placeholder#readme",
+  "homepage": "https://github.com/evert/curveball#readme",
   "devDependencies": {
     "typescript": "^2.9.2"
   }
