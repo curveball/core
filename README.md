@@ -20,5 +20,5 @@ Literally nothing works at the moment.
 
 [1]: https://expressjs.com/ "Express"
 [2]: https://koajs.com/ "Koa"
-[3]: https://www.typescriptlang.org/ "TypeScript".
+[3]: https://www.typescriptlang.org/ "TypeScript"
 [4]: https://tools.ietf.org/html/rfc8297 "RFC8297"
