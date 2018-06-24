@@ -1,4 +1,4 @@
-import Headers from './headers';
+import { HeadersInterface } from './headers';
 
 /**
  * This interface represents an incoming server request.
@@ -8,7 +8,7 @@ export interface Request {
   /**
    * List of HTTP Headers
    */
-  headers: Headers;
+  headers: HeadersInterface;
 
   /**
    * path-part of the request.
