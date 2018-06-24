@@ -1,6 +1,6 @@
 import http from 'http';
 import Request from './request';
-import Headers from './headers';
+import { Headers, HeadersInterface } from './headers';
 import url from 'url';
 
 export class NodeRequest implements Request {
@@ -16,13 +16,13 @@ export class NodeRequest implements Request {
   /**
    * List of HTTP Headers
    */
-  get headers(): Headers {
+  get headers(): HeadersInterface {
 
     /**
      * We're using a type cast here because the @types/node definition is not
      * as correct.
      */
-    return <Headers>this.inner.headers;
+    return new Headers(this.inner.headers);
 
   }
 

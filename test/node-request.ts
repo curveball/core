@@ -7,7 +7,7 @@ function getReq() {
   const inner = new IncomingMessage(<any>null);
   inner.method = 'GET';
   inner.headers ={
-    'content-type': 'text/html'
+    'Content-Type': 'text/html'
   };
   inner.url = 'https://example.org/foo/bar';
 
@@ -23,10 +23,7 @@ describe('node-request', () => {
     it('should have headers set correctly', () => {
 
       const req = getReq();
-
-      expect(req.headers).to.eql({
-        'content-type': 'text/html'
-      });
+      expect(req.headers.get('content-type')).to.eql('text/html');
 
     });
 

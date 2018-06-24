@@ -1,4 +1,4 @@
-import Headers from './headers';
+import { HeadersInterface } from './headers';
 
 /**
  * This interface represents an incoming server request.
@@ -8,7 +8,7 @@ export interface Response {
   /**
    * List of HTTP Headers.
    */
-  headers: Headers;
+  headers: HeadersInterface;
 
   /**
    * HTTP status code.
@@ -22,4 +22,4 @@ export interface Response {
 
 }
 
-export default Request;
+export default Response;
