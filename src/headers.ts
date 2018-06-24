@@ -31,7 +31,7 @@ export class Headers implements HeadersInterface {
     [name: string]: [string, string | string[] | number]
   }
 
-  constructor(headersObj: HeadersObj) {
+  constructor(headersObj: HeadersObj = {}) {
 
     this.store = {};
     for(const key of Object.keys(headersObj)) {
