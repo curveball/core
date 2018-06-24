@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { Headers } from '../src/headers';
+import headersInterfaceTests from './headers-interface-tests';
 
 describe('Headers class', () => {
 
@@ -56,5 +57,7 @@ describe('Headers class', () => {
     });
 
   });
+
+  headersInterfaceTests(new Headers());
 
 });
