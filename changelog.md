@@ -1,6 +1,7 @@
 0.2.0 (2018-06-25)
 ==================
 
+* #37: `Response.body` now has type `any`.
 * #38: Added `Context.state`.
 * #39: Added `Application.callback`.
 

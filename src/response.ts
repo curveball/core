@@ -18,7 +18,7 @@ export interface Response {
   /**
    * The response body.
    */
-  body: null | object | string
+  body: any;
 
 }
 
