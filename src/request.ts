@@ -64,8 +64,8 @@ export interface Request {
    * You can only call this function once. Most likely you'll want a single
    * middleware that calls this function and then sets `body`.
    */
-  rawBody(encoding: string, limit?: string): Promise<string>;
-  rawBody(encoding: undefined, limit?: string): Promise<Buffer>;
+  rawBody(encoding?: string, limit?: string): Promise<string>;
+  rawBody(encoding?: undefined, limit?: string): Promise<Buffer>;
 
   /**
    * This object contains parsed query parameters.
