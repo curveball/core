@@ -1,6 +1,7 @@
 0.2.0 (2018-06-25)
 ==================
 
+* #19: Added `Request.rawBody()` method.
 * #33: Added `Request.accept()` method.
 * #35: Added `Request.type` and `Response.type`.
 * #36: Added `Request.query`.

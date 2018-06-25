@@ -94,22 +94,27 @@ export class NodeRequest implements Request {
    * You can only call this function once. Most likely you'll want a single
    * middleware that calls this function and then sets `body`.
    */
-  rawBody(encoding: string, limit?: string): Promise<string>;
-  rawBody(encoding: undefined, limit?: string): Promise<Buffer>;
-  rawBody(encoding: undefined|string, limit?: string): Promise<Buffer|string> {
+  rawBody(encoding?: string, limit?: string): Promise<string>;
+  rawBody(encoding?: undefined, limit?: string): Promise<Buffer>;
+  rawBody(encoding?: undefined|string, limit?: string): Promise<Buffer|string> {
 
-    if (encoding) {
-      return rawBody(this.inner, {
-        length: this.headers.get('Content-Length'),
-        limit: limit,
-        encoding: encoding
-      }) as Promise<string>;
-    } else {
-      return rawBody(this.inner, {
-        length: this.headers.get('Content-Length'),
-        limit: limit
-      }) as Promise<Buffer>;
+    const options:{
+      encoding?: string,
+      limit?: string,
+      length?: string
+    } = {};
+    if (limit) {
+      options.limit = limit;
     }
+    if (encoding) {
+      options.encoding = encoding;
+    }
+    const length = this.headers.get('Content-Length');
+    if (length) {
+      options.length = length;
+    }
+    return rawBody(this.inner, options);
+
   }
 
   /**
