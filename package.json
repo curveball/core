@@ -1,6 +1,6 @@
 {
   "name": "curveball",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Curveball is a framework writting in Typescript for Node.js",
   "main": "index.js",
   "scripts": {
