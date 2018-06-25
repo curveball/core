@@ -68,6 +68,20 @@ export interface Request {
    */
   readonly type: string;
 
+  /**
+   * accepts is used for negotation the Content-Type with a client.
+   *
+   * You can pass a content-type, or an array of content-types.
+   * The Content-Types you provide are a list of types your application
+   * supports.
+   *
+   * This function will then return the best possible type based on the Accept
+   * header.
+   *
+   * If no compatible types are found, this function returns null.
+   */
+  accepts(...types: string[]): null | string;
+
 }
 
 export default Request;
