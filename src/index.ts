@@ -1,5 +1,14 @@
-export { default as Application } from './application';
-export { default as Context } from './context';
-export { default as Headers } from './headers';
-export { default as Request } from './request';
-export { default as Response } from './response';
+import Application from './application';
+import Context from './context';
+import Headers from './headers';
+import Request from './request';
+import Response from './response';
+
+export default Application;
+export {
+  Application,
+  Context,
+  Headers,
+  Request,
+  Response,
+};
