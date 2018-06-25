@@ -3,17 +3,36 @@ import NodeRequest from './node-request';
 import NodeResponse from './node-response';
 import Context from './context';
 
+const pkg = require('../package.json');
+
 export default class Application {
+
+  /**
+   * Handles a single request and calls all middleware
+   */
+  handle(ctx: Context) {
+
+    ctx.response.headers.set('Server', 'curveball/' + pkg.version);
+    ctx.response.body = 'hi';
+
+  }
 
   listen(port: number): void {
 
-    const server = http.createServer((req, res) => {
+    const server = http.createServer(async (req, res) => {
 
-      this.createContext(req, res);
+      const ctx = this.createContext(req, res);
+      await this.handle(ctx);
+
+      if (typeof ctx.response.body === 'string') {
+        res.write(ctx.response.body);
+      } else {
+        throw new Error('Only strings are supported currently');
+      }
+      res.end();
 
     });
     server.listen(port);
-    console.log('Listening on %n', 3000);
 
   }
 
@@ -24,9 +43,6 @@ export default class Application {
       new NodeResponse(res)
     );
 
-    console.log(context);
-    res.write('bye');
-    res.end();
     return context;
 
   }
