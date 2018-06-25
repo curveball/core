@@ -48,6 +48,35 @@ export default function headersTest(headers: HeadersInterface) {
 
     });
 
+    describe('delete', () => {
+
+      it('should delete headers', () => {
+
+        headers.set('X-Foo', 'bar');
+        headers.delete('X-Foo');
+
+        expect(headers.get('X-Foo')).to.equal(null);
+
+      });
+
+      it('should delete headers if casing is different', () => {
+
+        headers.set('X-Foo', 'bar');
+        headers.delete('x-foo');
+
+        expect(headers.get('X-Foo')).to.equal(null);
+
+      });
+
+      it('shouldn\'t error when an unknown header is deleted.', () => {
+
+        headers.delete('x-foo2');
+        expect(headers.get('X-Foo2')).to.equal(null);
+
+      });
+
+    });
+
   });
 
 }

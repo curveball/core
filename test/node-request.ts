@@ -7,7 +7,7 @@ function getReq() {
   const inner = new IncomingMessage(<any>null);
   inner.method = 'GET';
   inner.headers ={
-    'Content-Type': 'text/html'
+    'Content-Type': 'text/html; charset=utf-8'
   };
   inner.url = 'https://example.org/foo/bar?a=1&b=2';
 
@@ -23,7 +23,7 @@ describe('node-request', () => {
     it('should have headers set correctly', () => {
 
       const req = getReq();
-      expect(req.headers.get('content-type')).to.eql('text/html');
+      expect(req.headers.get('content-type')).to.eql('text/html; charset=utf-8');
 
     });
 
@@ -48,6 +48,21 @@ describe('node-request', () => {
         a: '1',
         b: '2'
       });
+
+    });
+
+    it('should have a "type" property containing "text/html"', () => {
+
+      const req = getReq();
+      expect(req.type).to.equal('text/html');
+
+    });
+
+    it('should have a "type" property containing an empty string if no Content-Type was set.', () => {
+
+      const req = getReq();
+      req.headers.delete('Content-Type');
+      expect(req.type).to.equal('');
 
     });
 

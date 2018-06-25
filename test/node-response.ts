@@ -8,7 +8,7 @@ function getRes() {
   const request = new IncomingMessage(<any>null);
   const inner = new ServerResponse(request);
 
-  inner.setHeader('Content-Type', 'text/html');
+  inner.setHeader('Content-Type', 'text/html; charset=utf-8');
   inner.statusCode = 200;
 
   const outer = new NodeResponse(inner);
@@ -23,14 +23,29 @@ describe('NodeResponse', () => {
     it('should have headers set correctly', () => {
 
       const res = getRes();
-      expect(res.headers.get('content-type')).to.eql('text/html');
+      expect(res.headers.get('content-type')).to.eql('text/html; charset=utf-8');
 
     });
 
     it('should have status set correctly', () => {
 
-      const req = getRes();
-      expect(req.status).to.eql(200);
+      const res = getRes();
+      expect(res.status).to.equal(200);
+
+    });
+
+    it('should have a "type" property containing "text/html"', () => {
+
+      const res = getRes();
+      expect(res.type).to.equal('text/html');
+
+    });
+
+    it('should have a "type" property containing an empty string if no Content-Type was set.', () => {
+
+      const res = getRes();
+      res.headers.delete('Content-Type');
+      expect(res.type).to.equal('');
 
     });
 

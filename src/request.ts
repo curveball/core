@@ -58,7 +58,15 @@ export interface Request {
   /**
    * This object contains parsed query parameters.
    */
-  query: { [s: string]: string };
+  readonly query: { [s: string]: string };
+
+  /**
+   * Returns the value of the Content-Type header, with any additional
+   * parameters such as charset= removed.
+   *
+   * If there was no Content-Type header, an empty string will be returned.
+   */
+  readonly type: string;
 
 }
 

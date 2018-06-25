@@ -19,6 +19,11 @@ export interface HeadersInterface {
    */
   get(name: string): string|null;
 
+  /**
+   * Removes a HTTP header
+   */
+  delete(name: string): void;
+
 }
 
 type HeadersObj = {
@@ -74,6 +79,15 @@ export class Headers implements HeadersInterface {
     } else {
       return value.toString();
     }
+
+  }
+
+  /**
+   * Removes a HTTP header
+   */
+  delete(name: string): void {
+
+    this.store[name.toLowerCase()] = undefined;
 
   }
 

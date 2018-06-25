@@ -20,6 +20,14 @@ export interface Response {
    */
   body: any;
 
+  /**
+   * Returns the value of the Content-Type header, with any additional
+   * parameters such as charset= removed.
+   *
+   * If there was no Content-Type header, an empty string will be returned.
+   */
+  readonly type: string;
+
 }
 
 export default Response;
