@@ -48,33 +48,42 @@ export default class Application extends EventEmitter {
 
   }
 
+  /**
+   * Starts a HTTP server on the specified port.
+   */
   listen(port: number): http.Server {
 
-    const server = http.createServer(async (req, res) => {
-
-      try {
-        const ctx = this.createContext(req, res);
-        await this.handle(ctx);
-
-        if (typeof ctx.response.body === 'string') {
-          res.write(ctx.response.body);
-        } else {
-          throw new Error('Only strings are supported currently');
-        }
-        res.end();
-      } catch (err) {
-
-        console.error(err);
-        res.statusCode = 500;
-        res.write('Uncaught exception');
-        res.end();
-        if (this.listenerCount('error')) {
-          this.emit('error', err);
-        }
-      }
-
-    });
+    const server = http.createServer(this.callback.bind(this));
     return server.listen(port);
+
+  }
+
+  /**
+   * This function is a callback that can be used for Node's http.Server,
+   * https.Server, or http2.Server.
+   */
+  async callback(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
+
+    try {
+      const ctx = this.createContext(req, res);
+      await this.handle(ctx);
+
+      if (typeof ctx.response.body === 'string') {
+        res.write(ctx.response.body);
+      } else {
+        throw new Error('Only strings are supported currently');
+      }
+      res.end();
+    } catch (err) {
+
+      console.error(err);
+      res.statusCode = 500;
+      res.write('Uncaught exception');
+      res.end();
+      if (this.listenerCount('error')) {
+        this.emit('error', err);
+      }
+    }
 
   }
 
