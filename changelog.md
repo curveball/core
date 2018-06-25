@@ -1,3 +1,13 @@
+0.1.2 (2018-06-24)
+==================
+
+* Set `script` and `types` correctly in `package.json`.
+
+0.1.1 (2018-06-24)
+==================
+
+* Fixed npm package distribution. Was shipping the wrong files.
+
 0.1.0 (2018-06-24)
 ==================
 
