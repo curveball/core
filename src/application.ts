@@ -6,7 +6,19 @@ import EventEmitter from 'events';
 
 const pkg = require('../package.json');
 
+/**
+ * The Middleware function is implemented by all middlewares.
+ *
+ * The Middleware function takes a Context and a next() function as its
+ * arguments, and _may_ be an async function.
+ */
 type Middleware = (ctx: Context, next: () => Promise<void>) => Promise<void> | void;
+
+/**
+ * The HttpCallback is the function that is passed as a request listener to
+ * node.js's HTTP implementations (http, https, http2).
+ */
+type HttpCallback = (req: http.IncomingMessage, res: http.ServerResponse) => Promise<void>;
 
 export default class Application extends EventEmitter {
 
@@ -53,7 +65,7 @@ export default class Application extends EventEmitter {
    */
   listen(port: number): http.Server {
 
-    const server = http.createServer(this.callback.bind(this));
+    const server = http.createServer(this.callback());
     return server.listen(port);
 
   }
@@ -62,26 +74,28 @@ export default class Application extends EventEmitter {
    * This function is a callback that can be used for Node's http.Server,
    * https.Server, or http2.Server.
    */
-  async callback(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
+  callback(): HttpCallback {
 
-    try {
-      const ctx = this.createContext(req, res);
-      await this.handle(ctx);
+    return async (req: http.IncomingMessage, res: http.ServerResponse): Promise<void> => {
+      try {
+        const ctx = this.createContext(req, res);
+        await this.handle(ctx);
 
-      if (typeof ctx.response.body === 'string') {
-        res.write(ctx.response.body);
-      } else {
-        throw new Error('Only strings are supported currently');
-      }
-      res.end();
-    } catch (err) {
+        if (typeof ctx.response.body === 'string') {
+          res.write(ctx.response.body);
+        } else {
+          throw new Error('Only strings are supported currently');
+        }
+        res.end();
+      } catch (err) {
 
-      console.error(err);
-      res.statusCode = 500;
-      res.write('Uncaught exception');
-      res.end();
-      if (this.listenerCount('error')) {
-        this.emit('error', err);
+        console.error(err);
+        res.statusCode = 500;
+        res.write('Uncaught exception');
+        res.end();
+        if (this.listenerCount('error')) {
+          this.emit('error', err);
+        }
       }
     }
 
