@@ -5,24 +5,20 @@ import url from 'url';
 
 export class NodeRequest implements Request {
 
+  /**
+   * List of HTTP Headers
+   */
+  headers: HeadersInterface;
+
+  /**
+   * Node.js Request object
+   */
   private inner: http.IncomingMessage;
 
   constructor(inner: http.IncomingMessage) {
 
     this.inner = inner;
-
-  }
-
-  /**
-   * List of HTTP Headers
-   */
-  get headers(): HeadersInterface {
-
-    /**
-     * We're using a type cast here because the @types/node definition is not
-     * as correct.
-     */
-    return new Headers(this.inner.headers);
+    this.headers = new Headers(this.inner.headers);
 
   }
 
@@ -89,6 +85,20 @@ export class NodeRequest implements Request {
   get query(): { [s: string]: string } {
 
     return <any>url.parse(this.requestTarget, true).query;
+
+  }
+
+  /**
+   * Returns the value of the Content-Type header, with any additional
+   * parameters such as charset= removed.
+   *
+   * If there was no Content-Type header, an empty string will be returned.
+   */
+  get type(): string {
+
+    const type = this.headers.get('content-type');
+    if (!type) return '';
+    return type.split(';')[0];
 
   }
 

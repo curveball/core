@@ -49,6 +49,15 @@ class NodeHeaders implements HeadersInterface {
 
   }
 
+  /**
+   * Removes a HTTP header
+   */
+  delete(name: string): void {
+
+    this.inner.removeHeader(name);
+
+  }
+
 }
 
 
@@ -85,6 +94,19 @@ export class NodeResponse implements Response {
    */
   body: null | object | string
 
+  /**
+   * Returns the value of the Content-Type header, with any additional
+   * parameters such as charset= removed.
+   *
+   * If there was no Content-Type header, an empty string will be returned.
+   */
+  get type(): string {
+
+    const type = this.headers.get('content-type');
+    if (!type) return '';
+    return type.split(';')[0];
+
+  }
 }
 
 export default NodeResponse;
