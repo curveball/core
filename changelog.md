@@ -1,3 +1,11 @@
+0.3.0 (2018-??-??)
+==================
+
+* #47: `Application.callback` now returns a callback instead of implementing
+  it. This makes it a bit easier to deal with `this` scope and is also
+  consistent with Koa.
+
+
 0.2.0 (2018-06-25)
 ==================
 
