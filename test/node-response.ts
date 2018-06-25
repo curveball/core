@@ -51,6 +51,19 @@ describe('NodeResponse', () => {
 
   });
 
+  describe('changing the status code', () => {
+
+    it('should not fail', () => {
+
+      const res = getRes();
+      res.status = 404;
+
+      expect(res.status).to.equal(404);
+
+    });
+
+  });
+
 });
 
 describe('NodeResponseHeaders', () => {

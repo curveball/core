@@ -90,6 +90,15 @@ export class NodeResponse implements Response {
   }
 
   /**
+   * Updates the HTTP status code for this response.
+   */
+  set status(value: number) {
+
+    this.inner.statusCode = value;
+
+  }
+
+  /**
    * The response body.
    */
   body: null | object | string
