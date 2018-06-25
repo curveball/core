@@ -2,6 +2,7 @@ import http from 'http';
 import Request from './request';
 import { Headers, HeadersInterface } from './headers';
 import url from 'url';
+import accepts from 'accepts';
 
 export class NodeRequest implements Request {
 
@@ -99,6 +100,25 @@ export class NodeRequest implements Request {
     const type = this.headers.get('content-type');
     if (!type) return '';
     return type.split(';')[0];
+
+  }
+
+  /**
+   * accepts is used for negotation the Content-Type with a client.
+   *
+   * You can pass a content-type, or an array of content-types.
+   * The Content-Types you provide are a list of types your application
+   * supports.
+   *
+   * This function will then return the best possible type based on the Accept
+   * header.
+   *
+   * If no compatible types are found, this function returns null.
+   */
+  accepts(...types: string[]): null | string {
+
+    const result = <string|false>accepts(this.inner).type(types);
+    return result === false ? null : result;
 
   }
 

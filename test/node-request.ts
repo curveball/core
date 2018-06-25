@@ -7,7 +7,8 @@ function getReq() {
   const inner = new IncomingMessage(<any>null);
   inner.method = 'GET';
   inner.headers ={
-    'Content-Type': 'text/html; charset=utf-8'
+    'content-type': 'text/html; charset=utf-8',
+    'accept': 'text/html',
   };
   inner.url = 'https://example.org/foo/bar?a=1&b=2';
 
@@ -63,6 +64,22 @@ describe('node-request', () => {
       const req = getReq();
       req.headers.delete('Content-Type');
       expect(req.type).to.equal('');
+
+    });
+
+    it('The "accepts" method should work', () => {
+
+      const req = getReq();
+      const result = req.accepts('application/json', 'text/html');
+      expect(result).to.equal('text/html');
+
+    });
+
+    it('The "accepts" method should return false if there was no acceptable match.', () => {
+
+      const req = getReq();
+      const result = req.accepts('application/json');
+      expect(result).to.equal(null);
 
     });
 
