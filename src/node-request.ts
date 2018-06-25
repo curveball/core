@@ -82,6 +82,16 @@ export class NodeRequest implements Request {
    * middlewares to do the actual parsing.
    */
   body: any;
+
+  /**
+   * This object contains parsed query parameters.
+   */
+  get query(): { [s: string]: string } {
+
+    return <any>url.parse(this.requestTarget, true).query;
+
+  }
+
 }
 
 export default NodeRequest;

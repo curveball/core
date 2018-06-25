@@ -55,6 +55,11 @@ export interface Request {
    */
   body: any;
 
+  /**
+   * This object contains parsed query parameters.
+   */
+  query: { [s: string]: string };
+
 }
 
 export default Request;

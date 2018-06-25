@@ -9,7 +9,7 @@ function getReq() {
   inner.headers ={
     'Content-Type': 'text/html'
   };
-  inner.url = 'https://example.org/foo/bar';
+  inner.url = 'https://example.org/foo/bar?a=1&b=2';
 
   const outer = new NodeRequest(inner);
   return outer;
@@ -38,6 +38,16 @@ describe('node-request', () => {
 
       const req = getReq();
       expect(req.method).to.eql('GET');
+
+    });
+
+    it('should have a "query" property containing query parameters', () => {
+
+      const req = getReq();
+      expect(req.query).to.eql({
+        a: '1',
+        b: '2'
+      });
 
     });
 
