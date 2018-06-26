@@ -1,4 +1,4 @@
-0.3.0 (2018-??-??)
+0.3.0 (2018-06-26)
 ==================
 
 * #5: Support for informational status codes such as `100 Continue` and
