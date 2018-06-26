@@ -36,7 +36,7 @@ possible to use the framework with plain javascript.
 ```typescript
 import { Application, Context } from 'curveball';
 
-const app = new Curveball();
+const app = new Application();
 app.use((ctx: Context) => {
 
   ctx.response.status = 200;
