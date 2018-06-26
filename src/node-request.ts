@@ -1,10 +1,10 @@
-import http from 'http';
-import Request from './request';
-import { Headers, HeadersInterface } from './headers';
-import url from 'url';
 import accepts from 'accepts';
+import http from 'http';
 import rawBody from 'raw-body';
+import url from 'url';
+import { Headers, HeadersInterface } from './headers';
 import { NodeHttpRequest } from './node-http-utils';
+import Request from './request';
 
 export class NodeRequest implements Request {
 
@@ -99,7 +99,7 @@ export class NodeRequest implements Request {
   rawBody(encoding?: undefined, limit?: string): Promise<Buffer>;
   rawBody(encoding?: undefined|string, limit?: string): Promise<Buffer|string> {
 
-    const options:{
+    const options: {
       encoding?: string,
       limit?: string,
       length?: string
@@ -123,7 +123,7 @@ export class NodeRequest implements Request {
    */
   get query(): { [s: string]: string } {
 
-    return <any>url.parse(this.requestTarget, true).query;
+    return <any> url.parse(this.requestTarget, true).query;
 
   }
 
@@ -136,7 +136,7 @@ export class NodeRequest implements Request {
   get type(): string {
 
     const type = this.headers.get('content-type');
-    if (!type) return '';
+    if (!type) { return ''; }
     return type.split(';')[0];
 
   }
@@ -155,7 +155,7 @@ export class NodeRequest implements Request {
    */
   accepts(...types: string[]): null | string {
 
-    const result = <string|false>accepts(<http.IncomingMessage>this.inner).type(types);
+    const result = <string|false> accepts(<http.IncomingMessage> this.inner).type(types);
     return result === false ? null : result;
 
   }

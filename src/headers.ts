@@ -6,7 +6,7 @@ export interface HeadersInterface {
   /**
    * Sets a HTTP header name and value
    */
-  set(name: string, value:string | string[] | number): void;
+  set(name: string, value: string | string[] | number): void;
 
   /**
    * Gets a HTTP header's value.
@@ -40,18 +40,18 @@ export interface HeadersInterface {
  */
 export type HeadersObject = {
   [headerName: string]: string | string[] | number
-}
+};
 
 export class Headers implements HeadersInterface {
 
-  private store:{
+  private store: {
     [name: string]: [string, string | string[] | number]
-  }
+  };
 
   constructor(headersObj: HeadersObject = {}) {
 
     this.store = {};
-    for(const key of Object.keys(headersObj)) {
+    for (const key of Object.keys(headersObj)) {
       this.set(key, headersObj[key]);
     }
 
@@ -103,7 +103,7 @@ export class Headers implements HeadersInterface {
   getAll(): HeadersObject {
 
     const result: HeadersObject = {};
-    for(const headerName of Object.keys(this.store)) {
+    for (const headerName of Object.keys(this.store)) {
 
       result[headerName] = this.store[headerName][1];
 

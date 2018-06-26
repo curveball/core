@@ -12,6 +12,10 @@ test:
 lint:
 	tslint -p .
 
+.PHONY:lint-fix
+lint-fix:
+	tslint -p . --fix
+
 .PHONY:watch
 watch:
 	tsc --watch

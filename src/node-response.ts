@@ -1,8 +1,8 @@
 import http from 'http';
-import { HeadersInterface, HeadersObject } from './headers';
-import Response from './response';
-import { NodeHttpResponse, isHttp2Response } from './node-http-utils';
 import { promisify } from 'util';
+import { HeadersInterface, HeadersObject } from './headers';
+import { isHttp2Response, NodeHttpResponse } from './node-http-utils';
+import Response from './response';
 
 /**
  * This is a wrapper around the Node Response object, and handles creates a
@@ -116,7 +116,7 @@ export class NodeResponse implements Response {
   /**
    * The response body.
    */
-  body: null | object | string
+  body: null | object | string;
 
   /**
    * Returns the value of the Content-Type header, with any additional
@@ -127,7 +127,7 @@ export class NodeResponse implements Response {
   get type(): string {
 
     const type = this.headers.get('content-type');
-    if (!type) return '';
+    if (!type) { return ''; }
     return type.split(';')[0];
 
   }
@@ -143,10 +143,10 @@ export class NodeResponse implements Response {
     let outHeaders: HeadersObject = {};
 
     if (typeof headers !== 'undefined') {
-      if ((<HeadersInterface>headers).getAll !== undefined) {
-        outHeaders = (<HeadersInterface>headers).getAll();
+      if ((<HeadersInterface> headers).getAll !== undefined) {
+        outHeaders = (<HeadersInterface> headers).getAll();
       } else {
-        outHeaders = <HeadersObject>headers;
+        outHeaders = <HeadersObject> headers;
       }
     }
 
@@ -161,11 +161,11 @@ export class NodeResponse implements Response {
 
     } else {
 
-      const rawHeaders:string[] = [];
-      for(const headerName of Object.keys(outHeaders)) {
+      const rawHeaders: string[] = [];
+      for (const headerName of Object.keys(outHeaders)) {
         const headerValue = outHeaders[headerName];
         if (Array.isArray(headerValue)) {
-          for(const headerVal of headerValue) {
+          for (const headerVal of headerValue) {
             rawHeaders.push(`${headerName}: ${headerVal}\r\n`);
           }
         } else {
@@ -175,7 +175,7 @@ export class NodeResponse implements Response {
       // @ts-ignore _writeRaw is private but its the only sane way to access
       // it.
       const writeRaw = promisify(this.inner._writeRaw.bind(this.inner));
-      const message = `HTTP/1.1 ${status} ${http.STATUS_CODES[status]}\r\n${rawHeaders.join('')}\r\n`
+      const message = `HTTP/1.1 ${status} ${http.STATUS_CODES[status]}\r\n${rawHeaders.join('')}\r\n`;
       await writeRaw(message, 'ascii');
 
     }
