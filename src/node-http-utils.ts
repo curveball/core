@@ -24,5 +24,5 @@ export function isHttp2Response(response: NodeHttpResponse): response is http2.H
  * The HttpCallback is the function that is passed as a request listener to
  * node.js's HTTP implementations (http, https, http2).
  */
-export type HttpCallback = (req: http.IncomingMessage, res: NodeHttpResponse) => Promise<void>;
+export type HttpCallback = (req: NodeHttpRequest, res: NodeHttpResponse) => void;
 
