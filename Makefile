@@ -8,6 +8,10 @@ build:
 test:
 	nyc mocha
 
+.PHONY:lint
+lint:
+	tslint -p .
+
 .PHONY:watch
 watch:
 	tsc --watch
