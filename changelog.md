@@ -1,6 +1,9 @@
 0.3.0 (2018-??-??)
 ==================
 
+* #5: Support for informational status codes such as `100 Continue` and
+  `103 Early Hints` for both HTTP/1 and HTTP/2.
+* #28: HTTP2 support.
 * #34: `Application` is now the default export.
 * #47: `Application.callback` now returns a callback instead of implementing
   it. This makes it a bit easier to deal with `this` scope and is also
