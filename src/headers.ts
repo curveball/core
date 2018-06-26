@@ -35,7 +35,7 @@ export interface HeadersInterface {
   /**
    * Appends a new header, without removing an old one with the same name.
    */
-  append(name:string, value: string | string[] | number): void;
+  append(name: string, value: string | string[] | number): void;
 
 }
 
@@ -120,7 +120,7 @@ export class Headers implements HeadersInterface {
   /**
    * Appends a new header, without removing an old one with the same name.
    */
-  append(name:string, value: string | string[] | number): void {
+  append(name: string, value: string | string[] | number): void {
 
     const lowerName = name.toLowerCase();
     if (this.store[lowerName] === undefined) {
@@ -128,8 +128,8 @@ export class Headers implements HeadersInterface {
       return;
     }
 
-    const oldArray:string[] = Array.isArray(this.store[lowerName][1]) ? <string[]> this.store[lowerName][1] : [this.store[lowerName][1].toString()];
-    this.store[lowerName][1] = oldArray.concat(<string|string[]>value);
+    const oldArray: string[] = Array.isArray(this.store[lowerName][1]) ? <string[]> this.store[lowerName][1] : [this.store[lowerName][1].toString()];
+    this.store[lowerName][1] = oldArray.concat(<string|string[]> value);
 
   }
 
