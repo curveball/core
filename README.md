@@ -128,6 +128,7 @@ properties and methods:
 * `sendInformational(status, headers?)` - Sends a `100 Continue`,
   `102 Processing` or `103 Early Hints` response with optional headers.
 
+
 ### The Headers inteface
 
 The Headers interface represents HTTP headers for both the `Request` and
@@ -138,6 +139,9 @@ It has the following methods:
 * `set(name, value)` - Sets a HTTP header.
 * `get(name)` - Returns the value of a HTTP header, or null.
 * `delete(name)` - Deletes a HTTP header.
+* `append(name, value)` - Adds a HTTP header, but doesn't erase an existing
+  one with the same name.
+* `getAll()` - Returns all HTTP headers as a key-value object.
 
 
 ### Status
