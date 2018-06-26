@@ -74,7 +74,7 @@ class NodeHeaders implements HeadersInterface {
   /**
    * Appends a new header, without removing an old one with the same name.
    */
-  append(name:string, value: string | string[] | number): void {
+  append(name: string, value: string | string[] | number): void {
 
     let oldValue = this.inner.getHeader(name);
     if (oldValue === undefined) {
@@ -83,7 +83,7 @@ class NodeHeaders implements HeadersInterface {
     if (!Array.isArray(oldValue)) {
       oldValue = [oldValue.toString()];
     }
-    this.inner.setHeader(name, oldValue.concat(<string|string[]>value));
+    this.inner.setHeader(name, oldValue.concat(<string|string[]> value));
 
   }
 
