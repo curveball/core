@@ -14,6 +14,12 @@ export class NodeRequest implements Request {
   headers: HeadersInterface;
 
   /**
+   * Contains a parsed, stored representation of the body. It's up to
+   * middlewares to do the actual parsing.
+   */
+  body: any;
+
+  /**
    * Node.js Request object
    */
   private inner: NodeHttpRequest;
@@ -75,12 +81,6 @@ export class NodeRequest implements Request {
     return this.inner.url;
 
   }
-
-  /**
-   * Contains a parsed, stored representation of the body. It's up to
-   * middlewares to do the actual parsing.
-   */
-  body: any;
 
   /**
    * This function returns the request body.
