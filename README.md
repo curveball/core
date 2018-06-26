@@ -45,8 +45,45 @@ app.use((ctx: Context) => {
 });
 ```
 
-The Context class
------------------
+Sending 1xx Informational responses
+-----------------------------------
+
+Curveball has native support for sending informational responses. Examples are:
+
+* [`100 Continue`][http-100] to let a client know even before the request
+  completed that it makes sense to continue, or that it should break off the
+  request.
+* [`102 Processing`][http-102] to periodically indicate that the server is
+  still working on the response. This might not be very useful anymore.
+* [`103 Early Hints`][http-103] a new standard to let a client or proxy know
+  early in the process that some headers might be coming, allowing clients or
+  proxies to for example pre-fetch certain resources even before the initial
+  request completes.
+
+Here's an example of a middleware using `103 Early Hints`:
+
+```typescript
+import { Application, Context, Middleware } from 'curveball';
+
+const app = new Curveball();
+app.use(async (ctx: Context, next: Middleware) => {
+
+  await ctx.response.sendInformational(103, {
+    'Link' : [
+      '</style.css> rel="prefetch" as="style"',
+      '</script.js> rel="prefetch" as="script"',
+    ]
+  });
+  await next();
+
+});
+```
+
+API
+---
+
+
+### The Context class
 
 The Context object has the following properties:
 
@@ -57,8 +94,8 @@ The Context object has the following properties:
   example is that an authentication middlware might set 'currently logged in
   user' information here.
 
-The Request interface
----------------------
+
+### The Request interface
 
 The Request interface represents the HTTP request. It has the following
 properties and methods:
@@ -78,8 +115,7 @@ properties and methods:
 * `accepts` - Uses the [accepts][6] package to do content-negotiation.
 
 
-The Response interface
------------------------
+### The Response interface
 
 The Response interface represents a HTTP response. It has the following
 properties and methods:
@@ -89,10 +125,10 @@ properties and methods:
 * `body` - The response body. Can be a string, a buffer or an Object. If it's
   an object, the server will serialize it as JSON.
 * `type` - The `Content-Type` without additional parameters.
+* `sendInformational(status, headers?)` - Sends a `100 Continue`,
+  `102 Processing` or `103 Early Hints` response with optional headers.
 
-
-The Headers inteface
---------------------
+### The Headers inteface
 
 The Headers interface represents HTTP headers for both the `Request` and
 `Response`.
@@ -104,8 +140,7 @@ It has the following methods:
 * `delete(name)` - Deletes a HTTP header.
 
 
-Status
-------
+### Status
 
 * Basic framework is in place.
 * Many features still missing.
