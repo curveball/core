@@ -36,25 +36,6 @@ export default class Application extends EventEmitter {
 
   }
 
-  /**
-   * Calls a chain of middlewares.
-   *
-   * Pass a list of middlewares. It will call the first and bind the next
-   * middleware to next().
-   */
-  private async callMiddleware(ctx: Context, fns: Middleware[]) {
-
-    if (fns.length === 0) {
-      return;
-    }
-    return fns[0](ctx, async () => {
-      await this.callMiddleware(
-        ctx,
-        fns.slice(1)
-      );
-    });
-
-  }
 
   /**
    * Starts a HTTP server on the specified port.
@@ -87,6 +68,7 @@ export default class Application extends EventEmitter {
         res.end();
       } catch (err) {
 
+        // tslint:disable:no-console
         console.error(err);
 
         res.statusCode = 500;
@@ -102,7 +84,10 @@ export default class Application extends EventEmitter {
 
   }
 
-  createContext(req: NodeHttpRequest, res: NodeHttpResponse): Context {
+  /**
+   * Creates a Context object based on a node.js request and response object.
+   */
+  private createContext(req: NodeHttpRequest, res: NodeHttpResponse): Context {
 
     const context = new Context(
       new NodeRequest(req),
@@ -112,5 +97,26 @@ export default class Application extends EventEmitter {
     return context;
 
   }
+
+  /**
+   * Calls a chain of middlewares.
+   *
+   * Pass a list of middlewares. It will call the first and bind the next
+   * middleware to next().
+   */
+  private async callMiddleware(ctx: Context, fns: Middleware[]) {
+
+    if (fns.length === 0) {
+      return;
+    }
+    return fns[0](ctx, async () => {
+      await this.callMiddleware(
+        ctx,
+        fns.slice(1)
+      );
+    });
+
+  }
+
 
 }
