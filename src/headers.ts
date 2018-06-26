@@ -32,6 +32,11 @@ export interface HeadersInterface {
    */
   getAll(): HeadersObject;
 
+  /**
+   * Appends a new header, without removing an old one with the same name.
+   */
+  append(name:string, value: string | string[] | number): void;
+
 }
 
 /**
@@ -87,7 +92,7 @@ export class Headers implements HeadersInterface {
     if (typeof(value) === 'string') {
       return value;
     } else if (Array.isArray(value)) {
-      return value.join(',');
+      return value.join(', ');
     } else {
       return value.toString();
     }
@@ -109,6 +114,22 @@ export class Headers implements HeadersInterface {
 
     }
     return result;
+
+  }
+
+  /**
+   * Appends a new header, without removing an old one with the same name.
+   */
+  append(name:string, value: string | string[] | number): void {
+
+    const lowerName = name.toLowerCase();
+    if (this.store[lowerName] === undefined) {
+      this.store[lowerName] = [name, value];
+      return;
+    }
+
+    const oldArray:string[] = Array.isArray(this.store[lowerName][1]) ? <string[]> this.store[lowerName][1] : [this.store[lowerName][1].toString()];
+    this.store[lowerName][1] = oldArray.concat(<string|string[]>value);
 
   }
 

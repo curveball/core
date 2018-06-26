@@ -52,7 +52,7 @@ describe('Headers class', () => {
       const headers = new Headers({
         'Accept': ['text/html', 'text/plain'],
       });
-      expect(headers.get('Accept')).to.equal('text/html,text/plain');
+      expect(headers.get('Accept')).to.equal('text/html, text/plain');
 
     });
 

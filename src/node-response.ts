@@ -44,7 +44,7 @@ class NodeHeaders implements HeadersInterface {
     } else if (typeof(value) === 'string') {
       return value;
     } else if (Array.isArray(value)) {
-      return value.join(',');
+      return value.join(', ');
     } else {
       return value.toString();
     }
@@ -71,7 +71,21 @@ class NodeHeaders implements HeadersInterface {
     return this.inner.getHeaders();
 
   }
+  /**
+   * Appends a new header, without removing an old one with the same name.
+   */
+  append(name:string, value: string | string[] | number): void {
 
+    let oldValue = this.inner.getHeader(name);
+    if (oldValue === undefined) {
+      oldValue = [];
+    }
+    if (!Array.isArray(oldValue)) {
+      oldValue = [oldValue.toString()];
+    }
+    this.inner.setHeader(name, oldValue.concat(<string|string[]>value));
+
+  }
 
 }
 
