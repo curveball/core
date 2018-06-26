@@ -148,6 +148,8 @@ It has the following methods:
 [1]: https://expressjs.com/ "Express"
 [2]: https://koajs.com/ "Koa"
 [3]: https://www.typescriptlang.org/ "TypeScript"
-[4]: https://tools.ietf.org/html/rfc8297 "RFC8297"
 [5]: https://www.npmjs.com/package/raw-body
 [6]: https://www.npmjs.com/package/accepts
+[http-100]: https://tools.ietf.org/html/rfc7231#section-6.2.1 "RFC7231: 100 Continue"
+[http-102]: https://tools.ietf.org/html/rfc2518#section-10.1 "RFC2518: 102 Processing"
+[http-103]: https://tools.ietf.org/html/rfc8297 "RFC8297: 103 Early Hints"
