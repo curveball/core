@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { ServerResponse, IncomingMessage } from 'http';
 import { NodeResponse } from '../src/node-response';
 import headersInterfaceTests from './headers-interface-tests';
+import sinon from 'sinon';
 
 function getRes() {
 
@@ -59,6 +60,30 @@ describe('NodeResponse', () => {
       res.status = 404;
 
       expect(res.status).to.equal(404);
+
+    });
+
+  });
+
+  describe('sendInformational', () => {
+
+    it('should send a 103 Status when called with a HTTP/1 response', async () => {
+
+      const res = getRes();
+      // @ts-ignore - Ignoring 'private' accessor.
+      const mock = sinon.mock(res.inner);
+
+      const writeRawMock = mock.expects('_writeRaw');
+      writeRawMock.callsArgWith(2, null, true);
+
+      await res.sendInformational(103, { Foo: 'bar'});
+
+      const body = `HTTP/1.1 103 Early Hints\r\nFoo: bar\r\n\r\n`;
+
+      expect(writeRawMock.calledOnce).to.equal(true);
+      expect(writeRawMock.calledWith(body)).to.equal(true);
+
+      mock.restore();
 
     });
 
