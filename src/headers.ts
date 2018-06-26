@@ -27,10 +27,10 @@ export interface HeadersInterface {
   /**
    * Returns all HTTP headers.
    *
-   * Headernames are not lowercased. Values may be either strings or arrays of
-   * strings.
+   * Headernames are lowercased. Values may be either strings or arrays of
+   * strings or numbers.
    */
-  getRaw(): HeadersObject;
+  getAll(): HeadersObject;
 
 }
 
@@ -97,15 +97,15 @@ export class Headers implements HeadersInterface {
   /**
    * Returns all HTTP headers.
    *
-   * Headernames are not lowercased. Values may be either strings or arrays of
-   * strings.
+   * Headernames are lowercased. Values may be either strings or arrays of
+   * strings or numbers.
    */
-  getRaw(): HeadersObject {
+  getAll(): HeadersObject {
 
     const result: HeadersObject = {};
-    for(const header of Object.values(this.store)) {
+    for(const headerName of Object.keys(this.store)) {
 
-      result[header[0]] = header[1];
+      result[headerName] = this.store[headerName][1];
 
     }
     return result;
@@ -117,7 +117,7 @@ export class Headers implements HeadersInterface {
    */
   delete(name: string): void {
 
-    this.store[name.toLowerCase()] = undefined;
+    delete this.store[name.toLowerCase()];
 
   }
 

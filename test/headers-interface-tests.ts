@@ -77,6 +77,22 @@ export default function headersTest(headers: HeadersInterface) {
 
     });
 
+    describe('getAll', () => {
+
+      it('should return the entire set of headers', () => {
+
+        const expected = {
+          accept: ['text/html', 'text/plain'],
+          'content-length': 5,
+          'content-type' : 'text/html',
+        };
+
+        expect(headers.getAll()).to.deep.equal(expected);
+
+      });
+
+    });
+
   });
 
 }
