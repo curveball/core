@@ -2,7 +2,7 @@ import http from 'http';
 import http2 from 'http2';
 
 /**
- * A node.js Http request 
+ * A node.js Http request
  */
 export type NodeHttpRequest = http.IncomingMessage | http2.Http2ServerRequest;
 
@@ -16,7 +16,7 @@ export type NodeHttpResponse = http.ServerResponse | http2.Http2ServerResponse;
  */
 export function isHttp2Response(response: NodeHttpResponse): response is http2.Http2ServerResponse {
 
-  return (<http2.Http2ServerResponse>response).stream !== undefined;
+  return (<http2.Http2ServerResponse> response).stream !== undefined;
 
 }
 

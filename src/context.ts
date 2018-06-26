@@ -28,8 +28,8 @@ export default class Context {
    * in this property for other middlewares to use.
    */
   state: {
-    [s:string]:  any
-  }
+    [s: string]: any
+  };
 
   constructor(req: Request, res: Response) {
 

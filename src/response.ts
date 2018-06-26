@@ -28,7 +28,7 @@ export interface Response {
    */
   readonly type: string;
 
-  sendInformational: (status: number, headers?: HeadersInterface | HeadersObject) => Promise<void>
+  sendInformational: (status: number, headers?: HeadersInterface | HeadersObject) => Promise<void>;
 
 }
 

@@ -1,9 +1,9 @@
+import EventEmitter from 'events';
 import http from 'http';
+import Context from './context';
+import { HttpCallback, NodeHttpRequest, NodeHttpResponse } from './node-http-utils';
 import NodeRequest from './node-request';
 import NodeResponse from './node-response';
-import Context from './context';
-import EventEmitter from 'events';
-import { HttpCallback, NodeHttpRequest, NodeHttpResponse } from './node-http-utils';
 
 const pkg = require('../package.json');
 
@@ -98,7 +98,7 @@ export default class Application extends EventEmitter {
           this.emit('error', err);
         }
       }
-    }
+    };
 
   }
 
