@@ -5,6 +5,7 @@ import { NodeResponse } from '../src/node-response';
 import headersInterfaceTests from './headers-interface-tests';
 import sinon from 'sinon';
 import Application from '../src/application';
+import { Headers } from '../src/headers';
 
 function getRes() {
 
@@ -69,7 +70,26 @@ describe('NodeResponse', () => {
 
   describe('sendInformational', () => {
 
-    it('should send a 103 Status when called with a HTTP/1 response', async () => {
+    it('should send a 100 Status when called via HTTP/1', async () => {
+
+      const res = getRes();
+      // @ts-ignore - Ignoring 'private' accessor.
+      const mock = sinon.mock(res.inner);
+
+      const writeRawMock = mock.expects('_writeRaw');
+      writeRawMock.callsArgWith(2, null, true);
+
+      await res.sendInformational(100);
+      const body = `HTTP/1.1 100 Continue\r\n\r\n`;
+
+      expect(writeRawMock.calledOnce).to.equal(true);
+      expect(writeRawMock.calledWith(body)).to.equal(true);
+
+      mock.restore();
+
+    });
+
+    it('should send a 103 Status when called via HTTP/1', async () => {
 
       const res = getRes();
       // @ts-ignore - Ignoring 'private' accessor.
@@ -91,6 +111,30 @@ describe('NodeResponse', () => {
       mock.restore();
 
     });
+
+    it('should also correctly send the 103 status when headers are passed as a HeadersInterface', async () => {
+
+      const res = getRes();
+      // @ts-ignore - Ignoring 'private' accessor.
+      const mock = sinon.mock(res.inner);
+
+      const writeRawMock = mock.expects('_writeRaw');
+      writeRawMock.callsArgWith(2, null, true);
+
+      await res.sendInformational(103, new Headers({
+        Foo: 'bar',
+        Many: ['1', '2']
+      }));
+
+      const body = `HTTP/1.1 103 Early Hints\r\nfoo: bar\r\nmany: 1\r\nmany: 2\r\n\r\n`;
+
+      expect(writeRawMock.calledOnce).to.equal(true);
+      expect(writeRawMock.calledWith(body)).to.equal(true);
+
+      mock.restore();
+
+    });
+
 
     it('should send a 103 Status when called with a HTTP/2 response', async () => {
 
