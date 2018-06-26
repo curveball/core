@@ -11,7 +11,7 @@ This web framework has the following goals:
 * Modern Ecmascript features.
 * Async/await-based middleware.
 * Native support for HTTP/2, including easy access to HTTP/2 Push.
-* Native support for modern HTTP features, such as [`103 Early Hints`][4].
+* Native support for modern HTTP features, such as [`103 Early Hints`][http-103].
 
 If you used Koa in the past, this is going to look pretty familiar. I'm a big
 fan of Koa myself and would recommend it over this project if you don't need
