@@ -1,6 +1,8 @@
 import http from 'http';
+import { HeadersInterface, HeadersObject } from './headers';
 import Response from './response';
-import { HeadersInterface } from './headers';
+import { NodeHttpResponse, isHttp2Response } from './node-http-utils';
+import { promisify } from 'util';
 
 /**
  * This is a wrapper around the Node Response object, and handles creates a
@@ -8,9 +10,9 @@ import { HeadersInterface } from './headers';
  */
 class NodeHeaders implements HeadersInterface {
 
-  private inner: http.ServerResponse;
+  private inner: NodeHttpResponse;
 
-  constructor(inner: http.ServerResponse) {
+  constructor(inner: NodeHttpResponse) {
 
     this.inner = inner;
 
@@ -58,14 +60,27 @@ class NodeHeaders implements HeadersInterface {
 
   }
 
+  /**
+   * Returns all HTTP headers.
+   *
+   * Headernames are not lowercased. Values may be either strings or arrays of
+   * strings.
+   */
+  getRaw(): HeadersObject {
+
+    return this.inner.getHeaders();
+
+  }
+
+
 }
 
 
 export class NodeResponse implements Response {
 
-  private inner: http.ServerResponse;
+  private inner: NodeHttpResponse;
 
-  constructor(inner: http.ServerResponse) {
+  constructor(inner: NodeHttpResponse) {
 
     this.inner = inner;
 
@@ -116,6 +131,57 @@ export class NodeResponse implements Response {
     return type.split(';')[0];
 
   }
+
+  /**
+   * Sends an informational response before the real response.
+   *
+   * This can be used to for example send a `100 Continue` or `103 Early Hints`
+   * response.
+   */
+  async sendInformational(status: number, headers?: HeadersInterface | HeadersObject): Promise<void> {
+
+    let outHeaders: HeadersObject = {};
+
+    if (typeof headers !== 'undefined') {
+      if ((<HeadersInterface>headers).getRaw !== undefined) {
+        outHeaders = (<HeadersInterface>headers).getRaw();
+      } else {
+        outHeaders = <HeadersObject>headers;
+      }
+    }
+
+    /**
+     * It's a HTTP2 connection.
+     */
+    if (isHttp2Response(this.inner)) {
+      this.inner.stream.additionalHeaders({
+        ':status': status,
+        ...outHeaders
+      });
+
+    } else {
+
+      const rawHeaders:string[] = [];
+      for(const headerName of Object.keys(outHeaders)) {
+        const headerValue = outHeaders[headerName];
+        if (Array.isArray(headerValue)) {
+          for(const headerVal of headerValue) {
+            rawHeaders.push(`${headerName}: ${headerVal}\r\n`);
+          }
+        } else {
+          rawHeaders.push(`${headerName}: ${headerValue}\r\n`);
+        }
+      }
+      // @ts-ignore _writeRaw is private but its the only sane way to access
+      // it.
+      const writeRaw = promisify(this.inner._writeRaw.bind(this.inner));
+      const message = `HTTP/1.1 ${status} ${http.STATUS_CODES[status]}\r\n${rawHeaders.join('')}\r\n`
+      await writeRaw(message, 'ascii');
+
+    }
+
+  }
+
 }
 
 export default NodeResponse;

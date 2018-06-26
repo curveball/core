@@ -3,6 +3,7 @@ import NodeRequest from './node-request';
 import NodeResponse from './node-response';
 import Context from './context';
 import EventEmitter from 'events';
+import { HttpCallback, NodeHttpRequest, NodeHttpResponse } from './node-http-utils';
 
 const pkg = require('../package.json');
 
@@ -12,13 +13,8 @@ const pkg = require('../package.json');
  * The Middleware function takes a Context and a next() function as its
  * arguments, and _may_ be an async function.
  */
-type Middleware = (ctx: Context, next: () => Promise<void>) => Promise<void> | void;
+export type Middleware = (ctx: Context, next: () => Promise<void>) => Promise<void> | void;
 
-/**
- * The HttpCallback is the function that is passed as a request listener to
- * node.js's HTTP implementations (http, https, http2).
- */
-type HttpCallback = (req: http.IncomingMessage, res: http.ServerResponse) => Promise<void>;
 
 export default class Application extends EventEmitter {
 
@@ -76,22 +72,27 @@ export default class Application extends EventEmitter {
    */
   callback(): HttpCallback {
 
-    return async (req: http.IncomingMessage, res: http.ServerResponse): Promise<void> => {
+    return async (req: NodeHttpRequest, res: NodeHttpResponse): Promise<void> => {
       try {
         const ctx = this.createContext(req, res);
         await this.handle(ctx);
 
         if (typeof ctx.response.body === 'string') {
+          // @ts-ignore
           res.write(ctx.response.body);
         } else {
           throw new Error('Only strings are supported currently');
         }
+        // @ts-ignore
         res.end();
       } catch (err) {
 
         console.error(err);
+
         res.statusCode = 500;
+        // @ts-ignore
         res.write('Uncaught exception');
+        // @ts-ignore
         res.end();
         if (this.listenerCount('error')) {
           this.emit('error', err);
@@ -101,7 +102,7 @@ export default class Application extends EventEmitter {
 
   }
 
-  createContext(req: http.IncomingMessage, res: http.ServerResponse): Context {
+  createContext(req: NodeHttpRequest, res: NodeHttpResponse): Context {
 
     const context = new Context(
       new NodeRequest(req),
