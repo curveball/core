@@ -9,6 +9,7 @@
   it. This makes it a bit easier to deal with `this` scope and is also
   consistent with Koa.
 * #48: Added a setter for `Response.status()`.
+* Now exporting the `Middleware` type.
 
 
 0.2.0 (2018-06-25)
@@ -21,6 +22,7 @@
 * #37: `Response.body` now has type `any`.
 * #38: Added `Context.state`.
 * #39: Added `Application.callback`.
+
 
 0.1.2 (2018-06-24)
 ==================
