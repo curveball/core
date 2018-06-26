@@ -6,7 +6,7 @@ export interface HeadersInterface {
   /**
    * Sets a HTTP header name and value
    */
-  set(name: string, value:string | string[] | number): void; 
+  set(name: string, value:string | string[] | number): void;
 
   /**
    * Gets a HTTP header's value.
@@ -24,9 +24,21 @@ export interface HeadersInterface {
    */
   delete(name: string): void;
 
+  /**
+   * Returns all HTTP headers.
+   *
+   * Headernames are not lowercased. Values may be either strings or arrays of
+   * strings.
+   */
+  getRaw(): HeadersObject;
+
 }
 
-type HeadersObj = {
+/**
+ * This type is a simple key-value object that can be used to instantiate a
+ * Headers class.
+ */
+export type HeadersObject = {
   [headerName: string]: string | string[] | number
 }
 
@@ -36,7 +48,7 @@ export class Headers implements HeadersInterface {
     [name: string]: [string, string | string[] | number]
   }
 
-  constructor(headersObj: HeadersObj = {}) {
+  constructor(headersObj: HeadersObject = {}) {
 
     this.store = {};
     for(const key of Object.keys(headersObj)) {
@@ -79,6 +91,24 @@ export class Headers implements HeadersInterface {
     } else {
       return value.toString();
     }
+
+  }
+
+  /**
+   * Returns all HTTP headers.
+   *
+   * Headernames are not lowercased. Values may be either strings or arrays of
+   * strings.
+   */
+  getRaw(): HeadersObject {
+
+    const result: HeadersObject = {};
+    for(const header of Object.values(this.store)) {
+
+      result[header[0]] = header[1];
+
+    }
+    return result;
 
   }
 

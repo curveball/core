@@ -1,4 +1,4 @@
-import { HeadersInterface } from './headers';
+import { HeadersInterface, HeadersObject } from './headers';
 
 /**
  * This interface represents an incoming server request.
@@ -27,6 +27,8 @@ export interface Response {
    * If there was no Content-Type header, an empty string will be returned.
    */
   readonly type: string;
+
+  sendInformational: (status: number, headers?: HeadersInterface | HeadersObject) => Promise<void>
 
 }
 

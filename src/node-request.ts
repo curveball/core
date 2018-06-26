@@ -4,6 +4,7 @@ import { Headers, HeadersInterface } from './headers';
 import url from 'url';
 import accepts from 'accepts';
 import rawBody from 'raw-body';
+import { NodeHttpRequest } from './node-http-utils';
 
 export class NodeRequest implements Request {
 
@@ -15,9 +16,9 @@ export class NodeRequest implements Request {
   /**
    * Node.js Request object
    */
-  private inner: http.IncomingMessage;
+  private inner: NodeHttpRequest;
 
-  constructor(inner: http.IncomingMessage) {
+  constructor(inner: NodeHttpRequest) {
 
     this.inner = inner;
     this.headers = new Headers(this.inner.headers);
@@ -154,7 +155,7 @@ export class NodeRequest implements Request {
    */
   accepts(...types: string[]): null | string {
 
-    const result = <string|false>accepts(this.inner).type(types);
+    const result = <string|false>accepts(<http.IncomingMessage>this.inner).type(types);
     return result === false ? null : result;
 
   }
