@@ -66,7 +66,7 @@ class NodeHeaders implements HeadersInterface {
    * Headernames are not lowercased. Values may be either strings or arrays of
    * strings.
    */
-  getRaw(): HeadersObject {
+  getAll(): HeadersObject {
 
     return this.inner.getHeaders();
 
@@ -143,8 +143,8 @@ export class NodeResponse implements Response {
     let outHeaders: HeadersObject = {};
 
     if (typeof headers !== 'undefined') {
-      if ((<HeadersInterface>headers).getRaw !== undefined) {
-        outHeaders = (<HeadersInterface>headers).getRaw();
+      if ((<HeadersInterface>headers).getAll !== undefined) {
+        outHeaders = (<HeadersInterface>headers).getAll();
       } else {
         outHeaders = <HeadersObject>headers;
       }
