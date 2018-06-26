@@ -42,7 +42,7 @@ export default function headersTest(headers: HeadersInterface) {
       it('should concatenate multiple headers with the same name', () => {
 
         headers.set('Accept', ['text/html', 'text/plain']),
-        expect(headers.get('Accept')).to.equal('text/html,text/plain');
+        expect(headers.get('Accept')).to.equal('text/html, text/plain');
 
       });
 
@@ -88,6 +88,40 @@ export default function headersTest(headers: HeadersInterface) {
         };
 
         expect(headers.getAll()).to.deep.equal(expected);
+
+      });
+
+    });
+
+    describe('append', () => {
+
+      it('should allow creating an initial header', () => {
+
+        headers.append('X-Append', 'a');
+        expect(headers.get('X-Append')).to.equal('a');
+
+      });
+
+      it('should allow adding another header with the same value', () => {
+
+        headers.append('X-Append', 'b');
+        expect(headers.get('X-Append')).to.equal('a, b');
+
+      });
+
+      it('should allow adding several headers in one go', () => {
+
+        headers.append('X-Append', ['c', 'd']);
+        expect(headers.get('X-Append')).to.equal('a, b, c, d');
+
+      });
+
+      it('should allow using append on a headers thats singular', () => {
+        // This is a weird test because it creates a broken value, but it
+        // tests a specific branch. Maybe I can come up with a better test
+        // for this later.
+        headers.append('Content-Length', 6);
+        expect(headers.get('Content-Length')).to.equal('5, 6');
 
       });
 
