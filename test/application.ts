@@ -68,6 +68,44 @@ describe('Application', () => {
 
   });
 
+  it('should handle "null" bodies', async () => {
+
+    const application = new Application();
+    application.use( (ctx, next) => {
+      ctx.response.body = null;
+    });
+    const server = application.listen(5555);
+
+    const response = await fetch('http://localhost:5555');
+    const body = await response.text();
+
+    expect(body).to.equal('');
+    expect(response.headers.get('server')).to.equal('curveball/' + require('../package.json').version);
+    expect(response.status).to.equal(200);
+
+    server.close();
+
+  });
+
+  it('should throw an exception for unsupported bodies', async () => {
+
+    const application = new Application();
+    application.use( (ctx, next) => {
+      ctx.response.body = 5;
+    });
+    const server = application.listen(5555);
+
+    const response = await fetch('http://localhost:5555');
+    const body = await response.text();
+
+    expect(body).to.equal('Uncaught exception');
+    expect(response.headers.get('server')).to.equal('curveball/' + require('../package.json').version);
+    expect(response.status).to.equal(500);
+
+    server.close();
+
+  });
+
   it('should work with multiple middlewares', async () => {
 
     const application = new Application();
@@ -155,14 +193,12 @@ describe('Application', () => {
 
   describe('When no middlewares are defined', () => {
 
-    it('should throw an exception', async () => {
+    it('should do nothing', async () => {
 
       const application = new Application();
       const server = application.listen(5555);
 
-      const response = await fetch('http://localhost:5555');
-      const body = await response.text();
-      expect(body).to.equal('Uncaught exception');
+      await fetch('http://localhost:5555');
 
       server.close();
 

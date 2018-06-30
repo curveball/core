@@ -1,6 +1,7 @@
 0.3.2 (2018-??-??)
 ==================
 
+* #56: `Response.body` may now be `null`.
 * #57: `Response.type` is now settable.
 
 
