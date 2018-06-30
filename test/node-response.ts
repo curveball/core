@@ -53,7 +53,17 @@ describe('NodeResponse', () => {
 
     });
 
+
   });
+
+  it('should update the Content-Type header when "type" is set', async() => {
+
+    const req = await getRes();
+    req.type = 'text/plain';
+    expect(req.headers.get('Content-Type')).to.equal('text/plain');
+
+  });
+
 
   describe('changing the status code', () => {
 
