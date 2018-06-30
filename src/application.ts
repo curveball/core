@@ -61,8 +61,14 @@ export default class Application extends EventEmitter {
         if (typeof ctx.response.body === 'string') {
           // @ts-ignore
           res.write(ctx.response.body);
+        } else if (ctx.response.body instanceof Buffer) {
+          // @ts-ignore
+          res.write(ctx.response.body);
+        } else if (typeof ctx.response.body === 'object') {
+          // @ts-ignore
+          res.write(JSON.stringify(ctx.response.body))
         } else {
-          throw new Error('Only strings are supported currently');
+          throw new Error('Only strings, Buffers and objects are supported for "body". We got a ' + typeof ctx.response.body);
         }
         // @ts-ignore
         res.end();

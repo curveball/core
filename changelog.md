@@ -1,7 +1,9 @@
-0.3.1 (2018-??-??)
+0.3.1 (2018-06-29)
 =================
 
-* Added License
+* Added License, Code of Conduct.
+* #52: Support for `Buffer` and arbitrary objects in `response.body`. The
+  latter will automatically get converted to JSON.
 
 
 0.3.0 (2018-06-26)
