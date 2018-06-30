@@ -147,6 +147,15 @@ export class NodeResponse implements Response {
   }
 
   /**
+   * Shortcut for setting the Content-Type header.
+   */
+  set type(value: string) {
+
+    this.headers.set('content-type', value);
+
+  }
+
+  /**
    * Sends an informational response before the real response.
    *
    * This can be used to for example send a `100 Continue` or `103 Early Hints`
