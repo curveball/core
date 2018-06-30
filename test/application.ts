@@ -30,6 +30,44 @@ describe('Application', () => {
 
   });
 
+  it('should work with Buffer responses', async () => {
+
+    const application = new Application();
+    application.use( (ctx, next) => {
+      ctx.response.body = Buffer.from('hi');
+    });
+    const server = application.listen(5555);
+
+    const response = await fetch('http://localhost:5555');
+    const body = await response.text();
+
+    expect(body).to.equal('hi');
+    expect(response.headers.get('server')).to.equal('curveball/' + require('../package.json').version);
+    expect(response.status).to.equal(200);
+
+    server.close();
+
+  });
+
+  it('should automatically JSON-encode objects', async () => {
+
+    const application = new Application();
+    application.use( (ctx, next) => {
+      ctx.response.body = { foo: 'bar' };
+    });
+    const server = application.listen(5555);
+
+    const response = await fetch('http://localhost:5555');
+    const body = await response.text();
+
+    expect(body).to.equal('{"foo":"bar"}');
+    expect(response.headers.get('server')).to.equal('curveball/' + require('../package.json').version);
+    expect(response.status).to.equal(200);
+
+    server.close();
+
+  });
+
   it('should work with multiple middlewares', async () => {
 
     const application = new Application();
