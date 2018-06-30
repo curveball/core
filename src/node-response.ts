@@ -97,6 +97,7 @@ export class NodeResponse implements Response {
   constructor(inner: NodeHttpResponse) {
 
     this.inner = inner;
+    this.body = null;
 
   }
 
