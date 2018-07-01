@@ -1,6 +1,7 @@
 0.4.0 (2018-??-??)
 ==================
 
+* #4: Support for HTTP/2 push via the `Response.push()` method.
 * #62: It's now possible to do internal sub-requests without going through
   the HTTP stack, with `Application.subRequest()`.
 * Added `MemoryRequest` and `MemoryResponse`.
