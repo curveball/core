@@ -209,7 +209,7 @@ describe('Application', () => {
 
   describe('Subrequests', () => {
 
-    it('should magically work', async () => {
+    it('should work with a Request object', async () => {
 
       let innerRequest;
 
@@ -230,6 +230,30 @@ describe('Application', () => {
       expect(response.headers.get('X-Foo')).to.equal('bar');
       expect(response.body).to.equal('hello world');
       expect(innerRequest).to.equal(request);
+
+    });
+
+    it('should work without a Request object', async () => {
+
+      const application = new Application();
+      application.use(ctx => {
+
+        ctx.response.status = 201;
+        ctx.response.headers.set('X-Foo', 'bar');
+        ctx.response.body = 'hello world';
+
+      });
+
+      const response = await application.subRequest(
+        'POST',
+        '/',
+        { foo: 'bar' },
+        'request-body'
+      );
+
+      expect(response.status).to.equal(201);
+      expect(response.headers.get('X-Foo')).to.equal('bar');
+      expect(response.body).to.equal('hello world');
 
     });
 
