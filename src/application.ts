@@ -4,6 +4,8 @@ import Context from './context';
 import { HttpCallback, NodeHttpRequest, NodeHttpResponse } from './node-http-utils';
 import NodeRequest from './node-request';
 import NodeResponse from './node-response';
+import Request from './request';
+import StaticResponse from './static-response';
 
 const pkg = require('../package.json');
 
@@ -55,7 +57,7 @@ export default class Application extends EventEmitter {
 
     return async (req: NodeHttpRequest, res: NodeHttpResponse): Promise<void> => {
       try {
-        const ctx = this.createContext(req, res);
+        const ctx = this.buildContextFromHttp(req, res);
         await this.handle(ctx);
 
         if (typeof ctx.response.body === 'string') {
@@ -93,9 +95,25 @@ export default class Application extends EventEmitter {
   }
 
   /**
+   * Does a sub-request based on a Request object, and returns a Response
+   * object.
+   */
+  async subRequest(request: Request) {
+
+    const context = new Context(
+      request,
+      new StaticResponse()
+    );
+
+    await this.handle(context);
+    return context.response;
+
+  }
+
+  /**
    * Creates a Context object based on a node.js request and response object.
    */
-  private createContext(req: NodeHttpRequest, res: NodeHttpResponse): Context {
+  private buildContextFromHttp(req: NodeHttpRequest, res: NodeHttpResponse): Context {
 
     const context = new Context(
       new NodeRequest(req),
