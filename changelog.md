@@ -1,3 +1,9 @@
+0.4.1 (????-??-??)
+==================
+
+* #57: `Response.type` is now settable.
+
+
 0.4.0 (2018-07-01)
 ==================
 
@@ -6,7 +12,7 @@
   the HTTP stack, with `Application.subRequest()`.
 * Added `MemoryRequest` and `MemoryResponse`.
 * #56: `Response.body` may now be `null`.
-* #57: `Response.type` is now settable.
+
 * Renamed package to `@curveball/core`.
 
 
