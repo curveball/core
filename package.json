@@ -1,6 +1,6 @@
 {
-  "name": "@curveball/curveball",
-  "version": "0.3.2",
+  "name": "@curveball/core",
+  "version": "0.4.0",
   "description": "Curveball is a framework writting in Typescript for Node.js",
   "main": "dist/index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/evert/curveball.git"
+    "url": "git+https://github.com/curveballjs/core.git"
   },
   "files": [
     "package.json",
@@ -28,9 +28,9 @@
   "author": "Evert Pot (https://evertpot.com/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/evert/curveball/issues"
+    "url": "https://github.com/curveballjs/core/issues"
   },
-  "homepage": "https://github.com/evert/curveball#readme",
+  "homepage": "https://github.com/curveballjs/core#readme",
   "devDependencies": {
     "@types/accepts": "^1.3.5",
     "@types/chai": "^4.1.4",

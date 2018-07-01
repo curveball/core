@@ -7,6 +7,7 @@
 * Added `MemoryRequest` and `MemoryResponse`.
 * #56: `Response.body` may now be `null`.
 * #57: `Response.type` is now settable.
+* Renamed package to `@curveball/core`.
 
 
 0.3.1 (2018-06-29)
