@@ -79,5 +79,20 @@ describe('MemoryResponse', () => {
     });
 
   });
+  describe('push', () => {
+
+    it('should be callable but do nothing', async () => {
+
+      const res = getRes();
+      let notCalled = true;
+
+      res.push( ctx => {
+        notCalled = false;
+      });
+      expect(notCalled).is.true;
+
+    });
+
+  });
 
 });

@@ -5,7 +5,7 @@ import Context from './context';
 import { HeadersInterface, HeadersObject } from './headers';
 import MemoryRequest from './memory-request';
 import MemoryResponse from './memory-response';
-import { isHttp2Response, NodeHttpResponse } from './node-http-utils';
+import { isHttp2Response, NodeHttpResponse, prepareBody } from './node-http-utils';
 import Response from './response';
 
 /**
@@ -245,6 +245,8 @@ export class NodeResponse implements Response {
 
       stream.pushStream(requestHeaders, (err, pushStream) => {
 
+        // TODO: not sure yet how I can write a test for this
+        /* istanbul ignore if */
         if (err) {
           rej(err);
           return;
@@ -254,13 +256,7 @@ export class NodeResponse implements Response {
           ...pushCtx.response.headers.getAll()
         });
 
-        if (pushCtx.response.body === null) {
-          pushStream.end();
-        } else if (typeof pushCtx.response.body === 'string' || pushCtx.response.body instanceof Buffer) {
-          pushStream.end(pushCtx.response.body);
-        } else {
-          pushStream.end(JSON.stringify(pushCtx.response.body));
-        }
+        pushStream.end(prepareBody(pushCtx.response.body));
         res();
 
       });

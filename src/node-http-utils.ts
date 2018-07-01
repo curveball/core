@@ -21,6 +21,26 @@ export function isHttp2Response(response: NodeHttpResponse): response is http2.H
 }
 
 /**
+ * Takes a response body in any of the supported formats, and returns a body
+ * that Node.js's http functions can accept.
+ */
+export function prepareBody(body: Buffer | object | string | null): Buffer|string {
+
+  if (body === null) {
+    return '';
+  } else if (typeof body === 'string') {
+    return body;
+  } else if (body instanceof Buffer) {
+    return body;
+  } else if (typeof body === 'object') {
+    return JSON.stringify(body);
+  } else {
+    throw new TypeError('Unsupported type for body: ' + typeof body);
+  }
+
+}
+
+/**
  * The HttpCallback is the function that is passed as a request listener to
  * node.js's HTTP implementations (http, https, http2).
  */
