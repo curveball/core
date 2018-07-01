@@ -1,14 +1,14 @@
 import EventEmitter from 'events';
 import http from 'http';
 import Context from './context';
+import { HeadersInterface, HeadersObject } from './headers';
+import MemoryRequest from './memory-request';
+import MemoryResponse from './memory-response';
 import { HttpCallback, NodeHttpRequest, NodeHttpResponse } from './node-http-utils';
 import NodeRequest from './node-request';
 import NodeResponse from './node-response';
 import Request from './request';
 import Response from './response';
-import MemoryResponse from './memory-response';
-import MemoryRequest from './memory-request';
-import { HeadersInterface, HeadersObject } from './headers';
 
 const pkg = require('../package.json');
 
@@ -105,12 +105,12 @@ export default class Application extends EventEmitter {
   async subRequest(request: Request): Promise<Response>;
   async subRequest(arg1: string | Request, path?: string, headers?: HeadersInterface | HeadersObject, body: any = ''): Promise<Response> {
 
-    let request:Request;
+    let request: Request;
 
     if (typeof arg1 === 'string') {
-      request = new MemoryRequest(<string>arg1, path, headers, body);
+      request = new MemoryRequest(<string> arg1, path, headers, body);
     } else {
-      request = <Request>arg1;
+      request = <Request> arg1;
     }
 
     const context = new Context(
