@@ -29,7 +29,7 @@ async function getReq() {
 
 }
 
-describe('node-request', () => {
+describe('NodeRequest', () => {
 
   it('should have headers set correctly', async () => {
 

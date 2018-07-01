@@ -16,7 +16,7 @@ export class StaticRequest implements Request {
    */
   body: any;
 
-  constructor(method?: string, requestTarget?: string, headers?: HeadersInterface | HeadersObject, body?: any) {
+  constructor(method?: string, requestTarget?: string, headers?: HeadersInterface | HeadersObject, body: any = null) {
 
     this.method = method;
     this.requestTarget = requestTarget;

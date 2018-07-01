@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import { StaticRequest } from '../src/static-request';
 import Application from '../src/application';
 import fetch from 'node-fetch';
 
@@ -201,6 +202,34 @@ describe('Application', () => {
       await fetch('http://localhost:5555');
 
       server.close();
+
+    });
+
+  });
+
+  describe('Subrequests', () => {
+
+    it('should magically work', async () => {
+
+      let innerRequest;
+
+      const application = new Application();
+      application.use(ctx => {
+
+        innerRequest = ctx.request;
+        ctx.response.status = 201;
+        ctx.response.headers.set('X-Foo', 'bar');
+        ctx.response.body = 'hello world';
+
+      });
+
+      const request = new StaticRequest('POST', '/', { foo: 'bar' }, 'request-body');
+      const response = await application.subRequest(request);
+
+      expect(response.status).to.equal(201);
+      expect(response.headers.get('X-Foo')).to.equal('bar');
+      expect(response.body).to.equal('hello world');
+      expect(innerRequest).to.equal(request);
 
     });
 
