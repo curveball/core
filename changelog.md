@@ -1,4 +1,4 @@
-0.4.0 (2018-??-??)
+0.4.0 (2018-07-01)
 ==================
 
 * #4: Support for HTTP/2 push via the `Response.push()` method.
