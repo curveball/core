@@ -236,6 +236,10 @@ export class NodeResponse implements Response {
 
     await callback(pushCtx, async () => {});
 
+    if (!pushCtx.request.requestTarget) {
+      throw new Error('The "path" must be set in the push context\'s request'); 
+    }
+
     await new Promise((res, rej) => {
 
       const requestHeaders = {
@@ -245,8 +249,6 @@ export class NodeResponse implements Response {
 
       stream.pushStream(requestHeaders, (err, pushStream) => {
 
-        // TODO: not sure yet how I can write a test for this
-        /* istanbul ignore if */
         if (err) {
           rej(err);
           return;
