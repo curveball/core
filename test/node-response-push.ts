@@ -224,7 +224,12 @@ describe('NodeResponse http/2 push', async() => {
     let err;
     try {
 
-      await response.push( pushCtx => {
+      await response.push( (pushCtx, next) => {
+        // next does nothing, but it's part of the callback
+        // signature so it can be compatible with middlewares.
+        // we're calling next, because we want to trick nyc to
+        // give us 100% code coverage.
+        next();
         pushCtx.request.path = '/foo';
       });
 
