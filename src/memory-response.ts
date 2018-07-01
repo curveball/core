@@ -1,7 +1,7 @@
 import { Headers, HeadersInterface, HeadersObject } from './headers';
 import Response from './response';
 
-export class StaticResponse implements Response {
+export class MemoryResponse implements Response {
 
   constructor() {
 
@@ -63,4 +63,4 @@ export class StaticResponse implements Response {
 
 }
 
-export default StaticResponse;
+export default MemoryResponse;

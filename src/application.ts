@@ -6,8 +6,8 @@ import NodeRequest from './node-request';
 import NodeResponse from './node-response';
 import Request from './request';
 import Response from './response';
-import StaticResponse from './static-response';
-import StaticRequest from './static-request';
+import MemoryResponse from './memory-response';
+import MemoryRequest from './memory-request';
 import { HeadersInterface, HeadersObject } from './headers';
 
 const pkg = require('../package.json');
@@ -108,14 +108,14 @@ export default class Application extends EventEmitter {
     let request:Request;
 
     if (typeof arg1 === 'string') {
-      request = new StaticRequest(<string>arg1, path, headers, body);
+      request = new MemoryRequest(<string>arg1, path, headers, body);
     } else {
       request = <Request>arg1;
     }
 
     const context = new Context(
       request,
-      new StaticResponse()
+      new MemoryResponse()
     );
 
     await this.handle(context);

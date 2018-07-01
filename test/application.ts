@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { StaticRequest } from '../src/static-request';
+import { MemoryRequest } from '../src/memory-request';
 import Application from '../src/application';
 import fetch from 'node-fetch';
 
@@ -223,7 +223,7 @@ describe('Application', () => {
 
       });
 
-      const request = new StaticRequest('POST', '/', { foo: 'bar' }, 'request-body');
+      const request = new MemoryRequest('POST', '/', { foo: 'bar' }, 'request-body');
       const response = await application.subRequest(request);
 
       expect(response.status).to.equal(201);

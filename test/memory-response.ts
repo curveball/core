@@ -1,9 +1,9 @@
 import { expect } from 'chai';
-import { StaticResponse } from '../src/static-response';
+import { MemoryResponse } from '../src/memory-response';
 
 function getRes() {
 
-  const response = new StaticResponse();
+  const response = new MemoryResponse();
   response.headers.set('Content-Type', 'text/html; charset=utf-8');
   response.status = 200;
 
@@ -11,7 +11,7 @@ function getRes() {
 
 }
 
-describe('StaticResponse', () => {
+describe('MemoryResponse', () => {
 
   describe('initialization', () => {
 

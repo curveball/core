@@ -4,8 +4,8 @@ import Context from './context';
 import Headers from './headers';
 import Request from './request';
 import Response from './response';
-import StaticRequest from './static-request';
-import StaticResponse from './static-response';
+import MemoryRequest from './memory-request';
+import MemoryResponse from './memory-response';
 
 export default Application;
 export {
@@ -15,6 +15,6 @@ export {
   Middleware,
   Request,
   Response,
-  StaticRequest,
-  StaticResponse,
+  MemoryRequest,
+  MemoryResponse,
 };
