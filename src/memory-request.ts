@@ -3,7 +3,7 @@ import url from 'url';
 import { Headers, HeadersInterface, HeadersObject } from './headers';
 import Request from './request';
 
-export class StaticRequest implements Request {
+export class MemoryRequest implements Request {
 
   /**
    * List of HTTP Headers
@@ -169,4 +169,4 @@ export class StaticRequest implements Request {
 
 }
 
-export default StaticRequest;
+export default MemoryRequest;

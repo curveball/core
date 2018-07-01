@@ -1,10 +1,10 @@
 import { expect } from 'chai';
-import { StaticRequest } from '../src/static-request';
+import { MemoryRequest } from '../src/memory-request';
 import { Headers } from '../src/headers';
 
 function getReq() {
 
-  return new StaticRequest(
+  return new MemoryRequest(
     'POST',
     '/foo?a=1&b=2',
     {
@@ -17,7 +17,7 @@ function getReq() {
 
 }
 
-describe('StaticRequest', () => {
+describe('MemoryRequest', () => {
 
   describe('constructing', async () => {
 
@@ -48,7 +48,7 @@ describe('StaticRequest', () => {
     it('should work with HeadersInterface', async () => {
 
       const headers = new Headers();
-      const request = new StaticRequest('GET', '/', headers);
+      const request = new MemoryRequest('GET', '/', headers);
 
       expect(request.headers).to.equal(headers);
 
@@ -115,7 +115,7 @@ describe('StaticRequest', () => {
 
     it('should return a string when passing encoding as utf-8', async () => {
 
-      const req = new StaticRequest(
+      const req = new MemoryRequest(
         'POST',
         '/',
         {},
@@ -129,7 +129,7 @@ describe('StaticRequest', () => {
 
     it('should return a buffer when not passing an encoding parameter', async () => {
 
-      const req = new StaticRequest(
+      const req = new MemoryRequest(
         'POST',
         '/',
         {},
@@ -143,7 +143,7 @@ describe('StaticRequest', () => {
 
     it('should return an empty buffer for empty requests', async () => {
 
-      const req = new StaticRequest(
+      const req = new MemoryRequest(
         'POST',
         '/',
         {}
@@ -156,7 +156,7 @@ describe('StaticRequest', () => {
 
     it('should work with arbitrary body objects', async () => {
 
-      const req = new StaticRequest(
+      const req = new MemoryRequest(
         'POST',
         '/',
         {},
@@ -170,7 +170,7 @@ describe('StaticRequest', () => {
     
     it('should work with buffers', async () => {
 
-      const req = new StaticRequest(
+      const req = new MemoryRequest(
         'POST',
         '/',
         {},
@@ -185,7 +185,7 @@ describe('StaticRequest', () => {
     it('should pass through buffers', async () => {
 
       const buffer = Buffer.from('hello');
-      const req = new StaticRequest(
+      const req = new MemoryRequest(
         'POST',
         '/',
         {},

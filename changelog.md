@@ -1,8 +1,9 @@
-0.3.2 (2018-??-??)
+0.4.0 (2018-??-??)
 ==================
 
 * #62: It's now possible to do internal sub-requests without going through
   the HTTP stack, with `Application.subRequest()`.
+* Added `MemoryRequest` and `MemoryResponse`.
 * #56: `Response.body` may now be `null`.
 * #57: `Response.type` is now settable.
 
