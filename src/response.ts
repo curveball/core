@@ -27,7 +27,7 @@ export interface Response {
    *
    * If there was no Content-Type header, an empty string will be returned.
    */
-  readonly type: string;
+  type: string;
 
   /**
    * Sends an informational (1xx status code) response.
