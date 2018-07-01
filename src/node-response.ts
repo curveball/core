@@ -3,6 +3,10 @@ import { promisify } from 'util';
 import { HeadersInterface, HeadersObject } from './headers';
 import { isHttp2Response, NodeHttpResponse } from './node-http-utils';
 import Response from './response';
+import { Middleware } from './application';
+import Context from './context';
+import MemoryRequest from './memory-request';
+import MemoryResponse from './memory-response';
 
 /**
  * This is a wrapper around the Node Response object, and handles creates a
@@ -203,6 +207,63 @@ export class NodeResponse implements Response {
       await writeRaw(message, 'ascii');
 
     }
+
+  }
+
+  /**
+   * Sends a HTTP/2 push.
+   *
+   * The passed middleware will be called with a new Context object specific
+   * for pushes.
+   */
+  async push(callback: Middleware): Promise<void> {
+
+    if (!isHttp2Response(this.inner)) {
+      // Not HTTP2
+      return;
+    }
+
+    const stream = this.inner.stream;
+    if (!stream.pushAllowed) {
+      // Client doesn't want pushes
+      return;
+    }
+
+    const pushCtx = new Context(
+      new MemoryRequest('GET'),
+      new MemoryResponse()
+    );
+
+    await new Promise((res, rej) => {
+
+      const requestHeaders = {
+        ':path': pushCtx.request.path,
+        ...pushCtx.request.headers.getAll()
+      }
+
+      stream.pushStream(requestHeaders, (err, pushStream) => {
+
+        if (err) {
+          rej(err);
+          return;
+        }
+        pushStream.respond({
+          ':status': pushCtx.response.status,
+          ...pushCtx.response.headers.getAll()
+        });
+
+        if (pushCtx.request.body === null) {
+          pushStream.end();
+        } else if (typeof pushCtx.request.body === 'string' || pushCtx.request.body instanceof Buffer) {
+          pushStream.end(pushCtx.request.body);
+        } else {
+          pushStream.end(JSON.stringify(pushCtx.request.body));
+        }
+        res();
+
+      });
+
+    });
 
   }
 

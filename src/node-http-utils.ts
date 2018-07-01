@@ -25,4 +25,3 @@ export function isHttp2Response(response: NodeHttpResponse): response is http2.H
  * node.js's HTTP implementations (http, https, http2).
  */
 export type HttpCallback = (req: NodeHttpRequest, res: NodeHttpResponse) => void;
-

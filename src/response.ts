@@ -1,4 +1,5 @@
 import { HeadersInterface, HeadersObject } from './headers';
+import { Middleware } from './application';
 
 /**
  * This interface represents an incoming server request.
@@ -32,6 +33,14 @@ export interface Response {
    * Sends an informational (1xx status code) response.
    */
   sendInformational: (status: number, headers?: HeadersInterface | HeadersObject) => Promise<void>;
+
+  /**
+   * Sends a HTTP/2 push.
+   *
+   * The passed middleware will be called with a new Context object specific
+   * for pushes.
+   */
+  push: (callback: Middleware) => Promise<void>
 
 }
 

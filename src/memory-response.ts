@@ -1,5 +1,6 @@
 import { Headers, HeadersInterface, HeadersObject } from './headers';
 import Response from './response';
+import { Middleware } from './application';
 
 export class MemoryResponse implements Response {
 
@@ -58,6 +59,18 @@ export class MemoryResponse implements Response {
   async sendInformational(status: number, headers?: HeadersInterface | HeadersObject): Promise<void> {
 
     // No need to do anything
+
+  }
+
+  /**
+   * Sends a HTTP/2 push.
+   *
+   * The passed middleware will be called with a new Context object specific
+   * for pushes.
+   */
+  async push(callback: Middleware): Promise<void> {
+
+    // Don't do anything
 
   }
 
