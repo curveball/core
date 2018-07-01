@@ -234,6 +234,8 @@ export class NodeResponse implements Response {
       new MemoryResponse()
     );
 
+    await callback(pushCtx, async () => {});
+
     await new Promise((res, rej) => {
 
       const requestHeaders = {
@@ -252,12 +254,12 @@ export class NodeResponse implements Response {
           ...pushCtx.response.headers.getAll()
         });
 
-        if (pushCtx.request.body === null) {
+        if (pushCtx.response.body === null) {
           pushStream.end();
-        } else if (typeof pushCtx.request.body === 'string' || pushCtx.request.body instanceof Buffer) {
-          pushStream.end(pushCtx.request.body);
+        } else if (typeof pushCtx.response.body === 'string' || pushCtx.response.body instanceof Buffer) {
+          pushStream.end(pushCtx.response.body);
         } else {
-          pushStream.end(JSON.stringify(pushCtx.request.body));
+          pushStream.end(JSON.stringify(pushCtx.response.body));
         }
         res();
 

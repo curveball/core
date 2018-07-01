@@ -20,7 +20,7 @@ export class MemoryRequest implements Request {
 
     this.method = method;
     this.requestTarget = requestTarget;
-    if ((<HeadersInterface> headers).get !== undefined) {
+    if (headers && (<HeadersInterface> headers).get !== undefined) {
       this.headers = <HeadersInterface> headers;
     } else {
       this.headers = new Headers(<HeadersObject> headers);
@@ -37,6 +37,15 @@ export class MemoryRequest implements Request {
   get path(): string {
 
     return url.parse(this.requestTarget).pathname;
+
+  }
+
+  /**
+   * Sets the path
+   */
+  set path(value: string) {
+
+    this.requestTarget = value;
 
   }
 
