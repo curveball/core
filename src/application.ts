@@ -5,7 +5,10 @@ import { HttpCallback, NodeHttpRequest, NodeHttpResponse } from './node-http-uti
 import NodeRequest from './node-request';
 import NodeResponse from './node-response';
 import Request from './request';
+import Response from './response';
 import StaticResponse from './static-response';
+import StaticRequest from './static-request';
+import { HeadersInterface, HeadersObject } from './headers';
 
 const pkg = require('../package.json');
 
@@ -98,7 +101,17 @@ export default class Application extends EventEmitter {
    * Does a sub-request based on a Request object, and returns a Response
    * object.
    */
-  async subRequest(request: Request) {
+  async subRequest(method: string, path: string, headers?: HeadersInterface | HeadersObject, body?: any): Promise<Response>;
+  async subRequest(request: Request): Promise<Response>;
+  async subRequest(arg1: string | Request, path?: string, headers?: HeadersInterface | HeadersObject, body: any = ''): Promise<Response> {
+
+    let request:Request;
+
+    if (typeof arg1 === 'string') {
+      request = new StaticRequest(<string>arg1, path, headers, body);
+    } else {
+      request = <Request>arg1;
+    }
 
     const context = new Context(
       request,
