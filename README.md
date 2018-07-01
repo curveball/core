@@ -22,7 +22,7 @@ any of the things this project offers.
 Installation
 ------------
 
-    npm install curveball
+    npm install curveball/@core
 
 
 Getting started
@@ -90,13 +90,19 @@ in the near future.
 Example use-cases are:
 
 * Sending scripts and stylesheets earlier for HTML-based sites.
-* For REST api's send resources based on relationships clients might want to
+* REST api's sending resources based on relationships clients might want to
   follow.
 
 ```typescript
 import { Application } from '@curveball/core';
+import http2 from 'http2';
 
 const app = new Application();
+const server = http2.createSecureSever({
+  key: fs.readFileSync('server-key.pem'),
+  cert: fs.readFileSync('server-cert.pem')
+}, app.callback());
+
 app.use( ctx => {
 
   ctx.response.status = 200;
@@ -117,8 +123,9 @@ HTTP/2 push works by sending HTTP responses to the client, but it also
 includes HTTP requests. This is because HTTP clients need to know which
 request the response belongs to.
 
-The `push` function on the HTTP response takes a callback. The callback
-will not be called for HTTP/1 requests, or if the client disabled pushes.
+The `push` function simply takes a middleware, similar to `use` on
+Application.  The callback will only be triggered if the clients supports
+push and wants to receive pushes.
 
 In the preceding example, we are using `app.handle()` to do a full HTTP
 request through all the regular middlewares.
@@ -167,6 +174,25 @@ app.use(async (ctx: Context, next: Middleware) => {
 API
 ---
 
+### The Application class
+
+The application is main class for your project. It's mainly responsible for
+calling middlewares and hooking into the HTTP server.
+
+It has the following methods
+
+* `use(m: Middleware)` - Add a middleware to your application.
+* `handle(c: Context)` - Take a Context object, and run all middlewares in
+  order on it.
+* `listen(port: number)` - Run a HTTP server on the specified port.
+* `callback()` - The result of this function can be used as a requestListener
+  for node.js `http`, `https` and `http2` packages.
+* `subRequest(method: string, path:string, headers: object, body: any)` - Run
+  an internal HTTP request and return the result.
+* `subRequest(request: Request)` - Run an internal HTTP request and return the
+  result.
+
+
 ### The Context class
 
 The Context object has the following properties:
@@ -210,7 +236,8 @@ properties and methods:
   an object, the server will serialize it as JSON.
 * `type` - The `Content-Type` without additional parameters.
 * `sendInformational(status, headers?)` - Sends a `100 Continue`,
-  `102 Processing` or `103 Early Hints` response with optional headers.
+  `102 Processing` or `103 Early Hints` - response with optional headers.
+* `push(callback: Middleware)` - Do a HTTP/2 push.
 
 
 ### The Headers inteface

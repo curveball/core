@@ -25,6 +25,11 @@ export default class Application extends EventEmitter {
 
   middlewares: Middleware[] = [];
 
+  /**
+   * Add a middleware to the application.
+   *
+   * Middlewares are called in the order they are added.
+   */
   use(middleware: Middleware) {
 
     this.middlewares.push(middleware);
