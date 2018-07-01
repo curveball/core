@@ -36,7 +36,7 @@ All of the following examples are written in typescript, but it is also
 possible to use the framework with plain javascript.
 
 ```typescript
-import { Application, Context } from '@curveball/curveball';
+import { Application, Context } from '@curveball/core';
 
 const app = new Application();
 app.use((ctx: Context) => {
@@ -65,7 +65,7 @@ Suggested use-cases:
 Example:
 
 ```typescript
-import { Application } from '@curveball/curveball';
+import { Application } from '@curveball/core';
 
 const app = new Application();
 const response = await app.subRequest('POST', '/foo/bar', { 'Content-Type': 'text/html' }, '<h1>Hi</h1>');
@@ -74,7 +74,7 @@ const response = await app.subRequest('POST', '/foo/bar', { 'Content-Type': 'tex
 Only the first 2 arguments are required. It's also possible to pass a Request object instead.
 
 ```typescript
-import { Application, MemoryRequest } from '@curveball/curveball';
+import { Application, MemoryRequest } from '@curveball/core';
 
 const app = new Application();
 const request = new MemoryRequest('POST', '/foo/bar', { 'Content-Type': 'text/html' }, '<h1>Hi</h1>');
@@ -94,7 +94,7 @@ Example use-cases are:
   follow.
 
 ```typescript
-import { Application } from '@curveball/curveball';
+import { Application } from '@curveball/core';
 
 const app = new Application();
 app.use( ctx => {
@@ -148,7 +148,7 @@ Curveball has native support for sending informational responses. Examples are:
 Here's an example of a middleware using `103 Early Hints`:
 
 ```typescript
-import { Application, Context, Middleware } from '@curveball/curveball';
+import { Application, Context, Middleware } from '@curveball/core';
 
 const app = new Curveball();
 app.use(async (ctx: Context, next: Middleware) => {
