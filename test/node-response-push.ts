@@ -2,6 +2,7 @@ import http2 from 'http2';
 import { Application } from '../src';
 import { expect } from 'chai';
 import fetch from 'node-fetch';
+import NodeResponse from '../src/node-response';
 
 describe('NodeResponse http/2 push', async() => {
 
@@ -183,6 +184,57 @@ describe('NodeResponse http/2 push', async() => {
     expect((<any>responseHeaders)[':status']).to.eql(200);
     expect(notCalled).to.eql(true);
     expect(notCalled2).to.eql(true);
+
+  });
+  it('should throw an error when no path was set', async() => {
+
+    const response = new NodeResponse(<any>{
+      stream: {
+        pushAllowed: true
+      }
+    });
+
+    let err;
+    try {
+
+      await response.push( pushCtx => {
+      });
+
+    } catch (e) {
+      console.error(e);
+      err = e;
+    }
+
+    expect(err).to.be.an.instanceof(Error);
+    expect((<Error>err).message).to.equal('The "path" must be set in the push context\'s request');
+
+  });
+
+  it('should handle stream errors', async() => {
+
+    const response = new NodeResponse(<any>{
+      stream: {
+        pushStream(headers: any, callback: any) {
+          callback(new Error('hi'));
+        },
+        pushAllowed: true
+      }
+    });
+
+    let err;
+    try {
+
+      await response.push( pushCtx => {
+        pushCtx.request.path = '/foo';
+      });
+
+    } catch (e) {
+      console.error(e);
+      err = e;
+    }
+
+    expect(err).to.be.an.instanceof(Error);
+    expect((<Error>err).message).to.equal('hi');
 
   });
 });

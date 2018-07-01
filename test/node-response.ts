@@ -145,9 +145,7 @@ describe('NodeResponse', () => {
 
     });
 
-
     it('should send a 103 Status when called with a HTTP/2 response', async () => {
-
 
       const app = new Application();
       const server = http2.createServer({}, app.callback());
