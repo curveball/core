@@ -81,6 +81,55 @@ const request = new MemoryRequest('POST', '/foo/bar', { 'Content-Type': 'text/ht
 const response = await app.subRequest(request);
 ```
 
+HTTP/2 push
+-----------
+
+HTTP/2 push can be used to anticipate GET requests client might want to do
+in the near future.
+
+Example use-cases are:
+
+* Sending scripts and stylesheets earlier for HTML-based sites.
+* For REST api's send resources based on relationships clients might want to
+  follow.
+
+```typescript
+import { Application } from '@curveball/curveball';
+
+const app = new Application();
+app.use( ctx => {
+
+  ctx.response.status = 200;
+  ctx.response.headers.set('Content-Type', 'text/html');
+  ctx.response.body = '';
+
+  await ctx.response.push( pushCtx => {
+
+    pushCtx.request.path = '/script.js';
+    return app.handle(pushCtx);
+
+  });
+
+});
+```
+
+HTTP/2 push works by sending HTTP responses to the client, but it also
+includes HTTP requests. This is because HTTP clients need to know which
+request the response belongs to.
+
+The `push` function on the HTTP response takes a callback. The callback
+will not be called for HTTP/1 requests, or if the client disabled pushes.
+
+In the preceding example, we are using `app.handle()` to do a full HTTP
+request through all the regular middlewares.
+
+It's not required to do this. You can also generate responses right in the
+callback or call an alternative middleware.
+
+Lastly, `pushCtx.request.method` will be set to `GET` by default. `GET` is
+also the only supported method for pushes.
+
+
 Sending 1xx Informational responses
 -----------------------------------
 
