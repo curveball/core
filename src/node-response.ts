@@ -1,12 +1,12 @@
 import http from 'http';
 import { promisify } from 'util';
-import { HeadersInterface, HeadersObject } from './headers';
-import { isHttp2Response, NodeHttpResponse } from './node-http-utils';
-import Response from './response';
 import { Middleware } from './application';
 import Context from './context';
+import { HeadersInterface, HeadersObject } from './headers';
 import MemoryRequest from './memory-request';
 import MemoryResponse from './memory-response';
+import { isHttp2Response, NodeHttpResponse } from './node-http-utils';
+import Response from './response';
 
 /**
  * This is a wrapper around the Node Response object, and handles creates a
@@ -239,7 +239,7 @@ export class NodeResponse implements Response {
       const requestHeaders = {
         ':path': pushCtx.request.path,
         ...pushCtx.request.headers.getAll()
-      }
+      };
 
       stream.pushStream(requestHeaders, (err, pushStream) => {
 

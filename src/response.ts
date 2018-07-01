@@ -1,5 +1,5 @@
-import { HeadersInterface, HeadersObject } from './headers';
 import { Middleware } from './application';
+import { HeadersInterface, HeadersObject } from './headers';
 
 /**
  * This interface represents an incoming server request.
@@ -40,7 +40,7 @@ export interface Response {
    * The passed middleware will be called with a new Context object specific
    * for pushes.
    */
-  push: (callback: Middleware) => Promise<void>
+  push: (callback: Middleware) => Promise<void>;
 
 }
 
