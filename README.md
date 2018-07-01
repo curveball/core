@@ -47,6 +47,20 @@ app.use((ctx: Context) => {
 });
 ```
 
+Middlewares you might want
+--------------------------
+
+* [Router](https://github.com/curveballjs/router).
+* [Body Parser](https://github.com/curveballjs/bodyparser).
+
+
+Project status
+--------------
+
+The project is currently alpha quality. I would love some feedback on developer
+ergonomics. Things might change before a 1.0 release.
+
+
 Doing internal subrequests
 --------------------------
 
@@ -254,12 +268,6 @@ It has the following methods:
   one with the same name.
 * `getAll()` - Returns all HTTP headers as a key-value object.
 
-
-Project Status
---------------
-
-* Basic framework is in place.
-* Many features still missing.
 
 [1]: https://expressjs.com/ "Express"
 [2]: https://koajs.com/ "Koa"
