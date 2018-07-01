@@ -4,7 +4,7 @@ import Context from './context';
 import { HeadersInterface, HeadersObject } from './headers';
 import MemoryRequest from './memory-request';
 import MemoryResponse from './memory-response';
-import { HttpCallback, NodeHttpRequest, NodeHttpResponse } from './node-http-utils';
+import { HttpCallback, NodeHttpRequest, NodeHttpResponse, prepareBody } from './node-http-utils';
 import NodeRequest from './node-request';
 import NodeResponse from './node-response';
 import Request from './request';
@@ -63,22 +63,8 @@ export default class Application extends EventEmitter {
         const ctx = this.buildContextFromHttp(req, res);
         await this.handle(ctx);
 
-        if (typeof ctx.response.body === 'string') {
-          // @ts-ignore
-          res.write(ctx.response.body);
-        } else if (ctx.response.body instanceof Buffer) {
-          // @ts-ignore
-          res.write(ctx.response.body);
-        } else if (ctx.response.body === null) {
-          // Do nothng
-        } else if (typeof ctx.response.body === 'object') {
-          // @ts-ignore
-          res.write(JSON.stringify(ctx.response.body));
-        } else {
-          throw new Error('Unsupported type for body: ' + typeof ctx.response.body);
-        }
-        // @ts-ignore
-        res.end();
+        // @ts-ignore - not sure why this line fails
+        res.end(prepareBody(ctx.response.body));
       } catch (err) {
 
         // tslint:disable:no-console
@@ -86,9 +72,7 @@ export default class Application extends EventEmitter {
 
         res.statusCode = 500;
         // @ts-ignore
-        res.write('Uncaught exception');
-        // @ts-ignore
-        res.end();
+        res.end('Internal Server Error');
         if (this.listenerCount('error')) {
           this.emit('error', err);
         }
