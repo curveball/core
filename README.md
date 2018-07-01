@@ -118,7 +118,6 @@ app.use(async (ctx: Context, next: Middleware) => {
 API
 ---
 
-
 ### The Context class
 
 The Context object has the following properties:
@@ -180,7 +179,8 @@ It has the following methods:
 * `getAll()` - Returns all HTTP headers as a key-value object.
 
 
-### Status
+Project Status
+--------------
 
 * Basic framework is in place.
 * Many features still missing.
