@@ -234,10 +234,13 @@ export class NodeResponse implements Response {
       new MemoryResponse()
     );
 
-    await callback(pushCtx, async () => {});
+    await callback(pushCtx, async () => {
+      // We're passing an empty function for the 'next' argument, so the
+      // signature is compatible with middlewares, but next does nothing.
+    });
 
     if (!pushCtx.request.requestTarget) {
-      throw new Error('The "path" must be set in the push context\'s request'); 
+      throw new Error('The "path" must be set in the push context\'s request');
     }
 
     await new Promise((res, rej) => {
