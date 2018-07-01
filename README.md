@@ -12,6 +12,8 @@ This web framework has the following goals:
 * Async/await-based middleware.
 * Native support for HTTP/2, including easy access to HTTP/2 Push.
 * Native support for modern HTTP features, such as [`103 Early Hints`][http-103].
+* The ability to easily do internal sub-requests without having to do a real
+  HTTP request.
 
 If you used Koa in the past, this is going to look pretty familiar. I'm a big
 fan of Koa myself and would recommend it over this project if you don't need
@@ -34,7 +36,7 @@ All of the following examples are written in typescript, but it is also
 possible to use the framework with plain javascript.
 
 ```typescript
-import { Application, Context } from 'curveball';
+import { Application, Context } from '@curveball/curveball';
 
 const app = new Application();
 app.use((ctx: Context) => {
@@ -43,6 +45,40 @@ app.use((ctx: Context) => {
   ctx.body = 'Hello world!'
 
 });
+```
+
+Doing internal subrequests
+--------------------------
+
+Many Node.js HTTP frameworks don't easily allow doing internal sub-requests.
+Instead, they recommend doing a real HTTP request. These requests are more
+expensive though, as it has to go through the network stack.
+
+Curveball allows you do do an internal request with 'mock' request and
+response objects.
+
+Suggested use-cases:
+
+* Running cheaper integration tests.
+* Embedding resources in REST apis.
+
+Example:
+
+```typescript
+import { Application } from '@curveball/curveball';
+
+const app = new Application();
+const response = await app.subRequest('POST', '/foo/bar', { 'Content-Type': 'text/html' }, '<h1>Hi</h1>');
+```
+
+Only the first 2 arguments are required. It's also possible to pass a Request object instead.
+
+```typescript
+import { Application, MemoryRequest } from '@curveball/curveball';
+
+const app = new Application();
+const request = new MemoryRequest('POST', '/foo/bar', { 'Content-Type': 'text/html' }, '<h1>Hi</h1>');
+const response = await app.subRequest(request);
 ```
 
 Sending 1xx Informational responses
@@ -63,7 +99,7 @@ Curveball has native support for sending informational responses. Examples are:
 Here's an example of a middleware using `103 Early Hints`:
 
 ```typescript
-import { Application, Context, Middleware } from 'curveball';
+import { Application, Context, Middleware } from '@curveball/curveball';
 
 const app = new Curveball();
 app.use(async (ctx: Context, next: Middleware) => {
