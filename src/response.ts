@@ -28,6 +28,9 @@ export interface Response {
    */
   readonly type: string;
 
+  /**
+   * Sends an informational (1xx status code) response.
+   */
   sendInformational: (status: number, headers?: HeadersInterface | HeadersObject) => Promise<void>;
 
 }

@@ -126,5 +126,4 @@ export default class Application extends EventEmitter {
 
   }
 
-
 }
