@@ -22,7 +22,7 @@ any of the things this project offers.
 Installation
 ------------
 
-    npm install curveball/@core
+    npm install @curveball/core
 
 
 Getting started
