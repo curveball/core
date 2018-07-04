@@ -11,10 +11,19 @@ export default async function push(stream: http2.ServerHttp2Stream, pushCtx: Con
     ':path': pushCtx.request.path,
     ...pushCtx.request.headers.getAll()
   };
-  const pushStream = await getPushStream(
-    stream,
-    requestHeaders,
-  );
+  let pushStream:http2.ServerHttp2Stream;
+  try {
+    pushStream = await getPushStream(
+      stream,
+      requestHeaders,
+    );
+  } catch (err) {
+    if (err.message.startsWith('HTTP/2 client has disabled push')) {
+      // HTTP/2 disabled pusing after all
+      return;
+    }
+    throw err;
+  }
   pushStream.on('error', err => {
 
     const isRefusedStream =
@@ -31,7 +40,7 @@ export default async function push(stream: http2.ServerHttp2Stream, pushCtx: Con
 
 }
 
-function getPushStream(stream: http2.ServerHttp2Stream, requestHeaders: http2.OutgoingHttpHeaders): Promise<http2.Http2Stream> {
+function getPushStream(stream: http2.ServerHttp2Stream, requestHeaders: http2.OutgoingHttpHeaders): Promise<http2.ServerHttp2Stream> {
 
   return new Promise((res, rej) => {
 
