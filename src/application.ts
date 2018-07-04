@@ -4,9 +4,9 @@ import Context from './context';
 import { HeadersInterface, HeadersObject } from './headers';
 import MemoryRequest from './memory-request';
 import MemoryResponse from './memory-response';
-import { HttpCallback, NodeHttpRequest, NodeHttpResponse, prepareBody } from './node-http-utils';
-import NodeRequest from './node-request';
-import NodeResponse from './node-response';
+import { HttpCallback, NodeHttpRequest, NodeHttpResponse, prepareBody } from './node/http-utils';
+import NodeRequest from './node/request';
+import NodeResponse from './node/response';
 import Request from './request';
 import Response from './response';
 

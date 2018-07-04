@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import Context from '../src/context';
-import Request from '../src/node-request';
-import Response from '../src/node-response';
+import Request from '../src/node/request';
+import Response from '../src/node/response';
 import http from 'http';
 
 describe('Context', () => {

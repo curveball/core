@@ -2,9 +2,9 @@ import accepts from 'accepts';
 import http from 'http';
 import rawBody from 'raw-body';
 import url from 'url';
-import { Headers, HeadersInterface } from './headers';
-import { NodeHttpRequest } from './node-http-utils';
-import Request from './request';
+import { Headers, HeadersInterface } from '../headers';
+import Request from '../request';
+import { NodeHttpRequest } from './http-utils';
 
 export class NodeRequest implements Request {
 
