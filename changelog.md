@@ -2,6 +2,7 @@
 ==================
 
 * #57: `Response.type` is now settable.
+* #72: Refactored node-specific code into its own directory.
 
 
 0.4.0 (2018-07-01)
@@ -12,7 +13,6 @@
   the HTTP stack, with `Application.subRequest()`.
 * Added `MemoryRequest` and `MemoryResponse`.
 * #56: `Response.body` may now be `null`.
-
 * Renamed package to `@curveball/core`.
 
 

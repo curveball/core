@@ -15,6 +15,16 @@ export default async function push(stream: http2.ServerHttp2Stream, pushCtx: Con
     stream,
     requestHeaders,
   );
+  pushStream.on('error', err => {
+
+    const isRefusedStream =
+      pushStream.rstCode === http2.constants.NGHTTP2_REFUSED_STREAM;
+
+    if (!isRefusedStream) {
+      throw err;
+    }
+
+  });
   pushStream.end(
     prepareBody(pushCtx.response.body)
   );
