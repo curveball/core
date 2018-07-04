@@ -9,9 +9,11 @@ export default async function push(stream: http2.ServerHttp2Stream, pushCtx: Con
 
   const requestHeaders = {
     ':path': pushCtx.request.path,
-    ...pushCtx.request.headers.getAll()
+    ...pushCtx.request.headers.getAll(),
+
   };
-  let pushStream:http2.ServerHttp2Stream;
+  let pushStream: http2.ServerHttp2Stream;
+
   try {
     pushStream = await getPushStream(
       stream,
@@ -33,6 +35,10 @@ export default async function push(stream: http2.ServerHttp2Stream, pushCtx: Con
       throw err;
     }
 
+  });
+  pushStream.respond({
+    ':status': 200,
+    ...pushCtx.response.headers.getAll(),
   });
   pushStream.end(
     prepareBody(pushCtx.response.body)
