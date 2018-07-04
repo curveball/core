@@ -20,7 +20,7 @@ export default async function push(stream: http2.ServerHttp2Stream, pushCtx: Con
       requestHeaders,
     );
   } catch (err) {
-    if (err.message.startsWith('HTTP/2 client has disabled push')) {
+    if (err.code === 'ERR_HTTP2_PUSH_DISABLED') {
       // HTTP/2 disabled pusing after all
       return;
     }

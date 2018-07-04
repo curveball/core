@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { Request } from '../src/request';
-import Application from '../src/application';
+import { Request } from '../../src/request';
+import Application from '../../src/application';
 import fetch from 'node-fetch';
 
 async function getReq() {
