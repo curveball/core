@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import http from 'http';
 import http2 from 'http2';
-import { NodeResponse } from '../src/node-response';
+import { NodeResponse } from '../src/node/response';
 import headersInterfaceTests from './headers-interface-tests';
 import sinon from 'sinon';
 import Application from '../src/application';

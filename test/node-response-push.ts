@@ -2,7 +2,7 @@ import http2 from 'http2';
 import { Application } from '../src';
 import { expect } from 'chai';
 import fetch from 'node-fetch';
-import NodeResponse from '../src/node-response';
+import NodeResponse from '../src/node/response';
 
 describe('NodeResponse http/2 push', async() => {
 
