@@ -1,8 +1,10 @@
 import http2 from 'http2';
-import { Application } from '../src';
+import { Application, Context, MemoryRequest, MemoryResponse } from '../../src';
 import { expect } from 'chai';
 import fetch from 'node-fetch';
-import NodeResponse from '../src/node/response';
+import NodeResponse from '../../src/node/response';
+import push from '../../src/node/push';
+import Emitter from 'events';
 
 describe('NodeResponse http/2 push', async() => {
 
@@ -242,4 +244,114 @@ describe('NodeResponse http/2 push', async() => {
     expect((<Error>err).message).to.equal('hi');
 
   });
+});
+
+
+describe('push() function', () => {
+
+  describe('late push disabled', () => {
+
+    it('should not error', async() => {
+
+      const stream = {
+        pushStream: () => {
+          const error = new Error('HTTP/2 client has disabled push');
+          (<any>error).code = 'ERR_HTTP2_PUSH_DISABLED';
+          throw error;
+        }
+      }
+
+      await push(
+        <any> stream,
+        new Context(
+          new MemoryRequest('GET', '/push-resource'),
+          new MemoryResponse()
+        )
+      );
+
+    });
+
+  });
+
+  describe('Client refusing stream', () => {
+
+    it('should not error', async() => {
+
+      class FakeStream extends Emitter {
+
+        rstCode: number
+        respond() {
+
+          const err = new Error('Refused');
+          this.rstCode = http2.constants.NGHTTP2_REFUSED_STREAM;
+          this.emit('error', err);
+
+        }
+
+        end() {
+
+        }
+
+      }
+
+      const stream = {
+        pushStream: (headers: any, callback: any) => {
+          callback(null, new FakeStream())
+        }
+      }
+
+      await push(
+        <any> stream,
+        new Context(
+          new MemoryRequest('GET', '/push-resource'),
+          new MemoryResponse()
+        )
+      );
+
+    });
+
+  });
+
+
+  describe('Other errors', () => {
+
+    it('should bubble', async() => {
+
+      class FakeStream extends Emitter {
+
+        respond() {
+
+          const err = new Error('Other error');
+          this.emit('error', err);
+
+        }
+
+      }
+
+      const stream = {
+        pushStream: (headers: any, callback: any) => {
+          callback(null, new FakeStream())
+        }
+      }
+
+      let caught = false;
+
+      try {
+        await push(
+          <any> stream,
+          new Context(
+            new MemoryRequest('GET', '/push-resource'),
+            new MemoryResponse()
+          )
+        );
+      } catch (e) {
+        caught = true;
+      }
+
+      expect(caught).to.equal(true);
+
+    });
+
+  });
+
 });
