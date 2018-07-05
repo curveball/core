@@ -1,10 +1,15 @@
-0.4.1 (2018-07-04)
+0.4.2 (2018-07-04)
 ==================
 
-* #57: `Response.type` is now settable.
 * #71: Fixed error messages when a HTTP/2 client disables or refuses a push
   late in the process.
 * #72: Refactored node-specific code into its own directory.
+
+
+0.4.1 (2018-07-01)
+==================
+
+* #57: `Response.type` is now settable.
 
 
 0.4.0 (2018-07-01)
