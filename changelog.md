@@ -1,4 +1,4 @@
-0.4.3 (????-??-??)
+0.4.3 (2018-07-09)
 ==================
 
 * `Application.buildContextFromHttp` is now public.
