@@ -115,7 +115,7 @@ export default class Application extends EventEmitter {
   /**
    * Creates a Context object based on a node.js request and response object.
    */
-  private buildContextFromHttp(req: NodeHttpRequest, res: NodeHttpResponse): Context {
+  public buildContextFromHttp(req: NodeHttpRequest, res: NodeHttpResponse): Context {
 
     const context = new Context(
       new NodeRequest(req),
