@@ -1,6 +1,9 @@
 0.5.0 (2018-08-??)
 ==================
 
+* #74: Added `method`, `path`, `status`, `accepts`, `push`, `sendInformational`,
+  and `query` to Context object. These properties and methods all forward to
+  the request or response object.
 * #78: By default the Application will return with a `404` response, unless a
   middleware updates the status or a body was set.
 * Tests will now error when a node version under 8.11.2 is used. They broke
