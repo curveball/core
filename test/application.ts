@@ -259,4 +259,35 @@ describe('Application', () => {
 
   });
 
+  describe('When middlewares did not set an explicit status', () => {
+
+    it('should return 200 when a body was set', async () => {
+
+      const app = new Application();
+      app.use( ctx => {
+        ctx.response.body = 'hi';
+      });
+      const server = app.listen(5555);
+
+      const response = await fetch('http://localhost:5555');
+      expect(response.status).to.equal(200);
+
+      server.close();
+
+    });
+    it('should return 404 when no body was set', async () => {
+
+      const app = new Application();
+      const server = app.listen(5555);
+
+      const response = await fetch('http://localhost:5555');
+      expect(response.status).to.equal(404);
+
+      server.close();
+
+    });
+
+
+  });
+
 });

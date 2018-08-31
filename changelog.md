@@ -1,6 +1,8 @@
 0.5.0 (2018-08-??)
 ==================
 
+* #78: By default the Application will return with a `404` response, unless a
+  middleware updates the status or a body was set.
 * Tests will now error when a node version under 8.11.2 is used. They broke
   before as well, but it's more explicit now about why.
 

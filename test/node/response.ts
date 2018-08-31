@@ -34,7 +34,7 @@ describe('NodeResponse', () => {
     it('should have status set correctly', () => {
 
       const res = getRes();
-      expect(res.status).to.equal(200);
+      expect(res.status).to.equal(404);
 
     });
 

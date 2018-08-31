@@ -37,7 +37,7 @@ export default class Application extends EventEmitter {
   }
 
   /**
-   * Handles a single request and calls all middleware
+   * Handles a single request and calls all middleware.
    */
   async handle(ctx: Context): Promise<void> {
 
