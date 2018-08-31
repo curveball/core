@@ -1,7 +1,7 @@
+import { Middleware } from './application';
+import { HeadersInterface, HeadersObject } from './headers';
 import Request from './request';
 import Response from './response';
-import { Middleware } from './application';
-import { HeadersObject, HeadersInterface } from './headers';
 
 /**
  * The Context object encapsulates a single HTTP request.
