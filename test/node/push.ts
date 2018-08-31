@@ -6,7 +6,19 @@ import NodeResponse from '../../src/node/response';
 import push from '../../src/node/push';
 import Emitter from 'events';
 
-describe('NodeResponse http/2 push', async() => {
+describe('NodeResponse http/2 push', () => {
+
+  const matches = process.version.match(/^v([0-9]+)\.([0-9]+)\.([0-9]+)$/);
+  if (matches) {
+    const major = parseInt(matches[1]);
+    const minor = parseInt(matches[2]);
+    const rev = parseInt(matches[2]);
+    if (major < 8 || (major === 8 && minor < 11) || (major === 8 && minor === 11 && rev < 2)) {
+      // The reason we requrie 8.11.2 is because in this version
+      // http2.HttpSession.close() was added.
+      throw new Error('This package requires Node version 8.11.2');
+    }
+  }
 
   it('should work', async() => {
 
