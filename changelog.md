@@ -1,3 +1,10 @@
+0.5.0 (2018-08-??)
+==================
+
+* Tests will now error when a node version under 8.11.2 is used. They broke
+  before as well, but it's more explicit now about why.
+
+
 0.4.3 (2018-07-09)
 ==================
 
