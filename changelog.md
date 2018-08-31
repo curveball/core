@@ -1,4 +1,4 @@
-0.5.0 (2018-08-??)
+0.5.0 (2018-08-31)
 ==================
 
 * #74: Added `method`, `path`, `status`, `accepts`, `push`, `sendInformational`,
