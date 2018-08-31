@@ -201,8 +201,14 @@ export class NodeResponse implements Response {
           rawHeaders.push(`${headerName}: ${headerValue}\r\n`);
         }
       }
+
       // @ts-ignore _writeRaw is private but its the only sane way to access
       // it.
+      if (this.inner._writeRaw === undefined) {
+        throw new Error('This version of node.js does not have a _writeRaw on http.OutgoingMessage, so sendInformational does not work.');
+      }
+
+      // @ts-ignore
       const writeRaw = promisify(this.inner._writeRaw.bind(this.inner));
       const message = `HTTP/1.1 ${status} ${http.STATUS_CODES[status]}\r\n${rawHeaders.join('')}\r\n`;
       await writeRaw(message, 'ascii');
