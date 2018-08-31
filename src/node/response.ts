@@ -98,16 +98,16 @@ class NodeHeaders implements HeadersInterface {
 export class NodeResponse implements Response {
 
   private inner: NodeHttpResponse;
-  private _body: null | object | string;
-  private _explicitStatus: boolean;
+  private bodyValue: null | object | string;
+  private explicitStatus: boolean;
 
   constructor(inner: NodeHttpResponse) {
 
     // The default response status is 404.
     this.inner = inner;
     this.status = 404;
-    this._body = null;
-    this._explicitStatus = false;
+    this.bodyValue = null;
+    this.explicitStatus = false;
 
   }
 
@@ -134,7 +134,7 @@ export class NodeResponse implements Response {
    */
   set status(value: number) {
 
-    this._explicitStatus = true;
+    this.explicitStatus = true;
     this.inner.statusCode = value;
 
   }
@@ -144,12 +144,11 @@ export class NodeResponse implements Response {
    */
   set body(value: null | object | string) {
 
-    console.log(value, this._explicitStatus);
-    if (!this._explicitStatus) {
+    if (!this.explicitStatus) {
       // If no status was set earlier, we set it to 200.
       this.inner.statusCode = 200;
     }
-    this._body = value;
+    this.bodyValue = value;
   }
 
   /**
@@ -157,7 +156,7 @@ export class NodeResponse implements Response {
    */
   get body(): null | object | string {
 
-    return this._body;
+    return this.bodyValue;
 
   }
 
