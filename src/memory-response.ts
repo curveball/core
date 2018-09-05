@@ -2,7 +2,7 @@ import { Middleware } from './application';
 import { Headers, HeadersInterface, HeadersObject } from './headers';
 import Response from './response';
 
-export class MemoryResponse implements Response {
+export class MemoryResponse<T> implements Response<T> {
 
   constructor() {
 
@@ -25,7 +25,7 @@ export class MemoryResponse implements Response {
   /**
    * The response body.
    */
-  body: null | object | string;
+  body: T;
 
   /**
    * Returns the value of the Content-Type header, with any additional

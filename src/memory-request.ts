@@ -3,7 +3,7 @@ import url from 'url';
 import { Headers, HeadersInterface, HeadersObject } from './headers';
 import Request from './request';
 
-export class MemoryRequest implements Request {
+export class MemoryRequest<T> implements Request<T> {
 
   /**
    * List of HTTP Headers
@@ -14,7 +14,7 @@ export class MemoryRequest implements Request {
    * Contains a parsed, stored representation of the body. It's up to
    * middlewares to do the actual parsing.
    */
-  body: any;
+  body: T;
 
   constructor(method?: string, requestTarget?: string, headers?: HeadersInterface | HeadersObject, body: any = null) {
 
