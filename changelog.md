@@ -1,6 +1,8 @@
-0.5.1 (2018-??-??)
+0.6.0 (2018-09-05)
 ==================
 
+* Request and Response object are now generic. `Response<T>` implies the body
+  property has type `T`.
 * `ctx.status` is now writable.
 
 
