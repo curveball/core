@@ -8,17 +8,17 @@ import Response from './response';
  *
  * It has references to the internal request and response object.
  */
-export default class Context {
+export default class Context<ReqT = any, ResT = any> {
 
   /**
    * HTTP Request
    */
-  request: Request;
+  request: Request<ReqT>;
 
   /**
    * HTTP Response
    */
-  response: Response;
+  response: Response<ResT>;
 
   /**
    * State information.
