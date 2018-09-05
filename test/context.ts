@@ -88,6 +88,10 @@ describe('Context', () => {
 
     expect(context.status).to.equal(414);
 
+    context.status = 303;
+
+    expect(response.status).to.equal(303);
+
   });
 
   it('should forward the "push" method to the response', () => {

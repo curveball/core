@@ -106,6 +106,17 @@ export default class Context {
   }
 
   /**
+   * Sets the HTTP response status code.
+   *
+   * This is a shortcut for response.status.
+   */
+  set status(value: number) {
+
+    this.response.status = value;
+
+  }
+
+  /**
    * Sends an informational (1xx status code) response.
    *
    * This is a shortcut for response.sendInformational()
