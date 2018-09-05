@@ -95,10 +95,10 @@ class NodeHeaders implements HeadersInterface {
 }
 
 
-export class NodeResponse implements Response {
+export class NodeResponse<T> implements Response<T> {
 
   private inner: NodeHttpResponse;
-  private bodyValue: null | object | string;
+  private bodyValue: T;
   private explicitStatus: boolean;
 
   constructor(inner: NodeHttpResponse) {
@@ -142,7 +142,7 @@ export class NodeResponse implements Response {
   /**
    * Updates the response body.
    */
-  set body(value: null | object | string) {
+  set body(value: T) {
 
     if (!this.explicitStatus) {
       // If no status was set earlier, we set it to 200.
@@ -154,7 +154,7 @@ export class NodeResponse implements Response {
   /**
    * Returns the response body.
    */
-  get body(): null | object | string {
+  get body(): T {
 
     return this.bodyValue;
 

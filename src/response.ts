@@ -4,7 +4,7 @@ import { HeadersInterface, HeadersObject } from './headers';
 /**
  * This interface represents an incoming server request.
  */
-export interface Response {
+export interface Response<T = any> {
 
   /**
    * List of HTTP Headers.
@@ -19,7 +19,7 @@ export interface Response {
   /**
    * The response body.
    */
-  body: any;
+  body: T;
 
   /**
    * Returns the value of the Content-Type header, with any additional

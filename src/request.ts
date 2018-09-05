@@ -3,7 +3,7 @@ import { HeadersInterface } from './headers';
 /**
  * This interface represents an incoming server request.
  */
-export interface Request {
+export interface Request<T = any> {
 
   /**
    * List of HTTP Headers
@@ -53,7 +53,7 @@ export interface Request {
    * Contains a parsed, stored representation of the body. It's up to
    * middlewares to do the actual parsing.
    */
-  body: any;
+  body: T;
 
   /**
    * This function returns the request body.

@@ -6,7 +6,7 @@ import { Headers, HeadersInterface } from '../headers';
 import Request from '../request';
 import { NodeHttpRequest } from './http-utils';
 
-export class NodeRequest implements Request {
+export class NodeRequest<T> implements Request<T> {
 
   /**
    * List of HTTP Headers
@@ -17,7 +17,7 @@ export class NodeRequest implements Request {
    * Contains a parsed, stored representation of the body. It's up to
    * middlewares to do the actual parsing.
    */
-  body: any;
+  body: T;
 
   /**
    * Node.js Request object
