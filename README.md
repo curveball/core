@@ -52,6 +52,7 @@ Middlewares you might want
 
 * [Router](https://github.com/curveballjs/router).
 * [Body Parser](https://github.com/curveballjs/bodyparser).
+* [Sessions](https://github.com/curveballjs/session).
 
 
 Project status
