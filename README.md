@@ -42,7 +42,7 @@ const app = new Application();
 app.use((ctx: Context) => {
 
   ctx.response.status = 200;
-  ctx.body = 'Hello world!'
+  ctx.response.body = 'Hello world!'
 
 });
 ```
