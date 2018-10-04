@@ -1,7 +1,7 @@
 import { Middleware } from './application';
+import { is } from './header-helpers';
 import { Headers, HeadersInterface, HeadersObject } from './headers';
 import Response from './response';
-import { is } from './header-helpers';
 
 export class MemoryResponse<T> implements Response<T> {
 

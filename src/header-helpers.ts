@@ -23,7 +23,7 @@ export function is(message: RequestInterface | ResponseInterface, type: string):
   }
 
   if (type === messageType) {
-    // Matches application/hal+json 
+    // Matches application/hal+json
     return true;
   }
 
