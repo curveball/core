@@ -9,6 +9,7 @@ import Response from '../response';
 import { isHttp2Response, NodeHttpResponse } from './http-utils';
 import push from './push';
 import NodeHeaders from './response-headers';
+import { is } from '../header-helpers';
 
 export class NodeResponse<T> implements Response<T> {
 
@@ -182,6 +183,24 @@ export class NodeResponse<T> implements Response<T> {
     }
 
     return push(stream, pushCtx);
+
+  }
+
+  /**
+   * This method will return true or false if a Request or Response has a
+   * Content-Type header that matches the argument.
+   *
+   * For example, if the Content-Type header has the value: application/hal+json,
+   * then the arguments will all return true:
+   *
+   * * application/hal+json
+   * * application/json
+   * * hal+json
+   * * json
+   */
+  is(type: string): boolean {
+
+    return is(this, type);
 
   }
 

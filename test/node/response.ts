@@ -54,6 +54,13 @@ describe('NodeResponse', () => {
     });
 
 
+    it('should have a working "is()" function"', () => {
+
+      const res = getRes();
+      expect(res.is('html')).to.equal(true);
+
+    });
+
   });
 
   it('should update the Content-Type header when "type" is set', async () => {
