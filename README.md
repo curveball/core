@@ -41,8 +41,8 @@ import { Application, Context } from '@curveball/core';
 const app = new Application();
 app.use((ctx: Context) => {
 
-  ctx.response.status = 200;
-  ctx.body = 'Hello world!'
+  ctx.status = 200;
+  ctx.response.body = 'Hello world!'
 
 });
 ```
@@ -126,7 +126,7 @@ app.use( ctx => {
 
   await ctx.response.push( pushCtx => {
 
-    pushCtx.request.path = '/script.js';
+    pushCtx.path = '/script.js';
     return app.handle(pushCtx);
 
   });
