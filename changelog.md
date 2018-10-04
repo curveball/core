@@ -1,4 +1,4 @@
-0.7.0 (2018-??-??)
+0.7.0 (2018-10-04)
 ==================
 
 * The `Context` object now has an `ip` method that can be used to get the ip
