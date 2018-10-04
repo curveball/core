@@ -1,10 +1,10 @@
-import http2 from 'http2';
-import { Application, Context, MemoryRequest, MemoryResponse } from '../../src';
 import { expect } from 'chai';
-import fetch from 'node-fetch';
-import NodeResponse from '../../src/node/response';
-import push from '../../src/node/push';
 import Emitter from 'events';
+import http2 from 'http2';
+import fetch from 'node-fetch';
+import { Application, Context, MemoryRequest, MemoryResponse } from '../../src';
+import push from '../../src/node/push';
+import NodeResponse from '../../src/node/response';
 
 describe('NodeResponse http/2 push', () => {
 
@@ -19,7 +19,7 @@ describe('NodeResponse http/2 push', () => {
     }
   }
 
-  it('should work', async() => {
+  it('should work', async () => {
 
     const app = new Application();
     const server = http2.createServer(app.callback());
@@ -27,7 +27,7 @@ describe('NodeResponse http/2 push', () => {
 
     app.use( ctx => {
 
-      switch(ctx.request.path) {
+      switch (ctx.request.path) {
         case '/foo' :
           ctx.response.body = 'Hello world A';
           ctx.response.push( pushCtx => {
@@ -71,7 +71,7 @@ describe('NodeResponse http/2 push', () => {
         });
         pushedStream.on('data', (chunk) => {
 
-          pushedData+=chunk;
+          pushedData += chunk;
 
         });
 
@@ -81,7 +81,7 @@ describe('NodeResponse http/2 push', () => {
         responseHeaders = headers;
       });
       req.on('data', (chunk) => {
-        data+=chunk;
+        data += chunk;
       });
       req.on('end', () => {
         client.close();
@@ -101,8 +101,8 @@ describe('NodeResponse http/2 push', () => {
       ':path': '/bar',
       ':scheme': 'http',
     });
-    expect((<any>pushResponseHeaders)[':status']).to.eql(200);
-    expect((<any>responseHeaders)[':status']).to.eql(200);
+    expect((<any> pushResponseHeaders)[':status']).to.eql(200);
+    expect((<any> responseHeaders)[':status']).to.eql(200);
 
   });
 
@@ -114,7 +114,7 @@ describe('NodeResponse http/2 push', () => {
     let notCalled = true;
     app.use( ctx => {
 
-      switch(ctx.request.path) {
+      switch (ctx.request.path) {
         case '/foo' :
           ctx.response.body = 'Hello world A';
           ctx.response.push( pushCtx => {
@@ -133,7 +133,7 @@ describe('NodeResponse http/2 push', () => {
 
   });
 
-  it('should do nothing if client doesn\'t want pushes', async() => {
+  it('should do nothing if client doesn\'t want pushes', async () => {
 
     const app = new Application();
     const server = http2.createServer(app.callback());
@@ -143,7 +143,7 @@ describe('NodeResponse http/2 push', () => {
 
     app.use( ctx => {
 
-      switch(ctx.request.path) {
+      switch (ctx.request.path) {
         case '/foo' :
           ctx.response.body = 'Hello world A';
           ctx.response.push( pushCtx => {
@@ -181,7 +181,7 @@ describe('NodeResponse http/2 push', () => {
         responseHeaders = headers;
       });
       req.on('data', (chunk) => {
-        data+=chunk;
+        data += chunk;
       });
       req.on('end', () => {
         client.close();
@@ -194,14 +194,14 @@ describe('NodeResponse http/2 push', () => {
     client.close();
 
     expect(data).to.equal('Hello world A');
-    expect((<any>responseHeaders)[':status']).to.eql(200);
+    expect((<any> responseHeaders)[':status']).to.eql(200);
     expect(notCalled).to.eql(true);
     expect(notCalled2).to.eql(true);
 
   });
-  it('should throw an error when no path was set', async() => {
+  it('should throw an error when no path was set', async () => {
 
-    const response = new NodeResponse(<any>{
+    const response = new NodeResponse(<any> {
       stream: {
         pushAllowed: true
       }
@@ -219,13 +219,13 @@ describe('NodeResponse http/2 push', () => {
     }
 
     expect(err).to.be.an.instanceof(Error);
-    expect((<Error>err).message).to.equal('The "path" must be set in the push context\'s request');
+    expect((<Error> err).message).to.equal('The "path" must be set in the push context\'s request');
 
   });
 
-  it('should handle stream errors', async() => {
+  it('should handle stream errors', async () => {
 
-    const response = new NodeResponse(<any>{
+    const response = new NodeResponse(<any> {
       stream: {
         pushStream(headers: any, callback: any) {
           callback(new Error('hi'));
@@ -252,7 +252,7 @@ describe('NodeResponse http/2 push', () => {
     }
 
     expect(err).to.be.an.instanceof(Error);
-    expect((<Error>err).message).to.equal('hi');
+    expect((<Error> err).message).to.equal('hi');
 
   });
 });
@@ -262,15 +262,15 @@ describe('push() function', () => {
 
   describe('late push disabled', () => {
 
-    it('should not error', async() => {
+    it('should not error', async () => {
 
       const stream = {
         pushStream: () => {
           const error = new Error('HTTP/2 client has disabled push');
-          (<any>error).code = 'ERR_HTTP2_PUSH_DISABLED';
+          (<any> error).code = 'ERR_HTTP2_PUSH_DISABLED';
           throw error;
         }
-      }
+      };
 
       await push(
         <any> stream,
@@ -286,11 +286,11 @@ describe('push() function', () => {
 
   describe('Client refusing stream', () => {
 
-    it('should not error', async() => {
+    it('should not error', async () => {
 
       class FakeStream extends Emitter {
 
-        rstCode: number
+        rstCode: number;
         respond() {
 
           const err = new Error('Refused');
@@ -307,9 +307,9 @@ describe('push() function', () => {
 
       const stream = {
         pushStream: (headers: any, callback: any) => {
-          callback(null, new FakeStream())
+          callback(null, new FakeStream());
         }
-      }
+      };
 
       await push(
         <any> stream,
@@ -326,7 +326,7 @@ describe('push() function', () => {
 
   describe('Other errors', () => {
 
-    it('should bubble', async() => {
+    it('should bubble', async () => {
 
       class FakeStream extends Emitter {
 
@@ -341,9 +341,9 @@ describe('push() function', () => {
 
       const stream = {
         pushStream: (headers: any, callback: any) => {
-          callback(null, new FakeStream())
+          callback(null, new FakeStream());
         }
-      }
+      };
 
       let caught = false;
 

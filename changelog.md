@@ -1,3 +1,10 @@
+0.7.0 (2018-??-??)
+==================
+
+* The `Context` object now has an `ip` method that can be used to get the ip
+  address of the client that's connecting.
+
+
 0.6.0 (2018-09-05)
 ==================
 

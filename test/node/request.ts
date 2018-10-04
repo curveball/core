@@ -1,11 +1,11 @@
 import { expect } from 'chai';
-import { Request } from '../../src/request';
-import Application from '../../src/application';
 import fetch from 'node-fetch';
+import Application from '../../src/application';
+import { Request } from '../../src/request';
 
 async function getReq() {
 
-  let request:Request;
+  let request: Request;
   const app = new Application();
   const server = app.listen(5555);
 
@@ -17,7 +17,7 @@ async function getReq() {
   await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
     method: 'POST',
     headers: {
-      accept: 'text/html',
+      'accept': 'text/html',
       'content-type': 'text/html; charset=utf-8',
     },
     body: 'hello',
@@ -109,7 +109,7 @@ describe('NodeRequest', () => {
       await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
         method: 'POST',
         headers: {
-          accept: 'text/html',
+          'accept': 'text/html',
           'content-type': 'text/html; charset=utf-8',
 
         },
@@ -135,7 +135,7 @@ describe('NodeRequest', () => {
       await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
         method: 'POST',
         headers: {
-          accept: 'text/html',
+          'accept': 'text/html',
           'content-type': 'text/html; charset=utf-8',
 
         },
@@ -161,7 +161,7 @@ describe('NodeRequest', () => {
       await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
         method: 'GET',
         headers: {
-          accept: 'text/html',
+          'accept': 'text/html',
           'content-type': 'text/html; charset=utf-8',
 
         }
@@ -180,7 +180,7 @@ describe('NodeRequest', () => {
 
       app.use(async ctx => {
         try {
-          await ctx.request.rawBody('utf-8','3');
+          await ctx.request.rawBody('utf-8', '3');
         } catch (err) {
           error = err;
         }
@@ -190,7 +190,7 @@ describe('NodeRequest', () => {
       await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
         method: 'POST',
         headers: {
-          accept: 'text/html',
+          'accept': 'text/html',
           'content-type': 'text/html; charset=utf-8',
 
         },
@@ -203,6 +203,84 @@ describe('NodeRequest', () => {
 
     });
 
+  });
+
+  describe('ip()', () => {
+
+    it('should return the ip address of the client that\'s connecting', async () => {
+
+      const app = new Application();
+      const server = app.listen(5555);
+      let ip;
+
+      app.use(async ctx => {
+        ip = ctx.ip();
+      });
+
+      await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
+        method: 'POST',
+        headers: {
+          'accept': 'text/html',
+          'content-type': 'text/html; charset=utf-8',
+
+        },
+        body: 'hello',
+      });
+
+      server.close();
+      expect(ip).to.eql('::ffff:127.0.0.1');
+
+    });
+
+    it('should use X-Forwarded-For if trustProxy was true', async () => {
+
+      const app = new Application();
+      const server = app.listen(5555);
+      let ip;
+
+      app.use(async ctx => {
+        ip = ctx.ip(true);
+      });
+
+      await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
+        method: 'POST',
+        headers: {
+          'accept': 'text/html',
+          'content-type': 'text/html; charset=utf-8',
+          'x-forwarded-for': '127.0.0.2',
+
+        },
+        body: 'hello',
+      });
+
+      server.close();
+      expect(ip).to.eql('127.0.0.2');
+
+    });
+
+    it('should use the clients ip if trustProxy was true but there was no XFF header', async () => {
+
+      const app = new Application();
+      const server = app.listen(5555);
+      let ip;
+
+      app.use(async ctx => {
+        ip = ctx.ip(true);
+      });
+
+      await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
+        method: 'POST',
+        headers: {
+          'accept': 'text/html',
+          'content-type': 'text/html; charset=utf-8',
+        },
+        body: 'hello',
+      });
+
+      server.close();
+      expect(ip).to.eql('::ffff:127.0.0.1');
+
+    });
   });
 
 });

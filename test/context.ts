@@ -140,4 +140,35 @@ describe('Context', () => {
     expect(called).to.equal(true);
 
   });
+
+  describe('ip()', () => {
+
+    it('should return null if the underlying request isn\'t socket-based', () => {
+
+      const request = new Request('GET', '/foo');
+      const response = new Response();
+
+      const context = new Context(
+        request,
+        response
+      );
+      expect(context.ip()).to.equal(null);
+
+    });
+    it('should call the ip() method on the request if it\'s socket-based', () => {
+
+      const request = new Request('GET', '/foo');
+      (<any> request).ip = () => '127.0.0.1';
+      const response = new Response();
+
+      const context = new Context(
+        request,
+        response
+      );
+      expect(context.ip()).to.equal('127.0.0.1');
+
+    });
+
+  });
+
 });

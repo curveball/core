@@ -160,6 +160,25 @@ export class NodeRequest<T> implements Request<T> {
 
   }
 
+  /**
+   * Returns the IP address of the HTTP client.
+   *
+   * If trustProxy is set to true, it means this server is running behind a
+   * proxy, and the X-Forwarded-For header should be used instead.
+   */
+  ip(trustProxy: boolean = false): string {
+
+    if (trustProxy) {
+      const forwardedForHeader = this.headers.get('X-Forwarded-For');
+      if (forwardedForHeader) {
+        return forwardedForHeader.split(',')[0].trim();
+      }
+    }
+
+    return this.inner.socket.remoteAddress;
+
+  }
+
 }
 
 export default NodeRequest;

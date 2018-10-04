@@ -218,6 +218,14 @@ The Context object has the following properties:
   this object can be used to pass information between middlewares. A common
   example is that an authentication middlware might set 'currently logged in
   user' information here.
+* `ip()` - Get the `ip` address of the HTTP client that's trying to connect.
+* `path` - The path of the request, for example `/foo.html`.
+* `method` - For example, `POST`.
+* `query` - An object containing the query parametes.
+* `status` - The HTTP status code, for example `200` or `404`.
+* `sendInformational(status, headers?)` - Sends a `100 Continue`,
+  `102 Processing` or `103 Early Hints` - response with optional headers.
+* `push(callback: Middleware)` - Do a HTTP/2 push.
 
 
 ### The Request interface

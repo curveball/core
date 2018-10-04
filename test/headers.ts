@@ -50,7 +50,7 @@ describe('Headers class', () => {
     it('should concatenate multiple headers with the same name', () => {
 
       const headers = new Headers({
-        'Accept': ['text/html', 'text/plain'],
+        Accept: ['text/html', 'text/plain'],
       });
       expect(headers.get('Accept')).to.equal('text/html, text/plain');
 
