@@ -3,6 +3,10 @@
 
 * The `Context` object now has an `ip` method that can be used to get the ip
   address of the client that's connecting.
+* The `Request` and `Response` objects now have an `is()` method that can be
+  used to easily check the `Content-Type` header of the object. For example
+  `Request.is('json')` will return true for `application/hal+json`.
+* The `Headers` object now has a `has()` method.
 
 
 0.6.0 (2018-09-05)
