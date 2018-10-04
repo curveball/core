@@ -103,6 +103,13 @@ describe('MemoryRequest', () => {
 
   });
 
+  it('should have a working "is()" function"', () => {
+
+    const res = getReq();
+    expect(res.is('html')).to.equal(true);
+
+  });
+
   it('should have a "type" property containing an empty string if no Content-Type was set.', async () => {
 
     const req = await getReq();

@@ -36,6 +36,13 @@ describe('MemoryResponse', () => {
 
     });
 
+    it('should have a working "is()" function"', () => {
+
+      const res = getRes();
+      expect(res.is('html')).to.equal(true);
+
+    });
+
     it('should have a "type" property containing an empty string if no Content-Type was set.', () => {
 
       const res = getRes();

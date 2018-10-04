@@ -2,6 +2,7 @@ import accepts from 'accepts';
 import url from 'url';
 import { Headers, HeadersInterface, HeadersObject } from './headers';
 import Request from './request';
+import { is } from './header-helpers';
 
 export class MemoryRequest<T> implements Request<T> {
 
@@ -173,6 +174,24 @@ export class MemoryRequest<T> implements Request<T> {
     }
     const result = <string|false> accepts(dummyRequest).type(types);
     return result === false ? null : result;
+
+  }
+
+  /**
+   * This method will return true or false if a Request or Response has a
+   * Content-Type header that matches the argument.
+   *
+   * For example, if the Content-Type header has the value: application/hal+json,
+   * then the arguments will all return true:
+   *
+   * * application/hal+json
+   * * application/json
+   * * hal+json
+   * * json
+   */
+  is(type: string): boolean {
+
+    return is(this, type);
 
   }
 

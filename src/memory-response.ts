@@ -1,6 +1,7 @@
 import { Middleware } from './application';
 import { Headers, HeadersInterface, HeadersObject } from './headers';
 import Response from './response';
+import { is } from './header-helpers';
 
 export class MemoryResponse<T> implements Response<T> {
 
@@ -71,6 +72,24 @@ export class MemoryResponse<T> implements Response<T> {
   async push(callback: Middleware): Promise<void> {
 
     // Don't do anything
+
+  }
+
+  /**
+   * This method will return true or false if a Request or Response has a
+   * Content-Type header that matches the argument.
+   *
+   * For example, if the Content-Type header has the value: application/hal+json,
+   * then the arguments will all return true:
+   *
+   * * application/hal+json
+   * * application/json
+   * * hal+json
+   * * json
+   */
+  is(type: string): boolean {
+
+    return is(this, type);
 
   }
 

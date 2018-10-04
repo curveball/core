@@ -5,6 +5,7 @@ import url from 'url';
 import { Headers, HeadersInterface } from '../headers';
 import Request from '../request';
 import { NodeHttpRequest } from './http-utils';
+import { is } from '../header-helpers';
 
 export class NodeRequest<T> implements Request<T> {
 
@@ -176,6 +177,24 @@ export class NodeRequest<T> implements Request<T> {
     }
 
     return this.inner.socket.remoteAddress;
+
+  }
+
+  /**
+   * This method will return true or false if a Request or Response has a
+   * Content-Type header that matches the argument.
+   *
+   * For example, if the Content-Type header has the value: application/hal+json,
+   * then the arguments will all return true:
+   *
+   * * application/hal+json
+   * * application/json
+   * * hal+json
+   * * json
+   */
+  is(type: string): boolean {
+
+    return is(this, type);
 
   }
 
