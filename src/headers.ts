@@ -20,6 +20,11 @@ export interface HeadersInterface {
   get(name: string): string|null;
 
   /**
+   * Returns true or false depending on if a HTTP header exists.
+   */
+  has(name: string): boolean;
+
+  /**
    * Removes a HTTP header
    */
   delete(name: string): void;
@@ -96,6 +101,15 @@ export class Headers implements HeadersInterface {
     } else {
       return value.toString();
     }
+
+  }
+
+  /**
+   * Returns true or false depending on if a HTTP header exists.
+   */
+  has(name: string): boolean {
+
+    return this.store[name.toLowerCase()] !== undefined;
 
   }
 
