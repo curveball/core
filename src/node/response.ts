@@ -2,6 +2,7 @@ import http from 'http';
 import { promisify } from 'util';
 import { Middleware } from '../application';
 import Context from '../context';
+import { is } from '../header-helpers';
 import { HeadersInterface, HeadersObject } from '../headers';
 import MemoryRequest from '../memory-request';
 import MemoryResponse from '../memory-response';
@@ -182,6 +183,24 @@ export class NodeResponse<T> implements Response<T> {
     }
 
     return push(stream, pushCtx);
+
+  }
+
+  /**
+   * This method will return true or false if a Request or Response has a
+   * Content-Type header that matches the argument.
+   *
+   * For example, if the Content-Type header has the value: application/hal+json,
+   * then the arguments will all return true:
+   *
+   * * application/hal+json
+   * * application/json
+   * * hal+json
+   * * json
+   */
+  is(type: string): boolean {
+
+    return is(this, type);
 
   }
 

@@ -94,6 +94,20 @@ export interface Request<T = any> {
    */
   accepts(...types: string[]): null | string;
 
+  /**
+   * This method will return true or false if a Request or Response has a
+   * Content-Type header that matches the argument.
+   *
+   * For example, if the Content-Type header has the value: application/hal+json,
+   * then the arguments will all return true:
+   *
+   * * application/hal+json
+   * * application/json
+   * * hal+json
+   * * json
+   */
+  is(type: string): boolean;
+
 }
 
 export default Request;
