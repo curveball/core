@@ -47,7 +47,7 @@ describe('MemoryResponse', () => {
 
   });
 
-  it('should update the Content-Type header when "type" is set', async() => {
+  it('should update the Content-Type header when "type" is set', async () => {
 
     const req = await getRes();
     req.type = 'text/plain';

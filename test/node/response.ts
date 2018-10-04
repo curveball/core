@@ -1,15 +1,15 @@
 import { expect } from 'chai';
 import http from 'http';
 import http2 from 'http2';
-import { NodeResponse } from '../../src/node/response';
-import headersInterfaceTests from '../headers-interface-tests';
 import sinon from 'sinon';
 import Application from '../../src/application';
 import { Headers } from '../../src/headers';
+import { NodeResponse } from '../../src/node/response';
+import headersInterfaceTests from '../headers-interface-tests';
 
 function getRes() {
 
-  const request = new http.IncomingMessage(<any>null);
+  const request = new http.IncomingMessage(<any> null);
   const inner = new http.ServerResponse(request);
 
   inner.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -56,7 +56,7 @@ describe('NodeResponse', () => {
 
   });
 
-  it('should update the Content-Type header when "type" is set', async() => {
+  it('should update the Content-Type header when "type" is set', async () => {
 
     const req = await getRes();
     req.type = 'text/plain';
@@ -90,7 +90,7 @@ describe('NodeResponse', () => {
       writeRawMock.callsArgWith(2, null, true);
 
       await res.sendInformational(100);
-      const body = `HTTP/1.1 100 Continue\r\n\r\n`;
+      const body = 'HTTP/1.1 100 Continue\r\n\r\n';
 
       expect(writeRawMock.calledOnce).to.equal(true);
       expect(writeRawMock.calledWith(body)).to.equal(true);
@@ -113,7 +113,7 @@ describe('NodeResponse', () => {
         Many: ['1', '2']
       });
 
-      const body = `HTTP/1.1 103 Early Hints\r\nFoo: bar\r\nMany: 1\r\nMany: 2\r\n\r\n`;
+      const body = 'HTTP/1.1 103 Early Hints\r\nFoo: bar\r\nMany: 1\r\nMany: 2\r\n\r\n';
 
       expect(writeRawMock.calledOnce).to.equal(true);
       expect(writeRawMock.calledWith(body)).to.equal(true);
@@ -136,7 +136,7 @@ describe('NodeResponse', () => {
         Many: ['1', '2']
       }));
 
-      const body = `HTTP/1.1 103 Early Hints\r\nfoo: bar\r\nmany: 1\r\nmany: 2\r\n\r\n`;
+      const body = 'HTTP/1.1 103 Early Hints\r\nfoo: bar\r\nmany: 1\r\nmany: 2\r\n\r\n';
 
       expect(writeRawMock.calledOnce).to.equal(true);
       expect(writeRawMock.calledWith(body)).to.equal(true);
@@ -149,7 +149,7 @@ describe('NodeResponse', () => {
 
       const app = new Application();
       const server = http2.createServer({}, app.callback());
-      let client:any;
+      let client: any;
 
       server.listen(8555);
 

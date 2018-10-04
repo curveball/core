@@ -31,7 +31,7 @@ export default function headersTest(headers: HeadersInterface) {
         expect(headers.get('cONTENT-tYPE')).to.equal('text/html');
 
       });
-      
+
       it('should return a string for number headers', () => {
 
         headers.set('Content-Length', 5);
@@ -82,7 +82,7 @@ export default function headersTest(headers: HeadersInterface) {
       it('should return the entire set of headers', () => {
 
         const expected = {
-          accept: ['text/html', 'text/plain'],
+          'accept': ['text/html', 'text/plain'],
           'content-length': 5,
           'content-type' : 'text/html',
         };

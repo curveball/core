@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { MemoryRequest } from '../src/memory-request';
 import { Headers } from '../src/headers';
+import { MemoryRequest } from '../src/memory-request';
 
 function getReq() {
 
@@ -167,7 +167,7 @@ describe('MemoryRequest', () => {
       expect(body).to.deep.equal('{"foo":"bar"}');
 
     });
-    
+
     it('should work with buffers', async () => {
 
       const req = new MemoryRequest(

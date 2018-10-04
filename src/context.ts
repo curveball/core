@@ -141,4 +141,21 @@ export default class Context<ReqT = any, ResT = any> {
 
   }
 
+  /**
+   * returns the ip address of the client that's trying to connect.
+   *
+   * If 'trustProxy' is set to true, it means the server is running behind a
+   * proxy, and the X-Forwarded-For header should be parsed instead.
+   *
+   * If there was no real HTTP client, this method will return null.
+   */
+  ip(trustProxy = false): null | string {
+
+    if ((<any> this.request).ip !== undefined) {
+      return (<any> this.request).ip(trustProxy);
+    }
+    return null;
+
+  }
+
 }

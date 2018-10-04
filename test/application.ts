@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { MemoryRequest } from '../src/memory-request';
-import Application from '../src/application';
 import fetch from 'node-fetch';
+import Application from '../src/application';
+import { MemoryRequest } from '../src/memory-request';
 
 describe('Application', () => {
 
