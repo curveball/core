@@ -1,8 +1,8 @@
 import accepts from 'accepts';
 import url from 'url';
+import { is } from './header-helpers';
 import { Headers, HeadersInterface, HeadersObject } from './headers';
 import Request from './request';
-import { is } from './header-helpers';
 
 export class MemoryRequest<T> implements Request<T> {
 

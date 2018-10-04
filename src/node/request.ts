@@ -2,10 +2,10 @@ import accepts from 'accepts';
 import http from 'http';
 import rawBody from 'raw-body';
 import url from 'url';
+import { is } from '../header-helpers';
 import { Headers, HeadersInterface } from '../headers';
 import Request from '../request';
 import { NodeHttpRequest } from './http-utils';
-import { is } from '../header-helpers';
 
 export class NodeRequest<T> implements Request<T> {
 
