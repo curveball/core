@@ -272,6 +272,7 @@ It has the following methods:
 
 * `set(name, value)` - Sets a HTTP header.
 * `get(name)` - Returns the value of a HTTP header, or null.
+* `has(name)` - Returns true or false if the header exists.
 * `delete(name)` - Deletes a HTTP header.
 * `append(name, value)` - Adds a HTTP header, but doesn't erase an existing
   one with the same name.

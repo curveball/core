@@ -48,6 +48,35 @@ export default function headersTest(headers: HeadersInterface) {
 
     });
 
+    describe('has', () => {
+
+      it('should return false when a header was not set', () => {
+
+        expect(headers.has('foo')).to.equal(false);
+
+      });
+
+      it('should return true if a header was set', () => {
+
+        headers.set('Content-Type', 'text/html');
+        expect(headers.has('Content-Type')).to.equal(true);
+
+      });
+
+      it('should also return true when asking for a header with a different case', () => {
+
+        expect(headers.has('cONTENT-tYPE')).to.equal(true);
+
+      });
+
+      it('should work with multiple headers with the same name', () => {
+
+        headers.set('Accept', ['text/html', 'text/plain']),
+        expect(headers.has('Accept')).to.equal(true);
+
+      });
+
+    });
     describe('delete', () => {
 
       it('should delete headers', () => {
