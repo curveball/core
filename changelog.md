@@ -5,6 +5,7 @@
   thats the `middlewareCall` symbol, it will call that instead.
 * The package now exports a `invokeMiddleware` function, which is a convenience
   method to call many middlewares.
+* #70: It's possible to set `Response.body` to a `stream.Readable` object.
 
 
 0.7.0 (2018-10-04)
