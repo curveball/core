@@ -13,13 +13,46 @@ import Response from './response';
 const pkg = require('../package.json');
 
 /**
- * The Middleware function is implemented by all middlewares.
+ * The middleware-call Symbol is a special symbol that might exist as a
+ * property on an object.
  *
- * The Middleware function takes a Context and a next() function as its
- * arguments, and _may_ be an async function.
+ * If it exists, the object can be used as a middleware.
  */
-export type Middleware = (ctx: Context, next: () => Promise<void>) => Promise<void> | void;
+const middlewareCall = Symbol('middleware-call');
+export { middlewareCall };
 
+/**
+ * A function that can act as a middleware.
+ */
+type MiddlewareFunction = (ctx: Context, next: () => Promise<void>) => Promise<void> | void;
+
+type MiddlewareObject = {
+  [middlewareCall]: MiddlewareFunction
+};
+
+export type Middleware = MiddlewareFunction | MiddlewareObject;
+
+// Calls a series of middlewares, in order.
+export async function invokeMiddlewares(ctx: Context, fns: Middleware[]): Promise<void> {
+
+  if (fns.length === 0) {
+    return;
+  }
+
+  let mw;
+  if ((<MiddlewareObject> fns[0])[middlewareCall] !== undefined) {
+    mw = (<MiddlewareObject> fns[0])[middlewareCall].bind(mw);
+  } else {
+    mw = fns[0];
+  }
+
+  return mw(ctx, async () => {
+    await invokeMiddlewares(
+      ctx,
+      fns.slice(1)
+    );
+  });
+}
 
 export default class Application extends EventEmitter {
 
@@ -42,7 +75,7 @@ export default class Application extends EventEmitter {
   async handle(ctx: Context): Promise<void> {
 
     ctx.response.headers.set('Server', 'curveball/' + pkg.version);
-    await this.callMiddleware(ctx, this.middlewares);
+    await invokeMiddlewares(ctx, this.middlewares);
 
   }
 
@@ -123,26 +156,6 @@ export default class Application extends EventEmitter {
     );
 
     return context;
-
-  }
-
-  /**
-   * Calls a chain of middlewares.
-   *
-   * Pass a list of middlewares. It will call the first and bind the next
-   * middleware to next().
-   */
-  private async callMiddleware(ctx: Context, fns: Middleware[]) {
-
-    if (fns.length === 0) {
-      return;
-    }
-    return fns[0](ctx, async () => {
-      await this.callMiddleware(
-        ctx,
-        fns.slice(1)
-      );
-    });
 
   }
 

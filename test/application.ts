@@ -1,7 +1,8 @@
 import { expect } from 'chai';
 import fetch from 'node-fetch';
-import Application from '../src/application';
-import { MemoryRequest } from '../src/memory-request';
+import { default as Application, middlewareCall } from '../src/application';
+import MemoryRequest from '../src/memory-request';
+import Context from '../src/context';
 
 describe('Application', () => {
 
@@ -48,7 +49,7 @@ describe('Application', () => {
 
     server.close();
 
-  });
+1  });
 
   it('should automatically JSON-encode objects', async () => {
 
@@ -123,6 +124,29 @@ describe('Application', () => {
 
     expect(body).to.equal('hi');
     expect(response.headers.get('X-Foo')).to.equal('bar');
+    expect(response.status).to.equal(200);
+
+    server.close();
+
+  });
+
+  it('should work with object-middlewares', async () => {
+
+    const application = new Application();
+
+    const myMw = {
+      [middlewareCall]: async(ctx: Context, next: Function) => {
+        ctx.response.body = 'hi';
+      }
+    };
+
+    application.use( myMw );
+
+    const server = application.listen(5555);
+    const response = await fetch('http://localhost:5555');
+    const body = await response.text();
+
+    expect(body).to.equal('hi');
     expect(response.status).to.equal(200);
 
     server.close();

@@ -1,5 +1,4 @@
-import Application from './application';
-import { Middleware } from './application';
+import { default as Application, Middleware, middlewareCall } from './application';
 import Context from './context';
 import Headers from './headers';
 import MemoryRequest from './memory-request';
@@ -12,6 +11,7 @@ export {
   Application,
   Context,
   Headers,
+  middlewareCall,
   Middleware,
   Request,
   Response,

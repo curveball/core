@@ -1,3 +1,12 @@
+0.8.0 (2018-??-??)
+==================
+
+* It's now possible to pass objects as Middlewares. If an object has a member
+  thats the `middlewareCall` symbol, it will call that instead.
+* The package now exports a `invokeMiddleware` function, which is a convenience
+  method to call many middlewares.
+
+
 0.7.0 (2018-10-04)
 ==================
 
