@@ -270,7 +270,7 @@ properties and methods:
   `application/hal+json` it will return true for `application/hal+json`,
   `hal+json` and `json`.
 
-### The Headers inteface
+### The Headers interface
 
 The Headers interface represents HTTP headers for both the `Request` and
 `Response`.
@@ -284,7 +284,6 @@ It has the following methods:
 * `append(name, value)` - Adds a HTTP header, but doesn't erase an existing
   one with the same name.
 * `getAll()` - Returns all HTTP headers as a key-value object.
-
 
 [1]: https://expressjs.com/ "Express"
 [2]: https://koajs.com/ "Koa"

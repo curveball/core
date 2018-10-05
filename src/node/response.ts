@@ -1,6 +1,6 @@
 import http from 'http';
 import { promisify } from 'util';
-import { Middleware } from '../application';
+import { invokeMiddlewares, Middleware } from '../application';
 import Context from '../context';
 import { is } from '../header-helpers';
 import { HeadersInterface, HeadersObject } from '../headers';
@@ -173,11 +173,7 @@ export class NodeResponse<T> implements Response<T> {
       new MemoryResponse()
     );
 
-    await callback(pushCtx, async () => {
-      // We're passing an empty function for the 'next' argument, so the
-      // signature is compatible with middlewares, but next does nothing.
-    });
-
+    await invokeMiddlewares(pushCtx, [callback]);
     if (!pushCtx.request.requestTarget) {
       throw new Error('The "path" must be set in the push context\'s request');
     }
