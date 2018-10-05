@@ -1,6 +1,6 @@
 import http2 from 'http2';
 import Context from '../context';
-import { prepareBody } from './http-utils';
+import { sendBody } from './http-utils';
 
 /**
  * This is a utility for helping with HTTP/2 Push for node servers.
@@ -40,9 +40,7 @@ export default async function push(stream: http2.ServerHttp2Stream, pushCtx: Con
     ':status': 200,
     ...pushCtx.response.headers.getAll(),
   });
-  pushStream.end(
-    prepareBody(pushCtx.response.body)
-  );
+  sendBody(pushStream, pushCtx.response.body);
 
 }
 

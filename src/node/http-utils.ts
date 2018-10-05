@@ -1,5 +1,6 @@
 import http from 'http';
 import http2 from 'http2';
+import Readable from 'stream';
 
 /**
  * A node.js Http request
@@ -20,20 +21,24 @@ export function isHttp2Response(response: NodeHttpResponse): response is http2.H
 
 }
 
-/**
- * Takes a response body in any of the supported formats, and returns a body
- * that Node.js's http functions can accept.
- */
-export function prepareBody(body: Buffer | object | string | null): Buffer|string {
+export function sendBody(res: NodeHttpResponse | http2.Http2Stream, body: Buffer | object | string | null) {
 
   if (body === null) {
-    return '';
+    // @ts-ignore - not sure why this line fails
+    res.end();
+    return;
   } else if (typeof body === 'string') {
-    return body;
+    // @ts-ignore - not sure why this line fails
+    res.end(body);
   } else if (body instanceof Buffer) {
-    return body;
+    // @ts-ignore - not sure why this line fails
+    res.end(body);
+  } else if (body instanceof Readable) {
+    // @ts-ignore - not sure why this line fails
+    body.pipe(res);
   } else if (typeof body === 'object') {
-    return JSON.stringify(body);
+    // @ts-ignore - not sure why this line fails
+    res.end(JSON.stringify(body));
   } else {
     throw new TypeError('Unsupported type for body: ' + typeof body);
   }

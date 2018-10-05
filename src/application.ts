@@ -4,7 +4,7 @@ import Context from './context';
 import { HeadersInterface, HeadersObject } from './headers';
 import MemoryRequest from './memory-request';
 import MemoryResponse from './memory-response';
-import { HttpCallback, NodeHttpRequest, NodeHttpResponse, prepareBody } from './node/http-utils';
+import { HttpCallback, NodeHttpRequest, NodeHttpResponse, sendBody } from './node/http-utils';
 import NodeRequest from './node/request';
 import NodeResponse from './node/response';
 import Request from './request';
@@ -102,7 +102,7 @@ export default class Application extends EventEmitter {
         await this.handle(ctx);
 
         // @ts-ignore - not sure why this line fails
-        res.end(prepareBody(ctx.response.body));
+        sendBody(res, ctx.response.body);
       } catch (err) {
 
         // tslint:disable:no-console
