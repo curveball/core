@@ -3,6 +3,7 @@ import fetch from 'node-fetch';
 import { default as Application, middlewareCall } from '../src/application';
 import MemoryRequest from '../src/memory-request';
 import Context from '../src/context';
+import fs from 'fs';
 
 describe('Application', () => {
 
@@ -49,7 +50,26 @@ describe('Application', () => {
 
     server.close();
 
-1  });
+  });
+
+  it('should work with Readable stream responses', async () => {
+
+    const application = new Application();
+    application.use( (ctx, next) => {
+      ctx.response.body = fs.createReadStream(__filename);
+    });
+    const server = application.listen(5555);
+
+    const response = await fetch('http://localhost:5555');
+    const body = await response.text();
+
+    expect(body.substring(0, 6)).to.equal('import');
+    expect(response.headers.get('server')).to.equal('curveball/' + require('../package.json').version);
+    expect(response.status).to.equal(200);
+
+    server.close();
+
+  });
 
   it('should automatically JSON-encode objects', async () => {
 
