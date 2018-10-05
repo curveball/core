@@ -41,7 +41,7 @@ export async function invokeMiddlewares(ctx: Context, fns: Middleware[]): Promis
 
   let mw;
   if ((<MiddlewareObject> fns[0])[middlewareCall] !== undefined) {
-    mw = (<MiddlewareObject> fns[0])[middlewareCall].bind(mw);
+    mw = (<MiddlewareObject> fns[0])[middlewareCall].bind(fns[0]);
   } else {
     mw = fns[0];
   }
