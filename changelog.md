@@ -1,4 +1,4 @@
-0.8.0 (2018-10-??)
+0.8.0 (2018-10-12)
 ==================
 
 * It's now possible to pass objects as Middlewares. If an object has a member
