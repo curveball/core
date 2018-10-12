@@ -6,7 +6,7 @@
 * The package now exports a `invokeMiddleware` function, which is a convenience
   method to call many middlewares.
 * #70: It's possible to set `Response.body` to a `stream.Readable` object.
-* #71: Bugfix: The `accept()` function ignored changes made my middlewares to
+* #91: Bugfix: The `accept()` function ignored changes made my middlewares to
   `Accept` header.
 
 
