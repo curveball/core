@@ -156,7 +156,13 @@ export class NodeRequest<T> implements Request<T> {
    */
   accepts(...types: string[]): null | string {
 
-    const result = <string|false> accepts(<http.IncomingMessage> this.inner).type(types);
+    const mockRequestObj = {
+      headers: {
+        accept: this.headers.get('Accept')
+      }
+    };
+
+    const result = <string|false> accepts(<http.IncomingMessage> mockRequestObj).type(types);
     return result === false ? null : result;
 
   }
