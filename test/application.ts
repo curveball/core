@@ -120,7 +120,7 @@ describe('Application', () => {
     const response = await fetch('http://localhost:5555');
     const body = await response.text();
 
-    expect(body).to.equal('Internal Server Error');
+    expect(body).to.include(': 500');
     expect(response.headers.get('server')).to.equal('curveball/' + require('../package.json').version);
     expect(response.status).to.equal(500);
 
@@ -228,7 +228,7 @@ describe('Application', () => {
 
       const response = await fetch('http://localhost:5555');
       const body = await response.text();
-      expect(body).to.equal('Internal Server Error');
+      expect(body).to.include(': 500');
 
       server.close();
 

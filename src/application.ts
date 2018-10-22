@@ -1,9 +1,11 @@
+import { isHttpError } from '@curveball/http-errors';
 import EventEmitter from 'events';
 import http from 'http';
 import Context from './context';
 import { HeadersInterface, HeadersObject } from './headers';
 import MemoryRequest from './memory-request';
 import MemoryResponse from './memory-response';
+import NotFoundMw from './middleware/not-found';
 import { HttpCallback, NodeHttpRequest, NodeHttpResponse, sendBody } from './node/http-utils';
 import NodeRequest from './node/request';
 import NodeResponse from './node/response';
@@ -56,6 +58,12 @@ export async function invokeMiddlewares(ctx: Context, fns: Middleware[]): Promis
 
 export default class Application extends EventEmitter {
 
+  constructor() {
+
+    super();
+
+  }
+
   middlewares: Middleware[] = [];
 
   /**
@@ -75,7 +83,10 @@ export default class Application extends EventEmitter {
   async handle(ctx: Context): Promise<void> {
 
     ctx.response.headers.set('Server', 'curveball/' + pkg.version);
-    await invokeMiddlewares(ctx, this.middlewares);
+    await invokeMiddlewares(ctx, [
+      ...this.middlewares,
+      NotFoundMw
+    ]);
 
   }
 
@@ -108,9 +119,13 @@ export default class Application extends EventEmitter {
         // tslint:disable:no-console
         console.error(err);
 
-        res.statusCode = 500;
+        if (isHttpError(err)) {
+          res.statusCode = err.httpStatus;
+        } else {
+          res.statusCode = 500;
+        }
         // @ts-ignore
-        res.end('Internal Server Error');
+        res.end('The server throw an exception, and no middleware was defined to handle it. We got the following HTTP status: ' + res.statusCode);
         if (this.listenerCount('error')) {
           this.emit('error', err);
         }
