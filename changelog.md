@@ -1,4 +1,4 @@
-0.8.1 (2018-??-??)
+0.8.1 (2018-11-01)
 ==================
 
 * Now exporting an `invokeMiddleware` function that can be used to
