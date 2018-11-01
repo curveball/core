@@ -3,6 +3,8 @@
 
 * Now exporting an `invokeMiddleware` function that can be used to
   chain and call mutltiple middlewares.
+* Application will now by default throw a `NotFound` exception if nothing
+  handled a HTTP request.
 
 
 0.8.0 (2018-10-12)
