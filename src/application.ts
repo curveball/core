@@ -58,12 +58,6 @@ export async function invokeMiddlewares(ctx: Context, fns: Middleware[]): Promis
 
 export default class Application extends EventEmitter {
 
-  constructor() {
-
-    super();
-
-  }
-
   middlewares: Middleware[] = [];
 
   /**
