@@ -1,3 +1,10 @@
+0.8.1 (2018-??-??)
+==================
+
+* Now exporting an `invokeMiddleware` function that can be used to
+  chain and call mutltiple middlewares.
+
+
 0.8.0 (2018-10-12)
 ==================
 
