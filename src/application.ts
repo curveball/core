@@ -151,7 +151,7 @@ export default class Application extends EventEmitter {
 
     try {
       await this.handle(context);
-    } catch (e) {
+    } catch (err) {
         // tslint:disable:no-console
       console.error(err);
       if (this.listenerCount('error')) {
