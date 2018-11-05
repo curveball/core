@@ -1,3 +1,9 @@
+0.8.2 (2018-??-??)
+==================
+
+* Subrequests should behave as regular requests and catch any exceptions.
+
+
 0.8.1 (2018-11-01)
 ==================
 

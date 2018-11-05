@@ -119,7 +119,7 @@ export default class Application extends EventEmitter {
           res.statusCode = 500;
         }
         // @ts-ignore
-        res.end('The server throw an exception, and no middleware was defined to handle it. We got the following HTTP status: ' + res.statusCode);
+        res.end('Uncaught exception. No middleware was defined to handle it. We got the following HTTP status: ' + res.statusCode);
         if (this.listenerCount('error')) {
           this.emit('error', err);
         }
@@ -149,7 +149,15 @@ export default class Application extends EventEmitter {
       new MemoryResponse()
     );
 
-    await this.handle(context);
+    try {
+      await this.handle(context);
+    } catch (e) {
+        // tslint:disable:no-console
+      console.error(err);
+      if (this.listenerCount('error')) {
+        this.emit('error', err);
+      }
+    }
     return context.response;
 
   }
