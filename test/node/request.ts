@@ -25,6 +25,7 @@ async function getReq() {
 
   server.close();
 
+  // @ts-ignore
   return request;
 
 }

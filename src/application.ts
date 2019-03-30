@@ -139,7 +139,7 @@ export default class Application extends EventEmitter {
     let request: Request;
 
     if (typeof arg1 === 'string') {
-      request = new MemoryRequest(<string> arg1, path, headers, body);
+      request = new MemoryRequest(<string> arg1, path!, headers, body);
     } else {
       request = <Request> arg1;
     }

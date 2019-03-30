@@ -22,7 +22,6 @@ export class NodeResponse<T> implements Response<T> {
     // The default response status is 404.
     this.inner = inner;
     this.status = 404;
-    this.bodyValue = null;
     this.explicitStatus = false;
 
   }
@@ -169,12 +168,12 @@ export class NodeResponse<T> implements Response<T> {
     }
 
     const pushCtx = new Context(
-      new MemoryRequest('GET'),
+      new MemoryRequest('GET', '|||DELIBERATELY_INVALID|||'),
       new MemoryResponse()
     );
 
     await invokeMiddlewares(pushCtx, [callback]);
-    if (!pushCtx.request.requestTarget) {
+    if (pushCtx.request.requestTarget === '|||DELIBERATELY_INVALID|||') {
       throw new Error('The "path" must be set in the push context\'s request');
     }
 

@@ -7,7 +7,7 @@ describe('Context', () => {
 
   it('should instantiate correctly', () => {
 
-    const request = new Request();
+    const request = new Request('GET', '/');
     const response = new Response();
 
     const context = new Context(
@@ -22,7 +22,7 @@ describe('Context', () => {
 
   it('should forward the "method" property to the request', () => {
 
-    const request = new Request('GET');
+    const request = new Request('GET', '/');
     const response = new Response();
 
     const context = new Context(

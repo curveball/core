@@ -28,6 +28,7 @@ export class NodeRequest<T> implements Request<T> {
   constructor(inner: NodeHttpRequest) {
 
     this.inner = inner;
+    // @ts-ignore ignoring that headers might be undefined
     this.headers = new Headers(this.inner.headers);
 
   }
@@ -39,7 +40,7 @@ export class NodeRequest<T> implements Request<T> {
    */
   get path(): string {
 
-    return url.parse(this.requestTarget).pathname;
+    return url.parse(this.requestTarget).pathname!;
 
   }
 
@@ -50,7 +51,7 @@ export class NodeRequest<T> implements Request<T> {
    */
   get method(): string {
 
-    return this.inner.method;
+    return this.inner.method!;
 
   }
 
@@ -79,7 +80,7 @@ export class NodeRequest<T> implements Request<T> {
    */
   get requestTarget(): string {
 
-    return this.inner.url;
+    return this.inner.url!;
 
   }
 
@@ -182,7 +183,7 @@ export class NodeRequest<T> implements Request<T> {
       }
     }
 
-    return this.inner.socket.remoteAddress;
+    return this.inner.socket.remoteAddress!;
 
   }
 

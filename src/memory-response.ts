@@ -7,9 +7,11 @@ export class MemoryResponse<T> implements Response<T> {
 
   constructor() {
 
-    this.body = null;
     this.headers = new Headers();
     this.status = 200;
+    // @ts-ignore: Typescript doesn't like null here because it might be
+    // incompatible with T, but we're ignoring it as it's a good default.
+    this.body = null;
 
   }
 

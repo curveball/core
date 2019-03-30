@@ -8,16 +8,15 @@ build:
 test:
 	nyc mocha
 
-.PHONY:quick-test
-quick-test:
-	mocha -b
-
 .PHONY:lint
 lint:
 	tslint -p .
 
 .PHONY:lint-fix
-lint-fix:
+lint-fix: fix
+
+.PHONY:fix
+fix:
 	tslint -p . --fix
 
 .PHONY:watch

@@ -1,8 +1,9 @@
-0.8.2 (2018-??-??)
+0.8.2 (2019-11-04)
 ==================
 
 * Subrequests should behave as regular requests and catch any exceptions.
-
+* Updated all dependecies.
+* Stricter typescript rules.
 
 0.8.1 (2018-11-01)
 ==================

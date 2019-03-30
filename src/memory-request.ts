@@ -17,7 +17,7 @@ export class MemoryRequest<T> implements Request<T> {
    */
   body: T;
 
-  constructor(method?: string, requestTarget?: string, headers?: HeadersInterface | HeadersObject, body: any = null) {
+  constructor(method: string, requestTarget: string, headers?: HeadersInterface | HeadersObject, body: any = null) {
 
     this.method = method;
     this.requestTarget = requestTarget;
@@ -27,6 +27,9 @@ export class MemoryRequest<T> implements Request<T> {
       this.headers = new Headers(<HeadersObject> headers);
     }
     this.originalBody = body;
+    // @ts-ignore: Typescript doesn't like null here because it might be
+    // incompatible with T, but we're ignoring it as it's a good default.
+    this.body = null;
 
   }
 
@@ -37,7 +40,7 @@ export class MemoryRequest<T> implements Request<T> {
    */
   get path(): string {
 
-    return url.parse(this.requestTarget).pathname;
+    return url.parse(this.requestTarget).pathname!;
 
   }
 
