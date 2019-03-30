@@ -21,12 +21,12 @@ export class NodeResponse<T> implements Response<T> {
 
     // The default response status is 404.
     this.inner = inner;
-    this.status = 404;
-    this.explicitStatus = false;
 
     // @ts-ignore: Typescript doesn't like null here because it might be
     // incompatible with T, but we're ignoring it as it's a good default.
     this.body = null;
+    this.status = 404;
+    this.explicitStatus = false;
 
   }
 

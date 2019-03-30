@@ -1,15 +1,23 @@
-0.8.3 (2019-11-04)
+0.8.6 (2019-03-30)
+==================
+
+* Correctly set status for HTTP exceptions in sub-requests.
+* Fixed a regression from 0.8.3.
+
+
+0.8.3 (2019-03-29)
 ==================
 
 * Correctly set status for HTTP exceptions in sub-requests.
 
 
-0.8.2 (2019-11-04)
+0.8.2 (2019-03-29)
 ==================
 
 * Subrequests should behave as regular requests and catch any exceptions.
 * Updated all dependecies.
 * Stricter typescript rules.
+
 
 0.8.1 (2018-11-01)
 ==================
