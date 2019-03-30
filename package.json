@@ -4,7 +4,7 @@
   "description": "Curveball is a framework writting in Typescript for Node.js",
   "main": "dist/index.js",
   "scripts": {
-    "prepublish": "make build",
+    "prepublishOnly": "make build",
     "test": "make lint test",
     "tsc": "tsc"
   },
