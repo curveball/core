@@ -1,3 +1,9 @@
+0.8.3 (2019-11-04)
+==================
+
+* Correctly set status for HTTP exceptions in sub-requests.
+
+
 0.8.2 (2019-11-04)
 ==================
 

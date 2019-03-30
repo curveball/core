@@ -157,6 +157,13 @@ export default class Application extends EventEmitter {
       if (this.listenerCount('error')) {
         this.emit('error', err);
       }
+      if (isHttpError(err)) {
+        context.response.status = err.httpStatus;
+      } else {
+        context.response.status = 500;
+      }
+      // @ts-ignore
+      res.end('Uncaught exception. No middleware was defined to handle it. We got the following HTTP status: ' + res.statusCode);
     }
     return context.response;
 
