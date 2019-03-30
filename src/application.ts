@@ -162,8 +162,7 @@ export default class Application extends EventEmitter {
       } else {
         context.response.status = 500;
       }
-      // @ts-ignore
-      res.end('Uncaught exception. No middleware was defined to handle it. We got the following HTTP status: ' + ctx.response.statusCode);
+      context.response.body = 'Uncaught exception. No middleware was defined to handle it. We got the following HTTP status: ' + context.response.status;
     }
     return context.response;
 
