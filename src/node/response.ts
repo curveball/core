@@ -24,6 +24,10 @@ export class NodeResponse<T> implements Response<T> {
     this.status = 404;
     this.explicitStatus = false;
 
+    // @ts-ignore: Typescript doesn't like null here because it might be
+    // incompatible with T, but we're ignoring it as it's a good default.
+    this.body = null;
+
   }
 
   /**
