@@ -1,13 +1,14 @@
 import { Middleware } from './application';
 import { HeadersInterface, HeadersObject } from './headers';
+import { is } from './header-helpers';
 
 /**
  * This interface represents an incoming server request.
  */
-export interface Response<T = any> {
+export abstract class Response<T = any> {
 
   /**
-   * List of HTTP Headers.
+   * List of HTTP Headers
    */
   headers: HeadersInterface;
 
@@ -27,12 +28,34 @@ export interface Response<T = any> {
    *
    * If there was no Content-Type header, an empty string will be returned.
    */
-  type: string;
+  get type(): string {
+
+    const type = this.headers.get('content-type');
+    if (!type) { return ''; }
+    return type.split(';')[0];
+
+  }
 
   /**
-   * Sends an informational (1xx status code) response.
+   * Shortcut for setting the Content-Type header.
    */
-  sendInformational: (status: number, headers?: HeadersInterface | HeadersObject) => Promise<void>;
+  set type(value: string) {
+
+    this.headers.set('content-type', value);
+
+  }
+
+  /**
+   * Sends an informational response before the real response.
+   *
+   * This can be used to for example send a `100 Continue` or `103 Early Hints`
+   * response.
+   */
+  async sendInformational(status: number, headers?: HeadersInterface | HeadersObject): Promise<void> {
+
+    // No need to do anything
+
+  }
 
   /**
    * Sends a HTTP/2 push.
@@ -40,7 +63,11 @@ export interface Response<T = any> {
    * The passed middleware will be called with a new Context object specific
    * for pushes.
    */
-  push: (callback: Middleware) => Promise<void>;
+  async push(callback: Middleware): Promise<void> {
+
+    // Don't do anything
+
+  }
 
   /**
    * This method will return true or false if a Request or Response has a
@@ -54,7 +81,11 @@ export interface Response<T = any> {
    * * hal+json
    * * json
    */
-  is(type: string): boolean;
+  is(type: string): boolean {
+
+    return is(this, type);
+
+  }
 
 }
 
