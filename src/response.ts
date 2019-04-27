@@ -1,6 +1,6 @@
 import { Middleware } from './application';
-import { HeadersInterface, HeadersObject } from './headers';
 import { is } from './header-helpers';
+import { HeadersInterface, HeadersObject } from './headers';
 
 /**
  * This interface represents an incoming server request.
