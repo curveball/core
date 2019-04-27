@@ -1,13 +1,9 @@
-import accepts from 'accepts';
-import http from 'http';
 import rawBody from 'raw-body';
-import url from 'url';
-import { is } from '../header-helpers';
 import { Headers, HeadersInterface } from '../headers';
 import Request from '../request';
 import { NodeHttpRequest } from './http-utils';
 
-export class NodeRequest<T> implements Request<T> {
+export class NodeRequest<T> extends Request<T> {
 
   /**
    * List of HTTP Headers
@@ -27,20 +23,10 @@ export class NodeRequest<T> implements Request<T> {
 
   constructor(inner: NodeHttpRequest) {
 
+    super();
     this.inner = inner;
     // @ts-ignore ignoring that headers might be undefined
     this.headers = new Headers(this.inner.headers);
-
-  }
-
-  /**
-   * path-part of the request.
-   *
-   * For example /hello/world
-   */
-  get path(): string {
-
-    return url.parse(this.requestTarget).pathname!;
 
   }
 
@@ -121,54 +107,6 @@ export class NodeRequest<T> implements Request<T> {
   }
 
   /**
-   * This object contains parsed query parameters.
-   */
-  get query(): { [s: string]: string } {
-
-    return <any> url.parse(this.requestTarget, true).query;
-
-  }
-
-  /**
-   * Returns the value of the Content-Type header, with any additional
-   * parameters such as charset= removed.
-   *
-   * If there was no Content-Type header, an empty string will be returned.
-   */
-  get type(): string {
-
-    const type = this.headers.get('content-type');
-    if (!type) { return ''; }
-    return type.split(';')[0];
-
-  }
-
-  /**
-   * accepts is used for negotation the Content-Type with a client.
-   *
-   * You can pass a content-type, or an array of content-types.
-   * The Content-Types you provide are a list of types your application
-   * supports.
-   *
-   * This function will then return the best possible type based on the Accept
-   * header.
-   *
-   * If no compatible types are found, this function returns null.
-   */
-  accepts(...types: string[]): null | string {
-
-    const mockRequestObj = {
-      headers: {
-        accept: this.headers.get('Accept')
-      }
-    };
-
-    const result = <string|false> accepts(<http.IncomingMessage> mockRequestObj).type(types);
-    return result === false ? null : result;
-
-  }
-
-  /**
    * Returns the IP address of the HTTP client.
    *
    * If trustProxy is set to true, it means this server is running behind a
@@ -184,24 +122,6 @@ export class NodeRequest<T> implements Request<T> {
     }
 
     return this.inner.socket.remoteAddress!;
-
-  }
-
-  /**
-   * This method will return true or false if a Request or Response has a
-   * Content-Type header that matches the argument.
-   *
-   * For example, if the Content-Type header has the value: application/hal+json,
-   * then the arguments will all return true:
-   *
-   * * application/hal+json
-   * * application/json
-   * * hal+json
-   * * json
-   */
-  is(type: string): boolean {
-
-    return is(this, type);
 
   }
 
