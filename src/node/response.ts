@@ -2,7 +2,6 @@ import http from 'http';
 import { promisify } from 'util';
 import { invokeMiddlewares, Middleware } from '../application';
 import Context from '../context';
-import { is } from '../header-helpers';
 import { HeadersInterface, HeadersObject } from '../headers';
 import MemoryRequest from '../memory-request';
 import MemoryResponse from '../memory-response';
@@ -11,13 +10,15 @@ import { isHttp2Response, NodeHttpResponse } from './http-utils';
 import push from './push';
 import NodeHeaders from './response-headers';
 
-export class NodeResponse<T> implements Response<T> {
+export class NodeResponse<T> extends Response<T> {
 
   private inner: NodeHttpResponse;
   private bodyValue: T;
   private explicitStatus: boolean;
 
   constructor(inner: NodeHttpResponse) {
+
+    super();
 
     // The default response status is 404.
     this.inner = inner;
@@ -76,29 +77,6 @@ export class NodeResponse<T> implements Response<T> {
   get body(): T {
 
     return this.bodyValue;
-
-  }
-
-  /**
-   * Returns the value of the Content-Type header, with any additional
-   * parameters such as charset= removed.
-   *
-   * If there was no Content-Type header, an empty string will be returned.
-   */
-  get type(): string {
-
-    const type = this.headers.get('content-type');
-    if (!type) { return ''; }
-    return type.split(';')[0];
-
-  }
-
-  /**
-   * Shortcut for setting the Content-Type header.
-   */
-  set type(value: string) {
-
-    this.headers.set('content-type', value);
 
   }
 
@@ -182,24 +160,6 @@ export class NodeResponse<T> implements Response<T> {
     }
 
     return push(stream, pushCtx);
-
-  }
-
-  /**
-   * This method will return true or false if a Request or Response has a
-   * Content-Type header that matches the argument.
-   *
-   * For example, if the Content-Type header has the value: application/hal+json,
-   * then the arguments will all return true:
-   *
-   * * application/hal+json
-   * * application/json
-   * * hal+json
-   * * json
-   */
-  is(type: string): boolean {
-
-    return is(this, type);
 
   }
 
