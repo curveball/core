@@ -1,8 +1,8 @@
-import { HeadersInterface } from './headers';
 import accepts from 'accepts';
 import http from 'http';
-import { is } from './header-helpers';
 import url from 'url';
+import { is } from './header-helpers';
+import { HeadersInterface } from './headers';
 
 /**
  * This interface represents an incoming server request.
