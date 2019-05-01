@@ -1,8 +1,18 @@
-import { is } from '../src/header-helpers';
+import { is, splitHeader, parsePrefer } from '../src/header-helpers';
 import MemoryRequest from '../src/memory-request';
 import { expect } from 'chai';
 
 describe('Header helpers', () => {
+
+  describe('splitHeader', () => {
+
+    it('should do its goddamn job', () => {
+      expect(splitHeader('foo')).to.eql(['foo']);
+      expect(splitHeader('foo,  bar ')).to.eql(['foo','bar']);
+    });
+
+  });
+
 
   describe('is', () => {
 
@@ -36,6 +46,39 @@ describe('Header helpers', () => {
 
       const request = new MemoryRequest('GET', '/');
       expect(is(request, 'json')).to.eql(false);
+
+    });
+
+  });
+
+  describe('parsePrefer', () => {
+
+    it('should parse simple values', () => {
+      expect(
+        parsePrefer('respond-async')
+      ).to.eql({
+        'respond-async': true
+      });
+
+    });
+
+    it('should parse more complex values', () => {
+      expect(
+        parsePrefer('handling=lenient, RETURN=representation, wait=5, foobar')
+      ).to.eql({
+        handling: 'lenient',
+        return: 'representation',
+        wait: '5',
+        foobar: true,
+      });
+    });
+
+    it('should handle null header values', () => {
+
+      expect(
+        parsePrefer(null)
+      ).to.eql({
+      });
 
     });
 

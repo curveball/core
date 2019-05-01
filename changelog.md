@@ -3,6 +3,8 @@
 
 * `Request` and `Response` types are now abstract classes instead of
   interfaces. This removes a bunch of duplication.
+* `Request` objects now have a `prefer()` method for quickly reading out the
+  values from the RFC7240 `Prefer` header.
 
 
 0.8.6 (2019-03-30)

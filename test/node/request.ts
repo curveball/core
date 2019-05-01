@@ -70,34 +70,11 @@ describe('NodeRequest', () => {
 
   });
 
-  it('should have a working "is()" function"', async () => {
-
-    const res = await getReq();
-    expect(res.is('html')).to.equal(true);
-
-  });
-
   it('should have a "type" property containing an empty string if no Content-Type was set.', async () => {
 
     const req = await getReq();
     req.headers.delete('Content-Type');
     expect(req.type).to.equal('');
-
-  });
-
-  it('The "accepts" method should work', async () => {
-
-    const req = await getReq();
-    const result = req.accepts('application/json', 'text/html');
-    expect(result).to.equal('text/html');
-
-  });
-
-  it('The "accepts" method should return false if there was no acceptable match.', async () => {
-
-    const req = await getReq();
-    const result = req.accepts('application/json');
-    expect(result).to.equal(null);
 
   });
 
@@ -265,6 +242,32 @@ describe('NodeRequest', () => {
       expect(ip).to.eql('127.0.0.2');
 
     });
+    it('should not use X-Forwarded-For if trustProxy was false', async () => {
+
+      const app = new Application();
+      const server = app.listen(5555);
+      let ip;
+
+      app.use(async ctx => {
+        ip = ctx.ip(false);
+      });
+
+      await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
+        method: 'POST',
+        headers: {
+          'accept': 'text/html',
+          'content-type': 'text/html; charset=utf-8',
+          'x-forwarded-for': '127.0.0.2',
+
+        },
+        body: 'hello',
+      });
+
+      server.close();
+      expect(ip).to.eql('::ffff:127.0.0.1');
+
+    });
+
 
     it('should use the clients ip if trustProxy was true but there was no XFF header', async () => {
 

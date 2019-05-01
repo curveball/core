@@ -1,7 +1,7 @@
 import accepts from 'accepts';
 import http from 'http';
 import url from 'url';
-import { is } from './header-helpers';
+import { is, parsePrefer } from './header-helpers';
 import { HeadersInterface } from './headers';
 
 /**
@@ -148,6 +148,41 @@ export abstract class Request<T = any> {
   is(type: string): boolean {
 
     return is(this, type);
+
+  }
+
+  /**
+   * This method parses the contents of the Prefer header, as defined in
+   * RFC7240.
+   *
+   * A prefer header can either stand alone, or contain a value. Examples:
+   *
+   * Prefer: return=minimal
+   * Prefer: wait=20
+   * Prefer: respond-async
+   *
+   * To get either of these values, pass the name of the preference (for
+   * example 'return', 'wait', 'respond-async'.
+   *
+   * This method returns false if the preference did not appear in the header.
+   * If it did appear, it will either return its value (minimal, 20) or 'true'
+   * if there was no value.
+   */
+  prefer(preference: 'respond-async'): boolean;
+  prefer(preference: 'return'): 'representation' | 'minimal' | false;
+  prefer(preference: 'wait'): string | false;
+  prefer(preference: 'handling'): 'strict' | 'lenient' | false;
+  prefer(preference: string): string | boolean {
+
+    const prefer = parsePrefer(
+      this.headers.get('Prefer')
+    );
+
+    const val = prefer[preference];
+    if (val === undefined) {
+      return false;
+    }
+    return val;
 
   }
 
