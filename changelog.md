@@ -1,3 +1,10 @@
+0.9.0 (????-??-??)
+==================
+
+* `Request` and `Response` types are now abstract classes instead of
+  interfaces. This removes a bunch of duplication.
+
+
 0.8.6 (2019-03-30)
 ==================
 

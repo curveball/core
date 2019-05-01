@@ -1,9 +1,13 @@
+import accepts from 'accepts';
+import http from 'http';
+import url from 'url';
+import { is } from './header-helpers';
 import { HeadersInterface } from './headers';
 
 /**
  * This interface represents an incoming server request.
  */
-export interface Request<T = any> {
+export abstract class Request<T = any> {
 
   /**
    * List of HTTP Headers
@@ -15,7 +19,20 @@ export interface Request<T = any> {
    *
    * For example /hello/world
    */
-  path: string;
+  get path(): string {
+
+    return url.parse(this.requestTarget).pathname!;
+
+  }
+
+  /**
+   * Sets the request path
+   */
+  set path(value: string) {
+
+    this.requestTarget = value;
+
+  }
 
   /**
    * HTTP method
@@ -64,13 +81,17 @@ export interface Request<T = any> {
    * You can only call this function once. Most likely you'll want a single
    * middleware that calls this function and then sets `body`.
    */
-  rawBody(encoding?: string, limit?: string): Promise<string>;
-  rawBody(encoding?: undefined, limit?: string): Promise<Buffer>;
+  abstract rawBody(encoding?: string, limit?: string): Promise<string>;
+  abstract rawBody(encoding?: undefined, limit?: string): Promise<Buffer>;
 
   /**
    * This object contains parsed query parameters.
    */
-  readonly query: { [s: string]: string };
+  get query(): { [s: string]: string } {
+
+    return <any> url.parse(this.requestTarget, true).query;
+
+  }
 
   /**
    * Returns the value of the Content-Type header, with any additional
@@ -78,7 +99,14 @@ export interface Request<T = any> {
    *
    * If there was no Content-Type header, an empty string will be returned.
    */
-  readonly type: string;
+  get type(): string {
+
+    const type = this.headers.get('content-type');
+    if (!type) { return ''; }
+    return type.split(';')[0];
+
+  }
+
 
   /**
    * accepts is used for negotation the Content-Type with a client.
@@ -92,7 +120,18 @@ export interface Request<T = any> {
    *
    * If no compatible types are found, this function returns null.
    */
-  accepts(...types: string[]): null | string;
+  accepts(...types: string[]): null | string {
+
+    const mockRequestObj = {
+      headers: {
+        accept: this.headers.get('Accept')
+      }
+    };
+
+    const result = <string|false> accepts(<http.IncomingMessage> mockRequestObj).type(types);
+    return result === false ? null : result;
+
+  }
 
   /**
    * This method will return true or false if a Request or Response has a
@@ -106,7 +145,11 @@ export interface Request<T = any> {
    * * hal+json
    * * json
    */
-  is(type: string): boolean;
+  is(type: string): boolean {
+
+    return is(this, type);
+
+  }
 
 }
 
