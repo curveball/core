@@ -53,7 +53,8 @@ Middlewares you might want
 * [Router](https://github.com/curveballjs/router).
 * [Body Parser](https://github.com/curveballjs/bodyparser).
 * [Sessions](https://github.com/curveballjs/session).
-
+* [Simple controllers - ideal for resource-oriented routing](https://github.com/curveballjs/controller).
+* [Generating application/problem+json responses](https://github.com/curveballjs/problem).
 
 Project status
 --------------
