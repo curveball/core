@@ -45,6 +45,8 @@ app.use((ctx: Context) => {
   ctx.response.body = 'Hello world!'
 
 });
+
+app.listen(4000);
 ```
 
 Middlewares you might want
@@ -114,10 +116,11 @@ import { Application } from '@curveball/core';
 import http2 from 'http2';
 
 const app = new Application();
-const server = http2.createSecureSever({
+const server = http2.createSecureServer({
   key: fs.readFileSync('server-key.pem'),
   cert: fs.readFileSync('server-cert.pem')
 }, app.callback());
+server.listen(4443);
 
 app.use( ctx => {
 
