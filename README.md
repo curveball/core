@@ -1,6 +1,8 @@
 Curveball
 =========
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/curveballjs/core.svg)](https://greenkeeper.io/)
+
 Curveball is a framework for building web services in Node.js. It fullfills a
 similar role to [Express][1] and it's heavily inspired by [Koa][2].
 
