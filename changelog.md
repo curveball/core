@@ -1,4 +1,4 @@
-0.9.0 (????-??-??)
+0.9.0 (2019-09-13)
 ==================
 
 * `Request` and `Response` types are now abstract classes instead of
