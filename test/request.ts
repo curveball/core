@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { Headers } from '../src/headers';
 import { Request } from '../src/request';
 import { HeadersObject } from '../src/headers';
+import { Readable } from 'stream';
 
 class FakeRequest extends Request {
 
@@ -24,6 +25,18 @@ class FakeRequest extends Request {
     } else {
       return this.body;
     }
+
+  }
+  /**
+   * getStream returns a Node.js readable stream.
+   *
+   * A stream can typically only be read once.
+   */
+  getStream(): Readable {
+
+    const s = new Readable();
+    s.push(this.body);
+    return s;
 
   }
 

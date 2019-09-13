@@ -1,3 +1,4 @@
+import { Readable } from 'stream';
 import { Headers, HeadersInterface, HeadersObject } from './headers';
 import Request from './request';
 
@@ -54,6 +55,26 @@ export class MemoryRequest<T> extends Request<T> {
   rawBody(encoding?: string, limit?: string): Promise<string>;
   rawBody(encoding?: undefined, limit?: string): Promise<Buffer>;
   async rawBody(encoding?: undefined|string, limit?: string): Promise<Buffer|string> {
+
+    return this.getBody(encoding);
+
+  }
+
+  /**
+   * getStream returns a Node.js readable stream.
+   *
+   * A stream can typically only be read once.
+   */
+  getStream(): Readable {
+
+    const s = new Readable();
+    s.push(this.getBody());
+    s.push(null);
+    return s;
+
+  }
+
+  private getBody(encoding?: string) {
 
     if (!this.originalBody) {
       // Memoizing the null case

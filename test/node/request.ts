@@ -293,5 +293,43 @@ describe('NodeRequest', () => {
 
     });
   });
+  describe('getStream', async () => {
+
+    it('should work!', async () => {
+
+      let outerBody;
+      const app = new Application();
+      const server = app.listen(5555);
+
+      app.use(async ctx => {
+        const stream = ctx.request.getStream();
+
+        let body = '';
+        stream.on('data', (chunk) => {
+          body += chunk;
+        });
+        stream.on('end', () => {
+
+          outerBody = body;
+
+        });
+      });
+
+      await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
+        method: 'POST',
+        headers: {
+          'accept': 'text/html',
+          'content-type': 'text/html; charset=utf-8',
+
+        },
+        body: 'hello',
+      });
+
+      server.close();
+      expect(outerBody).to.equal('hello');
+
+    });
+
+  });
 
 });

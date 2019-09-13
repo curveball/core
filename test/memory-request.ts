@@ -206,4 +206,31 @@ describe('MemoryRequest', () => {
 
   });
 
+  describe('getStream', () => {
+
+    it('should work!', (done) => {
+
+      const req = new MemoryRequest(
+        'POST',
+        '/',
+        {},
+        'hello'
+      );
+      const stream = req.getStream();
+
+      let body = '';
+      stream.on('data', (chunk) => {
+        body += chunk;
+      });
+      stream.on('end', () => {
+
+        expect(body).to.equal('hello');
+        done();
+
+      });
+
+    });
+
+  });
+
 });
