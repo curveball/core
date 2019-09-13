@@ -1,4 +1,5 @@
 import rawBody from 'raw-body';
+import { Readable } from 'stream';
 import { Headers, HeadersInterface } from '../headers';
 import Request from '../request';
 import { NodeHttpRequest } from './http-utils';
@@ -103,6 +104,17 @@ export class NodeRequest<T> extends Request<T> {
       options.length = length;
     }
     return rawBody(this.inner, options);
+
+  }
+
+  /**
+   * getStream returns a Node.js readable stream.
+   *
+   * A stream can typically only be read once.
+   */
+  getStream(): Readable {
+
+    return this.inner;
 
   }
 

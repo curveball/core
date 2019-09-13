@@ -1,5 +1,6 @@
 import accepts from 'accepts';
 import http from 'http';
+import { Readable } from 'stream';
 import url from 'url';
 import { is, parsePrefer } from './header-helpers';
 import { HeadersInterface } from './headers';
@@ -83,6 +84,13 @@ export abstract class Request<T = any> {
    */
   abstract rawBody(encoding?: string, limit?: string): Promise<string>;
   abstract rawBody(encoding?: undefined, limit?: string): Promise<Buffer>;
+
+  /**
+   * getStream returns a Node.js readable stream.
+   *
+   * A stream can typically only be read once.
+   */
+  abstract getStream(): Readable;
 
   /**
    * This object contains parsed query parameters.
