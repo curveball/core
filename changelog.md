@@ -1,5 +1,15 @@
+Changelog
+=========
+
+0.9.1 (2019-09-19)
+------------------
+
+* The server now sets a `application/hal+json` content-type if nothing else
+  was set. This fixes a regression from 0.9.0.
+
+
 0.9.0 (2019-09-13)
-==================
+------------------
 
 * `Request` and `Response` types are now abstract classes instead of
   interfaces. This removes a bunch of duplication.
@@ -8,20 +18,20 @@
 
 
 0.8.6 (2019-03-30)
-==================
+------------------
 
 * Correctly set status for HTTP exceptions in sub-requests.
 * Fixed a regression from 0.8.3.
 
 
 0.8.3 (2019-03-29)
-==================
+------------------
 
 * Correctly set status for HTTP exceptions in sub-requests.
 
 
 0.8.2 (2019-03-29)
-==================
+------------------
 
 * Subrequests should behave as regular requests and catch any exceptions.
 * Updated all dependecies.
@@ -29,7 +39,7 @@
 
 
 0.8.1 (2018-11-01)
-==================
+------------------
 
 * Now exporting an `invokeMiddleware` function that can be used to
   chain and call mutltiple middlewares.
@@ -38,7 +48,7 @@
 
 
 0.8.0 (2018-10-12)
-==================
+------------------
 
 * It's now possible to pass objects as Middlewares. If an object has a member
   thats the `middlewareCall` symbol, it will call that instead.
@@ -50,7 +60,7 @@
 
 
 0.7.0 (2018-10-04)
-==================
+------------------
 
 * The `Context` object now has an `ip` method that can be used to get the ip
   address of the client that's connecting.
@@ -61,7 +71,7 @@
 
 
 0.6.0 (2018-09-05)
-==================
+------------------
 
 * Request and Response object are now generic. `Response<T>` implies the body
   property has type `T`.
@@ -69,7 +79,7 @@
 
 
 0.5.0 (2018-08-31)
-==================
+------------------
 
 * #74: Added `method`, `path`, `status`, `accepts`, `push`, `sendInformational`,
   and `query` to Context object. These properties and methods all forward to
@@ -81,13 +91,13 @@
 
 
 0.4.3 (2018-07-09)
-==================
+------------------
 
 * `Application.buildContextFromHttp` is now public.
 
 
 0.4.2 (2018-07-04)
-==================
+------------------
 
 * #71: Fixed error messages when a HTTP/2 client disables or refuses a push
   late in the process.
@@ -95,13 +105,13 @@
 
 
 0.4.1 (2018-07-01)
-==================
+------------------
 
 * #57: `Response.type` is now settable.
 
 
 0.4.0 (2018-07-01)
-==================
+------------------
 
 * #4: Support for HTTP/2 push via the `Response.push()` method.
 * #62: It's now possible to do internal sub-requests without going through
@@ -112,7 +122,7 @@
 
 
 0.3.1 (2018-06-29)
-=================
+-----------------
 
 * Added License, Code of Conduct.
 * #52: Support for `Buffer` and arbitrary objects in `response.body`. The
@@ -120,7 +130,7 @@
 
 
 0.3.0 (2018-06-26)
-==================
+------------------
 
 * #5: Support for informational status codes such as `100 Continue` and
   `103 Early Hints` for both HTTP/1 and HTTP/2.
@@ -134,7 +144,7 @@
 
 
 0.2.0 (2018-06-25)
-==================
+------------------
 
 * #19: Added `Request.rawBody()` method.
 * #33: Added `Request.accept()` method.
@@ -146,25 +156,25 @@
 
 
 0.1.2 (2018-06-24)
-==================
+------------------
 
 * Set `script` and `types` correctly in `package.json`.
 
 
 0.1.1 (2018-06-24)
-==================
+------------------
 
 * Fixed npm package distribution. Was shipping the wrong files.
 
 
 0.1.0 (2018-06-24)
-==================
+------------------
 
 * Created `Request`, `Response`, `Application`, `Context`, `Headers` classes.
 * Basic framework works
 
 
 0.0.1 (2018-06-23)
-==================
+------------------
 
 * First published on npm.js to claim package name.
