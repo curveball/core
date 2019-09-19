@@ -80,6 +80,7 @@ export default class Application extends EventEmitter {
    */
   async handle(ctx: Context): Promise<void> {
     ctx.response.headers.set('Server', 'curveball/' + pkg.version);
+    ctx.response.type = 'application/hal+json';
     await invokeMiddlewares(ctx, [...this.middlewares, NotFoundMw]);
   }
 
