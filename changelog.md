@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.9.2 (2019-11-04)
+------------------
+
+* `rawBody()` had an incorrect type. It should _always_ return a `Buffer` if
+  the first argument is omitted.
+
+
 0.9.1 (2019-09-19)
 ------------------
 
