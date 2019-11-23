@@ -36,7 +36,7 @@
     "@types/chai": "^4.2.2",
     "@types/co-body": "0.0.3",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.7.9",
+    "@types/node": "^12.12.12",
     "@types/node-fetch": "^2.5.0",
     "@types/sinon": "^7.0.13",
     "chai": "^4.2.0",
