@@ -116,11 +116,12 @@ export default class Application extends EventEmitter {
         } else {
           res.statusCode = 500;
         }
-        // @ts-ignore
         res.end(
+          // @ts-ignore
           'Uncaught exception. No middleware was defined to handle it. We got the following HTTP status: ' +
-            res.statusCode
+          res.statusCode
         );
+
         if (this.listenerCount('error')) {
           this.emit('error', err);
         }
