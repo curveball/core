@@ -12,6 +12,7 @@ import ResponseInterface from './response';
  * * application/json
  * * hal+json
  * * json
+ * * application/*
  */
 export function is(message: RequestInterface | ResponseInterface, type: string): boolean {
 
@@ -31,6 +32,11 @@ export function is(message: RequestInterface | ResponseInterface, type: string):
 
   if (subType === type) {
     // Matches hal+json
+    return true;
+  }
+
+  if (type === mainType + '/*') {
+    // matches application/*
     return true;
   }
 
