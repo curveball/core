@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.9.3 (2019-12-19)
+------------------
+
+* The `is()` function will now also match wildcards, such as `image/*`.
+
+
 0.9.2 (2019-11-04)
 ------------------
 
