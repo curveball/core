@@ -28,6 +28,8 @@ describe('Header helpers', () => {
       ['application/json', 'hal+json', false],
       ['application/json', 'json', true],
       ['application/json', 'hal', false],
+      ['application/json', 'application/*', true],
+      ['application/json', 'image/*', false],
     ];
 
     for(const test of tests) {

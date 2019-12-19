@@ -80,6 +80,7 @@ export abstract class Response<T = any> {
    * * application/json
    * * hal+json
    * * json
+   * * application/*
    */
   is(type: string): boolean {
 
