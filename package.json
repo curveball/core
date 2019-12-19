@@ -1,6 +1,6 @@
 {
   "name": "@curveball/core",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "description": "Curveball is a framework writting in Typescript for Node.js",
   "main": "dist/index.js",
   "scripts": {
