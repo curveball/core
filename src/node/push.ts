@@ -8,7 +8,7 @@ import { sendBody } from './http-utils';
 export default async function push(stream: http2.ServerHttp2Stream, pushCtx: Context) {
 
   const requestHeaders = {
-    ':path': pushCtx.request.path,
+    ':path': pushCtx.request.requestTarget,
     ...pushCtx.request.headers.getAll(),
 
   };
