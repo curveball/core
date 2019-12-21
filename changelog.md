@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.9.4 (2019-12-21)
+------------------
+
+* Fix a bug in HTTP/2 Push. Resources with query parameters in their path were
+  not pushed correctly.
+
+
 0.9.3 (2019-12-19)
 ------------------
 
