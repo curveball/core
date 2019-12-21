@@ -117,11 +117,11 @@ describe('NodeResponse http/2 push', () => {
         case '/foo' :
           ctx.response.body = 'Hello world A';
           ctx.response.push( pushCtx => {
-            pushCtx.request.path = '/bar';
+            pushCtx.request.path = '/bar?sup';
             return app.handle(pushCtx);
           });
           break;
-        case '/bar?sup' :
+        case '/bar' :
           ctx.response.body = 'Hello world B';
           break;
       }
