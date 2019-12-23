@@ -88,6 +88,31 @@ export abstract class Response<T = any> {
 
   }
 
+  /**
+   * redirect performs an HTTP redirect to the provided path in address with a
+   * default HTTP response status code 303 See Other. It accepts an optional status
+   * parameter and a required location parameter.
+   *
+   * @param status (optional) the HTTP response code to set in the response header, defaults
+   * to 303 See Other.
+   * @param address the address to redirect to-gets set in the response.location header.
+   */
+  redirect(address: string): void;
+  redirect(status: number, address: string): void;
+  redirect(addrOrStatus: string|number, address?: string): void {
+    let status: number = 303;
+    let addr: string;
+    if (typeof(addrOrStatus) === 'number') {
+      status = addrOrStatus;
+      addr = address || '';
+    } else {
+      addr = addrOrStatus;
+    }
+
+    this.status = status;
+    this.headers.set('Location', addr);
+  }
+
 }
 
 export default Response;
