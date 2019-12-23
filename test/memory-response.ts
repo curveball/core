@@ -102,4 +102,21 @@ describe('MemoryResponse', () => {
 
   });
 
+  describe('redirect', () => {
+    it('should set the location header to /home with default status code 303', async () => {
+      const res = getRes();
+      res.redirect('/home');
+      expect(res.headers.get('Location')).equals('/home');
+      expect(res.status).equals(303);
+    });
+
+    it('should redirect to /home with provided status code 301', async () => {
+      const res = getRes();
+      const originalLocation = res.headers.get('Referer');
+      res.redirect(301, '/home');
+      expect(res.status).equals(301);
+      expect(res.headers.get('Location')).not.equals(originalLocation);
+    });
+  });
+
 });
