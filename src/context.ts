@@ -158,4 +158,21 @@ export default class Context<ReqT = any, ResT = any> {
 
   }
 
+  /**
+   * redirect redirects the response with an optionally provided HTTP status
+   * code in the first position to the location provided in address. If no status
+   * is provided, 303 See Other is used.
+   *
+   * It is a wrapper method for the underlying response.redirect function.
+   */
+  redirect(address: string): void;
+  redirect(status: number, address: string): void;
+  redirect(addrOrStatus: string|number, address?: string): void {
+    if (typeof(addrOrStatus) === 'number' && typeof(address) === 'string') {
+      return this.response.redirect(addrOrStatus, address);
+    } else if (typeof(addrOrStatus) === 'string') {
+      return this.response.redirect(addrOrStatus);
+    }
+  }
+
 }

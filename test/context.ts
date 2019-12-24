@@ -171,4 +171,47 @@ describe('Context', () => {
 
   });
 
+  describe('redirect', () => {
+    it('should set the location header to /home with default status code 303', async () => {
+      const originalTarget = '/foo';
+      const newTarget = '/bar';
+      const defaultStatus = 303;
+
+      const request = new Request('GET', originalTarget);
+      const response = new Response();
+
+      const context = new Context(
+          request,
+          response
+      );
+
+      context.redirect(newTarget);
+
+      expect(context.response.headers.get('Location')).equals(newTarget);
+      expect(context.status).equals(defaultStatus);
+    });
+
+    it('should redirect to /home with provided status code 301', async () => {
+      const originalTarget = '/foo';
+      const originalStatus = 303;
+      const newTarget = '/bar';
+      const newStatus = 301;
+
+      const request = new Request('GET', originalTarget);
+      const response = new Response();
+
+      const context = new Context(
+          request,
+          response
+      );
+
+      context.redirect(newStatus, newTarget);
+
+      expect(context.status).equals(newStatus);
+      expect(context.status).not.equals(originalStatus);
+      expect(context.response.headers.get('Location')).not.equals(originalTarget);
+      expect(context.response.headers.get('Location')).equals(newTarget);
+    });
+  });
+
 });
