@@ -167,10 +167,10 @@ export default class Context<ReqT = any, ResT = any> {
    */
   redirect(address: string): void;
   redirect(status: number, address: string): void;
-  redirect(addrOrStatus: string|number, address?: string): void {
-    if (typeof(addrOrStatus) === 'number' && typeof(address) === 'string') {
+  redirect(addrOrStatus: string|number, address = ''): void {
+    if (typeof(addrOrStatus) === 'number') {
       return this.response.redirect(addrOrStatus, address);
-    } else if (typeof(addrOrStatus) === 'string') {
+    } else {
       return this.response.redirect(addrOrStatus);
     }
   }
