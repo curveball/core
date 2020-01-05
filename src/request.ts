@@ -181,6 +181,7 @@ export abstract class Request<T = any> {
   prefer(preference: 'return'): 'representation' | 'minimal' | false;
   prefer(preference: 'wait'): string | false;
   prefer(preference: 'handling'): 'strict' | 'lenient' | false;
+  prefer(preference: 'transclude'): string | false;
   prefer(preference: string): string | boolean {
 
     const prefer = parsePrefer(
