@@ -176,6 +176,12 @@ export abstract class Request<T = any> {
    * This method returns false if the preference did not appear in the header.
    * If it did appear, it will either return its value (minimal, 20) or 'true'
    * if there was no value.
+   *
+   * The list of supported preferences is taken from the IANA registry:
+   * https://www.iana.org/assignments/http-parameters/http-parameters.xhtml#preferences
+   *
+   * In addition to this list, it also supports the 'transclude' draft:
+   * https://github.com/inadarei/draft-prefer-transclude/blob/master/draft.md
    */
   prefer(preference: 'respond-async'): boolean;
   prefer(preference: 'return'): 'representation' | 'minimal' | false;
