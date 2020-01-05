@@ -183,12 +183,9 @@ export abstract class Request<T = any> {
    * In addition to this list, it also supports the 'transclude' draft:
    * https://github.com/inadarei/draft-prefer-transclude/blob/master/draft.md
    */
-  prefer(preference: 'respond-async'): boolean;
+  prefer(preference: 'depth-noroot' | 'respond-async' | 'safe' | 'wait'): boolean;
   prefer(preference: 'return'): 'representation' | 'minimal' | false;
-  prefer(preference: 'wait'): string | false;
   prefer(preference: 'handling'): 'strict' | 'lenient' | false;
-  prefer(preference: 'depth-noroot'): boolean;
-  prefer(preference: 'safe'): boolean;
   prefer(preference: 'transclude'): string | false;
   prefer(preference: string): string | boolean {
 
