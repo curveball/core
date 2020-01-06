@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.10.0 (2020-01-05)
+-------------------
+
+* Added a `redirect()` function to `Context` and `Response` objects, making it
+  easier to set a status-code and location header in one step.
+* Support for more `Prefer` parameters: `depth-noroot`, `safe`, `transclude`.
+
+
 0.9.4 (2019-12-21)
 ------------------
 

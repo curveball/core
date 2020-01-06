@@ -232,6 +232,8 @@ The Context object has the following properties:
 * `sendInformational(status, headers?)` - Sends a `100 Continue`,
   `102 Processing` or `103 Early Hints` - response with optional headers.
 * `push(callback: Middleware)` - Do a HTTP/2 push.
+* `redirect(status, location)` - Send a redirect status code and set a
+  `Location` header.
 
 
 ### The Request interface
@@ -275,6 +277,8 @@ properties and methods:
   response matches the argument. If your `Content-Type` is
   `application/hal+json` it will return true for `application/hal+json`,
   `hal+json` and `json`.
+* `redirect(status, location)` - Send a redirect status code and set a
+  `Location` header.
 
 ### The Headers interface
 
