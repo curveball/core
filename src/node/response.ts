@@ -3,6 +3,7 @@ import { promisify } from 'util';
 import { invokeMiddlewares, Middleware } from '../application';
 import Context from '../context';
 import { HeadersInterface, HeadersObject } from '../headers';
+import { LinkManager } from '../links';
 import MemoryRequest from '../memory-request';
 import MemoryResponse from '../memory-response';
 import Response from '../response';
@@ -28,6 +29,7 @@ export class NodeResponse<T> extends Response<T> {
     this.body = null;
     this.status = 404;
     this.explicitStatus = false;
+    this.links = new LinkManager(this.headers);
 
   }
 

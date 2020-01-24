@@ -1,6 +1,7 @@
 import rawBody from 'raw-body';
 import { Readable } from 'stream';
 import { Headers, HeadersInterface } from '../headers';
+import { LinkManager } from '../links';
 import Request from '../request';
 import { NodeHttpRequest } from './http-utils';
 
@@ -28,6 +29,7 @@ export class NodeRequest<T> extends Request<T> {
     this.inner = inner;
     // @ts-ignore ignoring that headers might be undefined
     this.headers = new Headers(this.inner.headers);
+    this.links = new LinkManager(this.headers);
 
   }
 

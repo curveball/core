@@ -1,5 +1,6 @@
 import { Readable } from 'stream';
 import { Headers, HeadersInterface, HeadersObject } from './headers';
+import { LinkManager } from './links';
 import Request from './request';
 
 export class MemoryRequest<T> extends Request<T> {
@@ -29,6 +30,7 @@ export class MemoryRequest<T> extends Request<T> {
     // @ts-ignore: Typescript doesn't like null here because it might be
     // incompatible with T, but we're ignoring it as it's a good default.
     this.body = null;
+    this.links = new LinkManager(this.headers);
 
   }
 

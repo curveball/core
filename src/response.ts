@@ -1,6 +1,7 @@
 import { Middleware } from './application';
 import { is } from './header-helpers';
 import { HeadersInterface, HeadersObject } from './headers';
+import { LinkManager } from './links';
 
 /**
  * This interface represents an incoming server request.
@@ -21,6 +22,11 @@ export abstract class Response<T = any> {
    * The response body.
    */
   body: T;
+
+  /**
+   * HTTP Links manager
+   */
+  links: LinkManager;
 
   /**
    * Returns the value of the Content-Type header, with any additional

@@ -4,6 +4,7 @@ import { Readable } from 'stream';
 import url from 'url';
 import { is, parsePrefer } from './header-helpers';
 import { HeadersInterface } from './headers';
+import { LinkManager } from './links';
 
 /**
  * This interface represents an incoming server request.
@@ -14,6 +15,11 @@ export abstract class Request<T = any> {
    * List of HTTP Headers
    */
   headers: HeadersInterface;
+
+  /**
+   * HTTP Links manager
+   */
+  links: LinkManager;
 
   /**
    * path-part of the request.
