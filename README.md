@@ -1,8 +1,6 @@
 Curveball
 =========
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/curveballjs/core.svg)](https://greenkeeper.io/)
-
 Curveball is a framework for building web services in Node.js. It fullfills a
 similar role to [Express][1] and it's heavily inspired by [Koa][2].
 
@@ -54,11 +52,11 @@ app.listen(4000);
 Middlewares you might want
 --------------------------
 
-* [Router](https://github.com/curveballjs/router).
-* [Body Parser](https://github.com/curveballjs/bodyparser).
-* [Sessions](https://github.com/curveballjs/session).
-* [Simple controllers - ideal for resource-oriented routing](https://github.com/curveballjs/controller).
-* [Generating application/problem+json responses](https://github.com/curveballjs/problem).
+* [Router](https://github.com/curveball/router).
+* [Body Parser](https://github.com/curveball/bodyparser).
+* [Sessions](https://github.com/curveball/session).
+* [Simple controllers - ideal for resource-oriented routing](https://github.com/curveball/controller).
+* [Generating application/problem+json responses](https://github.com/curveball/problem).
 
 Project status
 --------------

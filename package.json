@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/curveballjs/core.git"
+    "url": "git+https://github.com/curveball/core.git"
   },
   "files": [
     "package.json",
@@ -28,9 +28,9 @@
   "author": "Evert Pot (https://evertpot.com/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/curveballjs/core/issues"
+    "url": "https://github.com/curveball/core/issues"
   },
-  "homepage": "https://github.com/curveballjs/core#readme",
+  "homepage": "https://github.com/curveball/core#readme",
   "devDependencies": {
     "@types/accepts": "^1.3.5",
     "@types/chai": "^4.2.7",
