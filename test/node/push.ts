@@ -290,6 +290,9 @@ describe('NodeResponse http/2 push', () => {
     const response = new NodeResponse(<any> {
       stream: {
         pushAllowed: true
+      },
+      getHeader(key: string) {
+        return null;
       }
     });
 
@@ -317,6 +320,9 @@ describe('NodeResponse http/2 push', () => {
           callback(new Error('hi'));
         },
         pushAllowed: true
+      },
+      getHeader(key: string) {
+        return null;
       }
     });
 
