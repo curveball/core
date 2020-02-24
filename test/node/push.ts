@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import Emitter from 'events';
 import http2 from 'http2';
 import fetch from 'node-fetch';
-import { Application, Context, MemoryRequest, MemoryResponse } from '../../src';
+import { Application, BaseContext, MemoryRequest, MemoryResponse } from '../../src';
 import push from '../../src/node/push';
 import NodeResponse from '../../src/node/response';
 
@@ -360,7 +360,7 @@ describe('push() function', () => {
 
       await push(
         <any> stream,
-        new Context(
+        new BaseContext(
           new MemoryRequest('GET', '/push-resource'),
           new MemoryResponse()
         )
@@ -399,7 +399,7 @@ describe('push() function', () => {
 
       await push(
         <any> stream,
-        new Context(
+        new BaseContext(
           new MemoryRequest('GET', '/push-resource'),
           new MemoryResponse()
         )
@@ -436,7 +436,7 @@ describe('push() function', () => {
       try {
         await push(
           <any> stream,
-          new Context(
+          new BaseContext(
             new MemoryRequest('GET', '/push-resource'),
             new MemoryResponse()
           )
