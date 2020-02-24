@@ -1,6 +1,7 @@
 import { isHttpError } from '@curveball/http-errors';
 import EventEmitter from 'events';
 import http from 'http';
+import BaseContext from './base-context';
 import Context from './context';
 import { HeadersInterface, HeadersObject } from './headers';
 import MemoryRequest from './memory-request';
@@ -154,7 +155,7 @@ export default class Application extends EventEmitter {
       request = <Request> arg1;
     }
 
-    const context = new Context(request, new MemoryResponse());
+    const context = new BaseContext(request, new MemoryResponse());
 
     try {
       await this.handle(context);
@@ -183,7 +184,7 @@ export default class Application extends EventEmitter {
     req: NodeHttpRequest,
     res: NodeHttpResponse
   ): Context {
-    const context = new Context(new NodeRequest(req), new NodeResponse(res));
+    const context = new BaseContext(new NodeRequest(req), new NodeResponse(res));
 
     return context;
   }

@@ -1,16 +1,16 @@
 import { expect } from 'chai';
-import Context from '../src/context';
+import BaseContext from '../src/base-context';
 import Request from '../src/memory-request';
 import Response from '../src/memory-response';
 
-describe('Context', () => {
+describe('BaseContext', () => {
 
   it('should instantiate correctly', () => {
 
     const request = new Request('GET', '/');
     const response = new Response();
 
-    const context = new Context(
+    const context = new BaseContext(
       request,
       response
     );
@@ -25,7 +25,7 @@ describe('Context', () => {
     const request = new Request('GET', '/');
     const response = new Response();
 
-    const context = new Context(
+    const context = new BaseContext(
       request,
       response
     );
@@ -39,7 +39,7 @@ describe('Context', () => {
     const request = new Request('GET', '/foo');
     const response = new Response();
 
-    const context = new Context(
+    const context = new BaseContext(
       request,
       response
     );
@@ -52,7 +52,7 @@ describe('Context', () => {
     const request = new Request('GET', '/foo?a=b');
     const response = new Response();
 
-    const context = new Context(
+    const context = new BaseContext(
       request,
       response
     );
@@ -66,7 +66,7 @@ describe('Context', () => {
     const request = new Request('GET', '/foo', {Accept: 'text/html'});
     const response = new Response();
 
-    const context = new Context(
+    const context = new BaseContext(
       request,
       response
     );
@@ -81,7 +81,7 @@ describe('Context', () => {
     const response = new Response();
     response.status = 414;
 
-    const context = new Context(
+    const context = new BaseContext(
       request,
       response
     );
@@ -106,7 +106,7 @@ describe('Context', () => {
 
     };
 
-    const context = new Context(
+    const context = new BaseContext(
       request,
       response
     );
@@ -130,7 +130,7 @@ describe('Context', () => {
 
     };
 
-    const context = new Context(
+    const context = new BaseContext(
       request,
       response
     );
@@ -148,7 +148,7 @@ describe('Context', () => {
       const request = new Request('GET', '/foo');
       const response = new Response();
 
-      const context = new Context(
+      const context = new BaseContext(
         request,
         response
       );
@@ -161,7 +161,7 @@ describe('Context', () => {
       (<any> request).ip = () => '127.0.0.1';
       const response = new Response();
 
-      const context = new Context(
+      const context = new BaseContext(
         request,
         response
       );
@@ -180,7 +180,7 @@ describe('Context', () => {
       const request = new Request('GET', originalTarget);
       const response = new Response();
 
-      const context = new Context(
+      const context = new BaseContext(
           request,
           response
       );
@@ -200,7 +200,7 @@ describe('Context', () => {
       const request = new Request('GET', originalTarget);
       const response = new Response();
 
-      const context = new Context(
+      const context = new BaseContext(
           request,
           response
       );

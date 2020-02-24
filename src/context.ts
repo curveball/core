@@ -3,12 +3,7 @@ import { HeadersInterface, HeadersObject } from './headers';
 import Request from './request';
 import Response from './response';
 
-/**
- * The Context object encapsulates a single HTTP request.
- *
- * It has references to the internal request and response object.
- */
-export default class Context<ReqT = any, ResT = any> {
+export default interface Context<ReqT = any, ResT = any> {
 
   /**
    * HTTP Request
@@ -33,46 +28,26 @@ export default class Context<ReqT = any, ResT = any> {
     [s: string]: any
   };
 
-  constructor(req: Request, res: Response) {
-
-    this.request = req;
-    this.response = res;
-    this.state = {};
-
-  }
-
   /**
    * The Request path.
    *
    * Shortcut for request.path
    */
-  get path(): string {
-
-    return this.request.path;
-
-  }
+  path: string;
 
   /**
    * HTTP method
    *
    * Shortcut for request.method
    */
-  get method(): string {
-
-    return this.request.method;
-
-  }
+   method: string;
 
   /**
    * This object contains parsed query string parameters.
    *
    * This is a shortcut for request.query
    */
-  get query(): { [s: string]: string } {
-
-    return this.request.query;
-
-  }
+  query: { [s: string]: string };
 
   /**
    * accepts is used for negotation the Content-Type with a client.
@@ -88,44 +63,21 @@ export default class Context<ReqT = any, ResT = any> {
    *
    * This is a shortcut to request.accepts()
    */
-  accepts(...types: string[]): null | string {
-
-    return this.request.accepts(...types);
-
-  }
+  accepts(...types: string[]): null | string;
 
   /**
    * HTTP status code.
    *
    * This is a shortcut for response.status
    */
-  get status(): number {
-
-    return this.response.status;
-
-  }
-
-  /**
-   * Sets the HTTP response status code.
-   *
-   * This is a shortcut for response.status.
-   */
-  set status(value: number) {
-
-    this.response.status = value;
-
-  }
+  status: number;
 
   /**
    * Sends an informational (1xx status code) response.
    *
    * This is a shortcut for response.sendInformational()
    */
-  sendInformational(status: number, headers?: HeadersInterface | HeadersObject): Promise<void> {
-
-    return this.response.sendInformational(status, headers);
-
-  }
+  sendInformational(status: number, headers?: HeadersInterface | HeadersObject): Promise<void>;
 
   /**
    * Sends a HTTP/2 push.
@@ -135,11 +87,7 @@ export default class Context<ReqT = any, ResT = any> {
    *
    * This is a shortcut for response.push()
    */
-  push(callback: Middleware): Promise<void> {
-
-    return this.response.push(callback);
-
-  }
+  push(callback: Middleware): Promise<void>;
 
   /**
    * returns the ip address of the client that's trying to connect.
@@ -149,37 +97,9 @@ export default class Context<ReqT = any, ResT = any> {
    *
    * If there was no real HTTP client, this method will return null.
    */
-  ip(trustProxy = false): null | string {
-
-    if ((<any> this.request).ip !== undefined) {
-      return (<any> this.request).ip(trustProxy);
-    }
-    return null;
-
-  }
+  ip(trustProxy?: boolean): null | string;
 
   redirect(address: string): void;
   redirect(status: number, address: string): void;
-  /**
-   * redirect redirects the response with an optionally provided HTTP status
-   * code in the first position to the location provided in address. If no status
-   * is provided, 303 See Other is used.
-   *
-   * It is a wrapper method for the underlying Response.redirect function.
-   *
-   * @param {(string|number)} addrOrStatus if passed a string, the string will
-   * be used to set the Location header of the response object and the default status
-   * of 303 See Other will be used. If a number, an addressed must be passed in the second
-   * argument.
-   * @param {string} address If addrOrStatus is passed a status code, this value is
-   * set as the value of the response's Location header.
-   */
-  redirect(addrOrStatus: string|number, address = ''): void {
-    if (typeof(addrOrStatus) === 'number') {
-      return this.response.redirect(addrOrStatus, address);
-    } else {
-      return this.response.redirect(addrOrStatus);
-    }
-  }
 
 }
