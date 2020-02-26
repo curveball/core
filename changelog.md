@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.11.0 (2020-02-26)
+-------------------
+
+* `Context` is no longer a class, it's an interface. It's default
+  implementation is now `BaseContext`. This allows plugins to modify the
+  interface and add new features.
+
+
 0.10.0 (2020-01-05)
 -------------------
 
