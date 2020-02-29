@@ -117,6 +117,7 @@ export default class Application extends EventEmitter {
         } else {
           res.statusCode = 500;
         }
+        res.setHeader('Content-Type', 'text/plain');
         res.end(
           // @ts-ignore
           'Uncaught exception. No middleware was defined to handle it. We got the following HTTP status: ' +
