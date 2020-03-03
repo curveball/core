@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.11.1 (2020-03-03)
+-------------------
+
+* Set `Content-Type` to `text/plain` for errors that fall without being caught
+  by an exception handling middleware.
+
+
 0.11.0 (2020-02-26)
 -------------------
 
