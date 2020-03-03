@@ -1,5 +1,5 @@
 import { isHttpError } from '@curveball/http-errors';
-import EventEmitter from 'events';
+import { EventEmitter } from 'events';
 import http from 'http';
 import BaseContext from './base-context';
 import Context from './context';

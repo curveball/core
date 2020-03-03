@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import Emitter from 'events';
+import { EventEmitter } from 'events';
 import http2 from 'http2';
 import fetch from 'node-fetch';
 import { Application, BaseContext, MemoryRequest, MemoryResponse } from '../../src';
@@ -374,7 +374,7 @@ describe('push() function', () => {
 
     it('should not error', async () => {
 
-      class FakeStream extends Emitter {
+      class FakeStream extends EventEmitter {
 
         rstCode: number;
         respond() {
@@ -414,7 +414,7 @@ describe('push() function', () => {
 
     it('should bubble', async () => {
 
-      class FakeStream extends Emitter {
+      class FakeStream extends EventEmitter {
 
         respond() {
 
