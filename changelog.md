@@ -1,11 +1,19 @@
 Changelog
 =========
 
-0.11.1 (?)
+
+0.11.2 (?)
 ----------
 * Typescript target is now `es2019` instead of `esnext` to ensure that older
   Node.js versions are supported.
-  
+
+
+0.11.1 (2020-03-03)
+-------------------
+
+* Set `Content-Type` to `text/plain` for errors that fall without being caught
+  by an exception handling middleware.
+
 
 0.11.0 (2020-02-26)
 -------------------
