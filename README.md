@@ -54,15 +54,21 @@ Middlewares you might want
 
 * [Router](https://github.com/curveball/router).
 * [Body Parser](https://github.com/curveball/bodyparser).
+* [Controller](https://github.com/curveball/controller).
+* [Access logs](https://github.com/curveball/access-log).
 * [Sessions](https://github.com/curveball/session).
-* [Simple controllers - ideal for resource-oriented routing](https://github.com/curveball/controller).
 * [Generating application/problem+json responses](https://github.com/curveball/problem).
+
+AWS Lambda support
+-------------------
+
+See [aws-lambda](https://github.com/curveball/aws-lambda).
 
 Project status
 --------------
 
-The project is currently alpha quality. I would love some feedback on developer
-ergonomics. Things might change before a 1.0 release.
+The project is currently in beta. It might go through a few more changes, but
+the project is mostly stable. It's ready for production.
 
 
 Doing internal subrequests
@@ -292,6 +298,30 @@ It has the following methods:
 * `append(name, value)` - Adds a HTTP header, but doesn't erase an existing
   one with the same name.
 * `getAll()` - Returns all HTTP headers as a key-value object.
+
+Other features
+--------------
+
+Use the `checkConditional` function to verify the following headers:
+
+* `If-Match`
+* `If-None-Match`
+* `If-Modified-Since`
+* `If-Unmodified-Since`.
+
+Signature:
+
+```typescript
+checkConditionial(req: RequestInterface, lastModified: Date | null, etag: string | null): 200 | 304 : 412;
+```
+
+This function returns `200` if the conditional passed. If it didn't, it will
+return either `304` or `412`. The former means you'll want to send a
+`304 Not Modified` back, the latter `412 Precondition Failed`.
+
+`200` does not mean you _have_ to return a `200 OK` status, it's just an easy
+way to indicate that all all conditions have passed.
+
 
 [1]: https://expressjs.com/ "Express"
 [2]: https://koajs.com/ "Koa"
