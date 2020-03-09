@@ -1,11 +1,15 @@
 Changelog
 =========
 
+0.11.2 (2020-03-09)
+-------------------
 
-0.11.2 (?)
-----------
+* Added utilities to check `If-Match`, `If-None-Match`, `If-Modified-Since`,
+  `If-Unmodified-Since`.
 * Typescript target is now `es2019` instead of `esnext` to ensure that older
   Node.js versions are supported.
+* Added a workaround to make sure the package works around a bug in
+  `@types/node@13`.
 
 
 0.11.1 (2020-03-03)
