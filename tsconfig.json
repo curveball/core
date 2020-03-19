@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "umd",
+        "module": "commonjs",
         "esModuleInterop": true,
         "target": "es2019",
         "noImplicitAny": true,
