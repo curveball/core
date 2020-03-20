@@ -55,7 +55,7 @@ Middlewares you might want
 * [Router](https://github.com/curveball/router).
 * [Body Parser](https://github.com/curveball/bodyparser).
 * [Controller](https://github.com/curveball/controller).
-* [Access logs](https://github.com/curveball/access-log).
+* [Access Logs](https://github.com/curveball/accesslog).
 * [Sessions](https://github.com/curveball/session).
 * [Generating application/problem+json responses](https://github.com/curveball/problem).
 
