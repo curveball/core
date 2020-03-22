@@ -3,15 +3,9 @@
         "module": "commonjs",
         "esModuleInterop": true,
         "target": "es2019",
-        "noImplicitAny": true,
 
-        "strictFunctionTypes": true,
-        "strictNullChecks": true,
-        "noImplicitThis": true,
-        "alwaysStrict": true,
-        "noUnusedLocals": true,
-        "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": true,
+        "strict": true,
+        "experimentalDecorators": true,
 
         "moduleResolution": "node",
         "sourceMap": true,

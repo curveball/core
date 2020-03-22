@@ -52,16 +52,21 @@ export async function invokeMiddlewares(
     return;
   }
 
-  let mw;
-  if ((<MiddlewareObject> fns[0])[middlewareCall] !== undefined) {
-    mw = (<MiddlewareObject> fns[0])[middlewareCall].bind(fns[0]);
+  const mw: Middleware = fns[0];
+  let mwFunc: MiddlewareFunction;
+  if (isMiddlewareObject(mw)) {
+    mwFunc = (<MiddlewareObject> mw)[middlewareCall].bind(fns[0]);
   } else {
-    mw = fns[0];
+    mwFunc = mw; 
   }
 
-  return mw(ctx, async () => {
+  return mwFunc(ctx, async () => {
     await invokeMiddlewares(ctx, fns.slice(1));
   });
+}
+
+function isMiddlewareObject(input: Middleware): input is MiddlewareObject {
+  return ((<MiddlewareObject> input)[middlewareCall] !== undefined);
 }
 
 export default class Application extends EventEmitter {
