@@ -8,9 +8,7 @@ class FakeRequest extends BaseRequest {
 
   constructor(method: string, path: string, headers: HeadersObject, body: any = '') {
 
-    super();
-    this.method = method;
-    this.path = path;
+    super(method, path);
     this.headers = new Headers(headers);
     this.body = Buffer.from(body);
 

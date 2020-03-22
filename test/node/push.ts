@@ -376,7 +376,7 @@ describe('push() function', () => {
 
       class FakeStream extends Emitter {
 
-        rstCode: number;
+        rstCode?: number;
         respond() {
 
           const err = new Error('Refused');
