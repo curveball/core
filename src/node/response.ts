@@ -5,20 +5,19 @@ import BaseContext from '../base-context';
 import { HeadersInterface, HeadersObject } from '../headers';
 import MemoryRequest from '../memory-request';
 import MemoryResponse from '../memory-response';
-import BaseResponse from '../base-response';
+import Response from '../response';
 import { isHttp2Response, NodeHttpResponse } from './http-utils';
 import push from './push';
 import NodeHeaders from './response-headers';
+import { is } from './../header-helpers';
 
-export class NodeResponse<T> extends BaseResponse<T> {
+export class NodeResponse<T> implements Response<T> {
 
   private inner: NodeHttpResponse;
   private bodyValue?: T;
   private explicitStatus: boolean;
 
   constructor(inner: NodeHttpResponse) {
-
-    super();
 
     // The default response status is 404.
     this.inner = inner;
@@ -161,6 +160,76 @@ export class NodeResponse<T> extends BaseResponse<T> {
 
     return push(stream, pushCtx);
 
+  }
+
+  /**
+   * Returns the value of the Content-Type header, with any additional
+   * parameters such as charset= removed.
+   *
+   * If there was no Content-Type header, an empty string will be returned.
+   */
+  get type(): string {
+
+    const type = this.headers.get('content-type');
+    if (!type) { return ''; }
+    return type.split(';')[0];
+
+  }
+
+  /**
+   * Shortcut for setting the Content-Type header.
+   */
+  set type(value: string) {
+
+    this.headers.set('content-type', value);
+
+  }
+
+  /**
+   * This method will return true or false if a Request or Response has a
+   * Content-Type header that matches the argument.
+   *
+   * For example, if the Content-Type header has the value: application/hal+json,
+   * then the arguments will all return true:
+   *
+   * * application/hal+json
+   * * application/json
+   * * hal+json
+   * * json
+   * * application/*
+   */
+  is(type: string): boolean {
+
+    return is(this, type);
+
+  }
+
+  redirect(address: string): void;
+  redirect(status: number, address: string): void;
+  /**
+   * redirect redirects the response with an optionally provided HTTP status
+   * code in the first position to the location provided in address. If no status
+   * is provided, 303 See Other is used.
+   *
+   * @param {(string|number)} addrOrStatus if passed a string, the string will
+   * be used to set the Location header of the response object and the default status
+   * of 303 See Other will be used. If a number, an addressed must be passed in the second
+   * argument.
+   * @param {string} address If addrOrStatus is passed a status code, this value is
+   * set as the value of the response's Location header.
+   */
+  redirect(addrOrStatus: string|number, address = ''): void {
+    let status: number = 303;
+    let addr: string;
+    if (typeof(addrOrStatus) === 'number') {
+      status = addrOrStatus;
+      addr = address;
+    } else {
+      addr = addrOrStatus;
+    }
+
+    this.status = status;
+    this.headers.set('Location', addr);
   }
 
 }

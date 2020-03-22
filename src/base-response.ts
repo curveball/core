@@ -2,7 +2,7 @@ import { Middleware } from './application';
 import { is } from './header-helpers';
 import { HeadersInterface, HeadersObject } from './headers';
 import Response from './response';
-import { Headers } from './headers'; 
+import { Headers } from './headers';
 
 /**
  * This interface represents an incoming server request.

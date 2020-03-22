@@ -57,7 +57,7 @@ export async function invokeMiddlewares(
   if (isMiddlewareObject(mw)) {
     mwFunc = (<MiddlewareObject> mw)[middlewareCall].bind(fns[0]);
   } else {
-    mwFunc = mw; 
+    mwFunc = mw;
   }
 
   return mwFunc(ctx, async () => {
