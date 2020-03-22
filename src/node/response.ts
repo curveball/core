@@ -5,12 +5,12 @@ import BaseContext from '../base-context';
 import { HeadersInterface, HeadersObject } from '../headers';
 import MemoryRequest from '../memory-request';
 import MemoryResponse from '../memory-response';
-import Response from '../response';
+import BaseResponse from '../base-response';
 import { isHttp2Response, NodeHttpResponse } from './http-utils';
 import push from './push';
 import NodeHeaders from './response-headers';
 
-export class NodeResponse<T> extends Response<T> {
+export class NodeResponse<T> extends BaseResponse<T> {
 
   private inner: NodeHttpResponse;
   private bodyValue: T;
