@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.12.0 (????-??-??)
+-------------------
+
+* Both `Request` and `Response` are now typescript interfaces. This will allow
+  plugins to extends them via interface declaration merging.
+
+
 0.11.2 (2020-03-09)
 -------------------
 
