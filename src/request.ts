@@ -4,7 +4,7 @@ import { HeadersInterface } from './headers';
 /**
  * This interface represents an incoming server request.
  */
-interface Request<T = any> {
+export interface Request<T = any> {
 
   /**
    * List of HTTP Headers
