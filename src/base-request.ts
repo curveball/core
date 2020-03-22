@@ -1,10 +1,15 @@
+import accepts from 'accepts';
+import http from 'http';
 import { Readable } from 'stream';
+import url from 'url';
+import { is, parsePrefer } from './header-helpers';
 import { HeadersInterface } from './headers';
+import Request from './request';
 
 /**
  * This interface represents an incoming server request.
  */
-interface Request<T = any> {
+export abstract class BaseRequest<T = any> implements Request<T> {
 
   /**
    * List of HTTP Headers
@@ -16,7 +21,20 @@ interface Request<T = any> {
    *
    * For example /hello/world
    */
-  path: string;
+  get path(): string {
+
+    return url.parse(this.requestTarget).pathname!;
+
+  }
+
+  /**
+   * Sets the request path
+   */
+  set path(value: string) {
+
+    this.requestTarget = value;
+
+  }
 
   /**
    * HTTP method
@@ -65,20 +83,24 @@ interface Request<T = any> {
    * You can only call this function once. Most likely you'll want a single
    * middleware that calls this function and then sets `body`.
    */
-  rawBody(encoding: string, limit?: string): Promise<string>;
-  rawBody(encoding?: undefined, limit?: string): Promise<Buffer>;
+  abstract rawBody(encoding: string, limit?: string): Promise<string>;
+  abstract rawBody(encoding?: undefined, limit?: string): Promise<Buffer>;
 
   /**
    * getStream returns a Node.js readable stream.
    *
    * A stream can typically only be read once.
    */
-  getStream(): Readable;
+  abstract getStream(): Readable;
 
   /**
    * This object contains parsed query parameters.
    */
-  query: { [s: string]: string };
+  get query(): { [s: string]: string } {
+
+    return <any> url.parse(this.requestTarget, true).query;
+
+  }
 
   /**
    * Returns the value of the Content-Type header, with any additional
@@ -86,7 +108,14 @@ interface Request<T = any> {
    *
    * If there was no Content-Type header, an empty string will be returned.
    */
-  type: string;
+  get type(): string {
+
+    const type = this.headers.get('content-type');
+    if (!type) { return ''; }
+    return type.split(';')[0];
+
+  }
+
 
   /**
    * accepts is used for negotation the Content-Type with a client.
@@ -100,7 +129,18 @@ interface Request<T = any> {
    *
    * If no compatible types are found, this function returns null.
    */
-  accepts(...types: string[]): null | string;
+  accepts(...types: string[]): null | string {
+
+    const mockRequestObj = {
+      headers: {
+        accept: this.headers.get('Accept')
+      }
+    };
+
+    const result = <string|false> accepts(<http.IncomingMessage> mockRequestObj).type(types);
+    return result === false ? null : result;
+
+  }
 
   /**
    * This method will return true or false if a Request or Response has a
@@ -115,7 +155,11 @@ interface Request<T = any> {
    * * json
    * * application/*
    */
-  is(type: string): boolean;
+  is(type: string): boolean {
+
+    return is(this, type);
+
+  }
 
   /**
    * This method parses the contents of the Prefer header, as defined in
@@ -144,7 +188,20 @@ interface Request<T = any> {
   prefer(preference: 'return'): 'representation' | 'minimal' | false;
   prefer(preference: 'handling'): 'strict' | 'lenient' | false;
   prefer(preference: 'transclude'): string | false;
+  prefer(preference: string): string | boolean {
+
+    const prefer = parsePrefer(
+      this.headers.get('Prefer')
+    );
+
+    const val = prefer[preference];
+    if (val === undefined) {
+      return false;
+    }
+    return val;
+
+  }
 
 }
 
-export default Request;
+export default BaseRequest;
