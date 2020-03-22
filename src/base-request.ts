@@ -5,11 +5,18 @@ import url from 'url';
 import { is, parsePrefer } from './header-helpers';
 import { HeadersInterface } from './headers';
 import Request from './request';
+import { Headers } from './headers';
 
 /**
  * This interface represents an incoming server request.
  */
 export abstract class BaseRequest<T = any> implements Request<T> {
+
+  constructor(method: string, requestTarget: string) {
+    this.method = method;
+    this.requestTarget = requestTarget;
+    this.headers = new Headers();
+  }
 
   /**
    * List of HTTP Headers
@@ -72,7 +79,7 @@ export abstract class BaseRequest<T = any> implements Request<T> {
    * Contains a parsed, stored representation of the body. It's up to
    * middlewares to do the actual parsing.
    */
-  body: T;
+  body?: T;
 
   /**
    * This function returns the request body.

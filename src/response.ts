@@ -19,7 +19,7 @@ export interface Response<T = any> {
   /**
    * The response body.
    */
-  body: T;
+  body?: T;
 
   /**
    * Returns the value of the Content-Type header, with any additional

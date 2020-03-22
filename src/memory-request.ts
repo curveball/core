@@ -17,9 +17,7 @@ export class MemoryRequest<T> extends BaseRequest<T> {
 
   constructor(method: string, requestTarget: string, headers?: HeadersInterface | HeadersObject, body: any = null) {
 
-    super();
-    this.method = method;
-    this.requestTarget = requestTarget;
+    super(method, requestTarget);
     if (headers && (<HeadersInterface> headers).get !== undefined) {
       this.headers = <HeadersInterface> headers;
     } else {

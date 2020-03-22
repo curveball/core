@@ -13,7 +13,7 @@ import NodeHeaders from './response-headers';
 export class NodeResponse<T> extends BaseResponse<T> {
 
   private inner: NodeHttpResponse;
-  private bodyValue: T;
+  private bodyValue?: T;
   private explicitStatus: boolean;
 
   constructor(inner: NodeHttpResponse) {
@@ -62,7 +62,7 @@ export class NodeResponse<T> extends BaseResponse<T> {
   /**
    * Updates the response body.
    */
-  set body(value: T) {
+  set body(value: T | undefined) {
 
     if (!this.explicitStatus) {
       // If no status was set earlier, we set it to 200.
@@ -74,7 +74,7 @@ export class NodeResponse<T> extends BaseResponse<T> {
   /**
    * Returns the response body.
    */
-  get body(): T {
+  get body(): T | undefined {
 
     return this.bodyValue;
 

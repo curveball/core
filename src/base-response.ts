@@ -2,11 +2,19 @@ import { Middleware } from './application';
 import { is } from './header-helpers';
 import { HeadersInterface, HeadersObject } from './headers';
 import Response from './response';
+import { Headers } from './headers'; 
 
 /**
  * This interface represents an incoming server request.
  */
 export abstract class BaseResponse<T = any> implements Response<T> {
+
+  constructor() {
+
+    this.headers = new Headers();
+    this.status = 200;
+
+  }
 
   /**
    * List of HTTP Headers
@@ -17,11 +25,6 @@ export abstract class BaseResponse<T = any> implements Response<T> {
    * HTTP status code.
    */
   status: number;
-
-  /**
-   * The response body.
-   */
-  body: T;
 
   /**
    * Returns the value of the Content-Type header, with any additional
