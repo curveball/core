@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import { Headers } from '../src/headers';
-import { BaseRequest } from '../src/base-request';
+import { Request } from '../src/request';
 import { HeadersObject } from '../src/headers';
 import { Readable } from 'stream';
 
-class FakeRequest extends BaseRequest {
+class FakeRequest extends Request {
 
   constructor(method: string, path: string, headers: HeadersObject, body: any = '') {
 

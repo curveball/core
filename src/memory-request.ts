@@ -1,8 +1,8 @@
 import { Readable } from 'stream';
 import { Headers, HeadersInterface, HeadersObject } from './headers';
-import BaseRequest from './base-request';
+import Request from './request';
 
-export class MemoryRequest<T> extends BaseRequest<T> {
+export class MemoryRequest<T> extends Request<T> {
 
   /**
    * List of HTTP Headers
