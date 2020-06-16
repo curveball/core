@@ -16,7 +16,8 @@
     "package.json",
     "README.md",
     "dist",
-    "LICENSE"
+    "LICENSE",
+    "src"
   ],
   "keywords": [
     "http",
