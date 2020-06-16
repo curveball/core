@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.13.0 (2020-06-16) (ALPHA)
+---------------------------
+
+* Removed `Request` and `Response` interfaces again. They actually made it more
+  difficult to extend.
+
+
 0.12.0 (2020-03-22)
 -------------------
 
