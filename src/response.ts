@@ -26,7 +26,7 @@ export abstract class Response<T = any> {
   status: number;
 
   /**
-   * Response Body 
+   * Response Body
    */
   body: any;
 
