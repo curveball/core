@@ -1,10 +1,10 @@
 import rawBody from 'raw-body';
 import { Readable } from 'stream';
 import { Headers, HeadersInterface } from '../headers';
-import BaseRequest from '../base-request';
+import Request from '../request';
 import { NodeHttpRequest } from './http-utils';
 
-export class NodeRequest<T> extends BaseRequest<T> {
+export class NodeRequest<T> extends Request<T> {
 
   /**
    * Node.js Request object

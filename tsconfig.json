@@ -5,6 +5,7 @@
         "target": "es2019",
 
         "strict": true,
+        "noFallthroughCasesInSwitch": true,
         "experimentalDecorators": true,
 
         "moduleResolution": "node",

@@ -1,10 +1,19 @@
 import { Middleware } from './application';
+import { is } from './header-helpers';
 import { HeadersInterface, HeadersObject } from './headers';
+import { Headers } from './headers';
 
 /**
  * This interface represents an incoming server request.
  */
-export interface Response<T = any> {
+export abstract class Response<T = any> {
+
+  constructor() {
+
+    this.headers = new Headers();
+    this.status = 200;
+
+  }
 
   /**
    * List of HTTP Headers
@@ -17,9 +26,9 @@ export interface Response<T = any> {
   status: number;
 
   /**
-   * The response body.
+   * Response Body
    */
-  body?: T;
+  body: any;
 
   /**
    * Returns the value of the Content-Type header, with any additional
@@ -27,7 +36,22 @@ export interface Response<T = any> {
    *
    * If there was no Content-Type header, an empty string will be returned.
    */
-  type: string;
+  get type(): string {
+
+    const type = this.headers.get('content-type');
+    if (!type) { return ''; }
+    return type.split(';')[0];
+
+  }
+
+  /**
+   * Shortcut for setting the Content-Type header.
+   */
+  set type(value: string) {
+
+    this.headers.set('content-type', value);
+
+  }
 
   /**
    * Sends an informational response before the real response.
@@ -35,7 +59,11 @@ export interface Response<T = any> {
    * This can be used to for example send a `100 Continue` or `103 Early Hints`
    * response.
    */
-  sendInformational(status: number, headers?: HeadersInterface | HeadersObject): Promise<void>;
+  async sendInformational(status: number, headers?: HeadersInterface | HeadersObject): Promise<void> {
+
+    // No need to do anything
+
+  }
 
   /**
    * Sends a HTTP/2 push.
@@ -43,7 +71,11 @@ export interface Response<T = any> {
    * The passed middleware will be called with a new Context object specific
    * for pushes.
    */
-  push(callback: Middleware): Promise<void>;
+  async push(callback: Middleware): Promise<void> {
+
+    // Don't do anything
+
+  }
 
   /**
    * This method will return true or false if a Request or Response has a
@@ -58,10 +90,39 @@ export interface Response<T = any> {
    * * json
    * * application/*
    */
-  is(type: string): boolean;
+  is(type: string): boolean {
+
+    return is(this, type);
+
+  }
 
   redirect(address: string): void;
   redirect(status: number, address: string): void;
+  /**
+   * redirect redirects the response with an optionally provided HTTP status
+   * code in the first position to the location provided in address. If no status
+   * is provided, 303 See Other is used.
+   *
+   * @param {(string|number)} addrOrStatus if passed a string, the string will
+   * be used to set the Location header of the response object and the default status
+   * of 303 See Other will be used. If a number, an addressed must be passed in the second
+   * argument.
+   * @param {string} address If addrOrStatus is passed a status code, this value is
+   * set as the value of the response's Location header.
+   */
+  redirect(addrOrStatus: string|number, address = ''): void {
+    let status: number = 303;
+    let addr: string;
+    if (typeof(addrOrStatus) === 'number') {
+      status = addrOrStatus;
+      addr = address;
+    } else {
+      addr = addrOrStatus;
+    }
+
+    this.status = status;
+    this.headers.set('Location', addr);
+  }
 
 }
 
