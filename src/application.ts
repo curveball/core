@@ -2,7 +2,7 @@ import { isHttpError } from '@curveball/http-errors';
 import { EventEmitter } from 'events';
 import http from 'http';
 import BaseContext from './base-context';
-import Context from './context';
+import { Context } from './context';
 import { HeadersInterface, HeadersObject } from './headers';
 import MemoryRequest from './memory-request';
 import MemoryResponse from './memory-response';
@@ -17,6 +17,8 @@ import NodeRequest from './node/request';
 import NodeResponse from './node/response';
 import Request from './request';
 import Response from './response';
+import WebSocket from 'ws';
+import * as net from 'net';
 
 const pkg = require('../package.json');
 
@@ -70,7 +72,10 @@ function isMiddlewareObject(input: Middleware): input is MiddlewareObject {
 }
 
 export default class Application extends EventEmitter {
+
   middlewares: Middleware[] = [];
+
+  private wss: WebSocket.Server | undefined;
 
   /**
    * Add a middleware to the application.
@@ -90,12 +95,34 @@ export default class Application extends EventEmitter {
     await invokeMiddlewares(ctx, [...this.middlewares, NotFoundMw]);
   }
 
+
   /**
    * Starts a HTTP server on the specified port.
    */
   listen(port: number): http.Server {
     const server = http.createServer(this.callback());
+    server.on('upgrade', this.upgradeCallback.bind(this));
     return server.listen(port);
+  }
+
+  listenWs(port: number): WebSocket.Server {
+
+    const wss = new WebSocket.Server({
+      port
+    });
+    wss.on('connection', async(ws, req) => {
+
+      const request = new NodeRequest(req);
+      const response = new MemoryResponse();
+      const context = new BaseContext(request, response);
+
+      context.webSocket = ws;
+
+      await this.handle(context);
+
+    });
+    return wss;
+
   }
 
   /**
@@ -134,6 +161,21 @@ export default class Application extends EventEmitter {
         }
       }
     };
+  }
+
+  /**
+   * This callback can be used to tie to the Node.js Http(s/2) server 'upgrade' event'.
+   *
+   * It's used to facilitate incoming Websocket requests
+   */
+  upgradeCallback(request: http.IncomingMessage, socket: net.Socket, head: Buffer) {
+    if (!this.wss) {
+      // We don't have an existing Websocket server. Lets make one.
+      this.wss = new WebSocket.Server({ noServer: true });
+    }
+    this.wss.handleUpgrade(request, socket, head, (ws: WebSocket) => {
+      this.wss!.emit('connection', ws, request);
+    });
   }
 
   /**
@@ -194,4 +236,5 @@ export default class Application extends EventEmitter {
 
     return context;
   }
+
 }

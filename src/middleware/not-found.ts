@@ -1,5 +1,5 @@
 import { HttpProblem } from '@curveball/http-errors';
-import Context from '../context';
+import { Context } from '../context';
 
 /**
  * This middleware simply triggers a 'NotFound' error.
