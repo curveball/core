@@ -194,3 +194,4 @@ export default class BaseContext<ReqT = any, ResT = any> implements Context<ReqT
   webSocket?: WebSocket
 
 }
+
