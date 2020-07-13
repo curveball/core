@@ -2,8 +2,9 @@ import { Middleware } from './application';
 import { HeadersInterface, HeadersObject } from './headers';
 import Request from './request';
 import Response from './response';
+import WebSocket from 'ws';
 
-export default interface Context<ReqT = any, ResT = any> {
+export interface Context<ReqT = any, ResT = any> {
 
   /**
    * HTTP Request
@@ -101,5 +102,30 @@ export default interface Context<ReqT = any, ResT = any> {
 
   redirect(address: string): void;
   redirect(status: number, address: string): void;
+
+  /**
+   * WebSocket object.
+   *
+   * If the current request is a websocket request, this proprerty will be set
+   *
+   * @see https://github.com/websockets/ws#simple-server
+   */
+  webSocket?: WebSocket
+}
+
+/**
+ * WebSocket Context
+ *
+ * This is the Context that will be passed in case a WebSocket request was
+ * initiated.
+ */
+export interface WsContext extends Context<any, any> {
+
+  /**
+   * WebSocket object.
+   *
+   * @see https://github.com/websockets/ws#simple-server
+   */
+  webSocket: WebSocket
 
 }

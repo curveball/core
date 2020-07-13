@@ -1,8 +1,9 @@
 import { Middleware } from './application';
-import Context from './context';
+import { Context } from './context';
 import { HeadersInterface, HeadersObject } from './headers';
 import Request from './request';
 import Response from './response';
+import WebSocket from 'ws';
 
 /**
  * The Context object encapsulates a single HTTP request.
@@ -183,4 +184,14 @@ export default class BaseContext<ReqT = any, ResT = any> implements Context<ReqT
     }
   }
 
+  /**
+   * WebSocket object.
+   *
+   * If the current request is a websocket request, this proprerty will be set
+   *
+   * @see https://github.com/websockets/ws#simple-server
+   */
+  webSocket?: WebSocket
+
 }
+
