@@ -1,8 +1,15 @@
 Changelog
 =========
 
-0.13.0 (2020-06-16) (ALPHA)
----------------------------
+0.14.0 (2020-07-13)
+-------------------
+
+* Native Websocket support. If enabled, `ctx` will now have a `webSocket`
+  property.
+
+
+0.13.0 (2020-06-16)
+-------------------
 
 * Removed `Request` and `Response` interfaces again. They actually made it more
   difficult to extend.
