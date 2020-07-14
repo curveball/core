@@ -1,6 +1,6 @@
 import rawBody from 'raw-body';
 import { Readable } from 'stream';
-import { Headers, HeadersInterface } from '../headers';
+import { Headers } from '../headers';
 import Request from '../request';
 import { NodeHttpRequest } from './http-utils';
 

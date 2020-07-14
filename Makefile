@@ -13,14 +13,14 @@ test:
 	
 .PHONY:lint
 lint:
-	eslint 'src/**/*.ts' 'test/**/*.ts'
+	eslint --quiet 'src/**/*.ts' 'test/**/*.ts'
 
 .PHONY:lint-fix
 lint-fix: fix
 
 .PHONY:fix
 fix:
-	eslint 'src/**/*.ts' 'test/**/*.ts' --fix
+	eslint --quiet 'src/**/*.ts' 'test/**/*.ts' --fix
 
 .PHONY:watch
 watch:
