@@ -224,6 +224,7 @@ describe('Application', () => {
       await fetch('http://localhost:5555');
 
       expect(error).to.be.an.instanceof(Error);
+      // @ts-expect-error: TS complains about error possibly being undefined.
       expect(error.message).to.equal('hi');
 
       server.close();
