@@ -111,7 +111,9 @@ describe('BaseContext', () => {
       response
     );
 
-    context.push(() => {});
+    context.push(() => {
+      /* Intentionally Empty */
+    });
 
     expect(called).to.equal(true);
 
@@ -181,8 +183,8 @@ describe('BaseContext', () => {
       const response = new Response();
 
       const context = new BaseContext(
-          request,
-          response
+        request,
+        response
       );
 
       context.redirect(newTarget);
@@ -201,8 +203,8 @@ describe('BaseContext', () => {
       const response = new Response();
 
       const context = new BaseContext(
-          request,
-          response
+        request,
+        response
       );
 
       context.redirect(newStatus, newTarget);

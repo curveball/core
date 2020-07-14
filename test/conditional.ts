@@ -113,7 +113,7 @@ describe('conditionals', () => {
 
   describe('If-Modified-Since on a resource with no modification date', () => {
 
-    it(`should return 200`, () => {
+    it('should return 200', () => {
 
       const request = new MemoryRequest('GET', '/foo', { 'If-Modified-Since': 'Thu, 7 Mar 2019 14:49:00 GMT' });
       expect(conditionalCheck(request, null, null)).to.eql(200);
@@ -144,7 +144,7 @@ describe('conditionals', () => {
 
   describe('If-Unmodified-Since on a resource with no modification date', () => {
 
-    it(`should return 412`, () => {
+    it('should return 412', () => {
 
       const request = new MemoryRequest('GET', '/foo', { 'If-Unmodified-Since': 'Thu, 7 Mar 2019 14:49:00 GMT' });
       expect(conditionalCheck(request, null, null)).to.eql(412);

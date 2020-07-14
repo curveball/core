@@ -21,6 +21,7 @@ describe('Application', () => {
 
     expect(body).to.equal('hi');
     expect(response.headers.get('server')).to.equal(
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       'curveball/' + require('../package.json').version
     );
     expect(response.status).to.equal(200);
@@ -40,6 +41,7 @@ describe('Application', () => {
 
     expect(body).to.equal('hi');
     expect(response.headers.get('server')).to.equal(
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       'curveball/' + require('../package.json').version
     );
     expect(response.status).to.equal(200);
@@ -59,6 +61,7 @@ describe('Application', () => {
 
     expect(body.substring(0, 6)).to.equal('import');
     expect(response.headers.get('server')).to.equal(
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       'curveball/' + require('../package.json').version
     );
     expect(response.status).to.equal(200);
@@ -78,6 +81,7 @@ describe('Application', () => {
 
     expect(body).to.equal('{"foo":"bar"}');
     expect(response.headers.get('server')).to.equal(
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       'curveball/' + require('../package.json').version
     );
     expect(response.status).to.equal(200);
@@ -97,6 +101,7 @@ describe('Application', () => {
 
     expect(body).to.equal('');
     expect(response.headers.get('server')).to.equal(
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       'curveball/' + require('../package.json').version
     );
     expect(response.status).to.equal(200);
@@ -116,6 +121,7 @@ describe('Application', () => {
 
     expect(body).to.include(': 500');
     expect(response.headers.get('server')).to.equal(
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       'curveball/' + require('../package.json').version
     );
     expect(response.status).to.equal(500);
@@ -148,9 +154,9 @@ describe('Application', () => {
       ctx.response.body = 'hi';
       await next();
     }),
-      application.use((ctx, next) => {
-        ctx.response.headers.set('X-Foo', 'bar');
-      });
+    application.use((ctx, next) => {
+      ctx.response.headers.set('X-Foo', 'bar');
+    });
     const server = application.listen(5555);
     const response = await fetch('http://localhost:5555');
     const body = await response.text();
@@ -166,6 +172,7 @@ describe('Application', () => {
     const application = new Application();
 
     const myMw = {
+      // eslint-disable-next-line @typescript-eslint/ban-types
       [middlewareCall]: async (ctx: Context, next: Function) => {
         ctx.response.body = 'hi';
       }
@@ -217,7 +224,6 @@ describe('Application', () => {
       await fetch('http://localhost:5555');
 
       expect(error).to.be.an.instanceof(Error);
-      // @ts-ignore: TS complains about error possibly being undefined.
       expect(error.message).to.equal('hi');
 
       server.close();

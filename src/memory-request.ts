@@ -24,7 +24,7 @@ export class MemoryRequest<T> extends Request<T> {
       this.headers = new Headers(<HeadersObject> headers);
     }
     this.originalBody = body;
-    // @ts-ignore: Typescript doesn't like null here because it might be
+    // @ts-expect-error Typescript doesn't like null here because it might be
     // incompatible with T, but we're ignoring it as it's a good default.
     this.body = null;
 
@@ -35,7 +35,7 @@ export class MemoryRequest<T> extends Request<T> {
    *
    * We keep a private copy so we can maintain compatibility with rawBody.
    */
-  private originalBody: Buffer|string|object|null;
+  private originalBody: Buffer|string|Record<string, any>|null;
 
   /**
    * This function returns the request body.

@@ -25,7 +25,6 @@ async function getReq() {
 
   server.close();
 
-  // @ts-ignore
   return request;
 
 }
@@ -183,7 +182,6 @@ describe('NodeRequest', () => {
       });
 
       server.close();
-      // @ts-ignore
       expect(error.message).to.equal('request entity too large');
 
     });

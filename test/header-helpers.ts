@@ -44,7 +44,7 @@ describe('Header helpers', () => {
 
     }
 
-    it(`should return false when no Content-Type was set`, () => {
+    it('should return false when no Content-Type was set', () => {
 
       const request = new MemoryRequest('GET', '/');
       expect(is(request, 'json')).to.eql(false);

@@ -21,23 +21,22 @@ export function isHttp2Response(response: NodeHttpResponse): response is http2.H
 
 }
 
-export function sendBody(res: NodeHttpResponse | http2.Http2Stream, body: Buffer | object | string | null) {
+export function sendBody(res: NodeHttpResponse | http2.Http2Stream, body: Buffer | Record<string, any> | string | null) {
 
   if (body === null) {
-    // @ts-ignore - not sure why this line fails
     res.end();
     return;
   } else if (typeof body === 'string') {
-    // @ts-ignore - not sure why this line fails
+    // @ts-expect-error - not sure why this line fails
     res.end(body);
   } else if (body instanceof Buffer) {
-    // @ts-ignore - not sure why this line fails
+    // @ts-expect-error - not sure why this line fails
     res.end(body);
   } else if (body instanceof Readable) {
-    // @ts-ignore - not sure why this line fails
+    // @ts-expect-error - not sure why this line fails
     body.pipe(res);
   } else if (typeof body === 'object') {
-    // @ts-ignore - not sure why this line fails
+    // @ts-expect-error - not sure why this line fails
     res.end(JSON.stringify(body));
   } else {
     throw new TypeError('Unsupported type for body: ' + typeof body);

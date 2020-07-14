@@ -22,7 +22,7 @@ export class NodeResponse<T> implements Response<T> {
     // The default response status is 404.
     this.inner = inner;
 
-    // @ts-ignore: Typescript doesn't like null here because it might be
+    // @ts-expect-error: Typescript doesn't like null here because it might be
     // incompatible with T, but we're ignoring it as it's a good default.
     this.body = null;
     this.status = 404;
@@ -120,7 +120,7 @@ export class NodeResponse<T> implements Response<T> {
         }
       }
 
-      // @ts-ignore
+      // @ts-expect-error let's ignore this
       const writeRaw = promisify(this.inner._writeRaw.bind(this.inner));
       const message = `HTTP/1.1 ${status} ${http.STATUS_CODES[status]}\r\n${rawHeaders.join('')}\r\n`;
       await writeRaw(message, 'ascii');
