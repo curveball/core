@@ -35,7 +35,8 @@
       "semi": ["error", "always"],
       "no-unused-vars": ["error",
           {
-            "args": "none"
+            "args": "none",
+            "ignoreRestSiblings": true
           }
         ],
       "@typescript-eslint/no-inferrable-types": 0,
