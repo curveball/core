@@ -11,6 +11,7 @@ This web framework has the following goals:
 * Modern Ecmascript features.
 * Async/await-based middleware.
 * Native support for HTTP/2, including easy access to HTTP/2 Push.
+* Native, deeply integrated Websocket.
 * Native support for modern HTTP features, such as [`103 Early Hints`][http-103].
 * The ability to easily do internal sub-requests without having to do a real
   HTTP request.
@@ -54,7 +55,7 @@ Middlewares you might want
 
 * [Router](https://github.com/curveball/router).
 * [Body Parser](https://github.com/curveball/bodyparser).
-* [Controller](https://github.com/curveball/controller).
+* [Controller][controller].
 * [Access Logs](https://github.com/curveball/accesslog).
 * [Sessions](https://github.com/curveball/session).
 * [Generating application/problem+json responses](https://github.com/curveball/problem).
@@ -196,6 +197,49 @@ app.use(async (ctx: Context, next: Middleware) => {
 });
 ```
 
+Websocket
+---------
+
+To get Websocket up and running, just run:
+
+```typescript
+app.listenWs(port);
+```
+
+This will start a websocket server on the specified port. Any incoming
+Websocket connections will now *just work*.
+
+If a Websocket connection was started, the `Context` object will now have a
+`webSocket` property. This property is simply an instance of [Websocket][ws]
+from the [ws][ws] NPM package.
+
+Example usage:
+
+```typescript
+import { UpgradeRequired } from '@curveball/http-errors';
+
+app.use( ctx => {
+  if (!ctx.webSocket) {
+    throw new UpgradeRequired('This endpoint only supports WebSocket');
+  }
+
+  ctx.webSocket.send('Hello');
+  ctx.webSocket.on('message', (msg) => {
+    console.log('Received %s', msg);
+  });
+
+});
+```
+
+If you use typescript, install the `@types/ws` package to get all the correct
+typings:
+
+    npm i -D @types/ws
+
+The [Controller][controller] package also has built-in features to make this
+even easier.
+
+
 API
 ---
 
@@ -210,6 +254,7 @@ It has the following methods
 * `handle(c: Context)` - Take a Context object, and run all middlewares in
   order on it.
 * `listen(port: number)` - Run a HTTP server on the specified port.
+* `listenWs(port: number)` - Start a websocket server on the specified port.
 * `callback()` - The result of this function can be used as a requestListener
   for node.js `http`, `https` and `http2` packages.
 * `subRequest(method: string, path:string, headers: object, body: any)` - Run
@@ -331,3 +376,5 @@ way to indicate that all all conditions have passed.
 [http-100]: https://tools.ietf.org/html/rfc7231#section-6.2.1 "RFC7231: 100 Continue"
 [http-102]: https://tools.ietf.org/html/rfc2518#section-10.1 "RFC2518: 102 Processing"
 [http-103]: https://tools.ietf.org/html/rfc8297 "RFC8297: 103 Early Hints"
+[ws]: https://github.com/websockets/ws
+[controller]: https://github.com/curveball/controller
