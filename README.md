@@ -55,7 +55,7 @@ Middlewares you might want
 
 * [Router](https://github.com/curveball/router).
 * [Body Parser](https://github.com/curveball/bodyparser).
-* [Controller](https://github.com/curveball/controller).
+* [Controller][controller].
 * [Access Logs](https://github.com/curveball/accesslog).
 * [Sessions](https://github.com/curveball/session).
 * [Generating application/problem+json responses](https://github.com/curveball/problem).
@@ -236,6 +236,9 @@ typings:
 
     npm i -D @types/ws
 
+The [Controller][controller] package also has built-in features to make this
+even easier.
+
 
 API
 ---
@@ -374,3 +377,4 @@ way to indicate that all all conditions have passed.
 [http-102]: https://tools.ietf.org/html/rfc2518#section-10.1 "RFC2518: 102 Processing"
 [http-103]: https://tools.ietf.org/html/rfc8297 "RFC8297: 103 Early Hints"
 [ws]: https://github.com/websockets/ws
+[controller]: https://github.com/curveball/controller
