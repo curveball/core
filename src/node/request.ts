@@ -1,6 +1,6 @@
 import rawBody from 'raw-body';
 import { Readable } from 'stream';
-import { Headers, HeadersInterface } from '../headers';
+import { Headers } from '../headers';
 import Request from '../request';
 import { NodeHttpRequest } from './http-utils';
 
@@ -15,7 +15,7 @@ export class NodeRequest<T> extends Request<T> {
 
     super(inner.method!, inner.url!);
     this.inner = inner;
-    // @ts-ignore ignoring that headers might be undefined
+    // @ts-expect-error ignoring that headers might be undefined
     this.headers = new Headers(this.inner.headers);
 
   }

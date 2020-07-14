@@ -74,7 +74,7 @@ export default class NodeHeaders implements HeadersInterface {
    */
   getAll(): HeadersObject {
 
-    // @ts-ignore typescript doesn't like that the getHeaders function can
+    // @ts-expect-error typescript doesn't like that the getHeaders function can
     // have undefined values, so we're just ignoring that problem.
     return this.inner.getHeaders();
 

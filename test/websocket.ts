@@ -3,7 +3,7 @@ import WebSocket from 'ws';
 import { UpgradeRequired } from '@curveball/http-errors';
 import { expect } from 'chai';
 
-describe("Websocket support", () => {
+describe('Websocket support', () => {
 
   it('should start a websocket server', () => {
 

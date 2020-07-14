@@ -297,6 +297,7 @@ describe('NodeResponse http/2 push', () => {
     try {
 
       await response.push( pushCtx => {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
       });
 
     } catch (e) {
@@ -384,7 +385,8 @@ describe('push() function', () => {
           this.emit('error', err);
 
         }
-
+        
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         end() {
 
         }

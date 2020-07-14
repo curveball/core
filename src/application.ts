@@ -20,6 +20,7 @@ import Response from './response';
 import WebSocket from 'ws';
 import * as net from 'net';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const pkg = require('../package.json');
 
 /**
@@ -137,11 +138,9 @@ export default class Application extends EventEmitter {
       try {
         const ctx = this.buildContextFromHttp(req, res);
         await this.handle(ctx);
-
-        // @ts-ignore - not sure why this line fails
         sendBody(res, ctx.response.body);
       } catch (err) {
-        // tslint:disable:no-console
+        // eslint-disable-next-line no-console
         console.error(err);
 
         if (isHttpError(err)) {
@@ -151,7 +150,7 @@ export default class Application extends EventEmitter {
         }
         res.setHeader('Content-Type', 'text/plain');
         res.end(
-          // @ts-ignore
+          // @ts-expect-error string error let's ignore 
           'Uncaught exception. No middleware was defined to handle it. We got the following HTTP status: ' +
           res.statusCode
         );
@@ -208,7 +207,7 @@ export default class Application extends EventEmitter {
     try {
       await this.handle(context);
     } catch (err) {
-      // tslint:disable:no-console
+    // eslint-disable-next-line no-console
       console.error(err);
       if (this.listenerCount('error')) {
         this.emit('error', err);

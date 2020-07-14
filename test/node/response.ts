@@ -90,7 +90,7 @@ describe('NodeResponse', () => {
     it('should send a 100 Status when called via HTTP/1', async () => {
 
       const res = getRes();
-      // @ts-ignore - Ignoring 'private' accessor.
+      // @ts-expect-error - Ignoring 'private' accessor.
       const mock = sinon.mock(res.inner);
 
       const writeRawMock = mock.expects('_writeRaw');
@@ -109,7 +109,7 @@ describe('NodeResponse', () => {
     it('should send a 103 Status when called via HTTP/1', async () => {
 
       const res = getRes();
-      // @ts-ignore - Ignoring 'private' accessor.
+      // @ts-expect-error - Ignoring 'private' accessor.
       const mock = sinon.mock(res.inner);
 
       const writeRawMock = mock.expects('_writeRaw');
@@ -132,7 +132,7 @@ describe('NodeResponse', () => {
     it('should also correctly send the 103 status when headers are passed as a HeadersInterface', async () => {
 
       const res = getRes();
-      // @ts-ignore - Ignoring 'private' accessor.
+      // @ts-expect-error - Ignoring 'private' accessor.
       const mock = sinon.mock(res.inner);
 
       const writeRawMock = mock.expects('_writeRaw');
@@ -197,8 +197,8 @@ describe('NodeResponse', () => {
 
 describe('NodeResponseHeaders', () => {
 
-    const res = getRes();
-    headersInterfaceTests(res.headers);
+  const res = getRes();
+  headersInterfaceTests(res.headers);
 
 });
 
