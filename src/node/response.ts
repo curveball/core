@@ -219,7 +219,8 @@ export class NodeResponse<T> implements Response<T> {
    * set as the value of the response's Location header.
    */
   redirect(addrOrStatus: string|number, address = ''): void {
-    let status: number = 303;
+    let status: number;
+    status = 303;
     let addr: string;
     if (typeof(addrOrStatus) === 'number') {
       status = addrOrStatus;
