@@ -47,7 +47,7 @@ describe('Application', () => {
     expect(response.status).to.equal(200);
 
     server.close();
-  })
+  });
 
   it('should work with Buffer responses', async () => {
     const application = new Application();
