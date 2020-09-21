@@ -29,6 +29,26 @@ describe('Application', () => {
     server.close();
   });
 
+  it('should accept hostname', async () => {
+    const application = new Application();
+    application.use((ctx, next) => {
+      ctx.response.body = 'hi';
+    });
+    const server = application.listen(5555, '0.0.0.0');
+
+    const response = await fetch('http://0.0.0.0:5555');
+    const body = await response.text();
+
+    expect(body).to.equal('hi');
+    expect(response.headers.get('server')).to.equal(
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      'curveball/' + require('../package.json').version
+    );
+    expect(response.status).to.equal(200);
+
+    server.close();
+  })
+
   it('should work with Buffer responses', async () => {
     const application = new Application();
     application.use((ctx, next) => {
