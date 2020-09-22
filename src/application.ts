@@ -100,16 +100,17 @@ export default class Application extends EventEmitter {
   /**
    * Starts a HTTP server on the specified port.
    */
-  listen(port: number, hostname?: string): http.Server {
+  listen(port: number, host?: string): http.Server {
     const server = http.createServer(this.callback());
     server.on('upgrade', this.upgradeCallback.bind(this));
-    return server.listen(port, hostname);
+    return server.listen(port, host);
   }
 
-  listenWs(port: number): WebSocket.Server {
+  listenWs(port: number, host?: string): WebSocket.Server {
 
     const wss = new WebSocket.Server({
-      port
+      port,
+      host
     });
     wss.on('connection', async(ws, req) => {
 
