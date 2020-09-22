@@ -58,6 +58,46 @@ describe('Headers class', () => {
 
   });
 
+  describe('getMany', () => {
+
+    it('should return an empty array when a header was not set', () => {
+
+      const headers = new Headers({
+        'Content-Type': 'text/html',
+      });
+      expect(headers.getMany('foo')).to.eql([]);
+
+    });
+
+    it('should return an array with a string for string headers', () => {
+
+      const headers = new Headers({
+        'Content-Type': 'text/html',
+      });
+      expect(headers.getMany('Content-Type')).to.eql(['text/html']);
+
+    });
+
+    it('should return an array with a string for number headers', () => {
+
+      const headers = new Headers({
+        'Content-Length': 5,
+      });
+      expect(headers.getMany('Content-Length')).to.eql(['5']);
+
+    });
+
+    it('should return an array with multiple headers of the same name', () => {
+
+      const headers = new Headers({
+        Accept: ['text/html', 'text/plain'],
+      });
+      expect(headers.getMany('Accept')).to.eql(['text/html', 'text/plain']);
+
+    });
+
+  });
+
   headersInterfaceTests(new Headers());
 
 });
