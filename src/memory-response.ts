@@ -8,7 +8,7 @@ export class MemoryResponse<T> extends Response<T> {
     super();
     this.headers = new Headers();
     this.status = 200;
-    this.body = null;
+    (this.body as any) = null;
 
   }
 
