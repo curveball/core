@@ -20,6 +20,14 @@ export interface HeadersInterface {
   get(name: string): string|null;
 
   /**
+   * Gets all values of a HTTP header
+   * 
+   * This function will return an array with 0 or more values of a header. 
+   * 
+   */
+  getMany(name: string): string[];
+
+  /**
    * Returns true or false depending on if a HTTP header exists.
    */
   has(name: string): boolean;
@@ -102,6 +110,27 @@ export class Headers implements HeadersInterface {
       return value.toString();
     }
 
+  }
+
+  /**
+   * Gets all values of a HTTP header
+   * 
+   * This function will return an array with 0 or more values of a header. 
+   * 
+   */
+  getMany(name: string): string[] {
+
+    const tuple = this.store[name.toLowerCase()];
+    if (tuple === undefined) {
+      return [];
+    }
+    const value = tuple[1];
+
+    if (Array.isArray(value)) {
+      return value;
+    } else {
+      return [value.toString()];
+    }
   }
 
   /**

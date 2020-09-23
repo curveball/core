@@ -49,6 +49,24 @@ export default class NodeHeaders implements HeadersInterface {
   }
 
   /**
+   * Gets all values of a HTTP header
+   * 
+   * This function will return an array with 0 or more values of a header. 
+   * 
+   */
+  getMany(name: string): string[] {
+
+    const value = this.inner.getHeader(name);
+
+    if (value === undefined || value === null) {
+      return [];
+    } else if (Array.isArray(value)) {
+      return value;
+    } else {
+      return [value.toString()];
+    }
+  }
+  /**
    * Returns true or false depending on if a HTTP header exists.
    */
   has(name: string): boolean {
