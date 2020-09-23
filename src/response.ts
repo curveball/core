@@ -28,7 +28,7 @@ export abstract class Response<T = any> {
   /**
    * Response Body
    */
-  body: any;
+  body!: T;
 
   /**
    * Returns the value of the Content-Type header, with any additional

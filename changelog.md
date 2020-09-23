@@ -1,6 +1,15 @@
 Changelog
 =========
 
+0.14.3 (2020-09-23)
+-------------------
+
+* #155 - `listen` and `listenWs` now both have a second `host` argument to
+ bind to a specific interface. (@Nicholaiii)
+* #145 - `request.headers` and `response.headers` now have a `getMany()`
+ function to get a list of header values for a given header name. (@Nicholaiii)
+
+
 0.14.2 (2020-07-14)
 -------------------
 

@@ -14,7 +14,7 @@ import { is } from './../header-helpers';
 export class NodeResponse<T> implements Response<T> {
 
   private inner: NodeHttpResponse;
-  private bodyValue?: T;
+  private bodyValue!: T;
   private explicitStatus: boolean;
 
   constructor(inner: NodeHttpResponse) {
@@ -22,7 +22,7 @@ export class NodeResponse<T> implements Response<T> {
     // The default response status is 404.
     this.inner = inner;
 
-    // @ts-expect-error: Typescript doesn't like null here because it might be
+    // @ts-expect-error Typescript doesn't like null here because it might be
     // incompatible with T, but we're ignoring it as it's a good default.
     this.body = null;
     this.status = 404;
@@ -61,7 +61,7 @@ export class NodeResponse<T> implements Response<T> {
   /**
    * Updates the response body.
    */
-  set body(value: T | undefined) {
+  set body(value: T) {
 
     if (!this.explicitStatus) {
       // If no status was set earlier, we set it to 200.
@@ -73,7 +73,7 @@ export class NodeResponse<T> implements Response<T> {
   /**
    * Returns the response body.
    */
-  get body(): T | undefined {
+  get body(): T {
 
     return this.bodyValue;
 
