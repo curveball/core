@@ -4,7 +4,7 @@ import Request from './request';
 import Response from './response';
 import WebSocket from 'ws';
 
-export interface Context<ReqT = any, ResT = any> {
+export interface Context<ReqT = unknown, ResT = any> {
 
   /**
    * HTTP Request
@@ -119,7 +119,7 @@ export interface Context<ReqT = any, ResT = any> {
  * This is the Context that will be passed in case a WebSocket request was
  * initiated.
  */
-export interface WsContext extends Context<any, any> {
+export interface WsContext extends Context<unknown, any> {
 
   /**
    * WebSocket object.
