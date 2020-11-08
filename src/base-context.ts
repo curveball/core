@@ -35,7 +35,7 @@ export default class BaseContext<ReqT = any, ResT = any> implements Context<ReqT
     [s: string]: any
   };
 
-  constructor(req: Request, res: Response) {
+  constructor(req: Request<ReqT>, res: Response<ResT>) {
 
     this.request = req;
     this.response = res;
