@@ -21,9 +21,9 @@ export interface HeadersInterface {
 
   /**
    * Gets all values of a HTTP header
-   * 
-   * This function will return an array with 0 or more values of a header. 
-   * 
+   *
+   * This function will return an array with 0 or more values of a header.
+   *
    */
   getMany(name: string): string[];
 
@@ -114,9 +114,9 @@ export class Headers implements HeadersInterface {
 
   /**
    * Gets all values of a HTTP header
-   * 
-   * This function will return an array with 0 or more values of a header. 
-   * 
+   *
+   * This function will return an array with 0 or more values of a header.
+   *
    */
   getMany(name: string): string[] {
 

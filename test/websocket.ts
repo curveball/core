@@ -19,7 +19,7 @@ describe('Websocket support', () => {
 
     });
     const wss = app.listenWs(57001);
-   
+
     return new Promise(res => {
       const ws = new WebSocket('ws://localhost:57001');
       ws.on('message', (msg) => {
@@ -50,7 +50,7 @@ describe('Websocket support', () => {
 
     });
     const wss = app.listenWs(57001, '0.0.0.0');
-   
+
     return new Promise(res => {
       const ws = new WebSocket('ws://0.0.0.0:57001');
       ws.on('message', (msg) => {
