@@ -1,3 +1,5 @@
+/* eslint no-console:0 */
+
 import { expect } from 'chai';
 import Emitter from 'events';
 import http2 from 'http2';
@@ -385,7 +387,7 @@ describe('push() function', () => {
           this.emit('error', err);
 
         }
-        
+
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         end() {
 

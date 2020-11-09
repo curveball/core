@@ -15,7 +15,7 @@ class FakeRequest extends Request {
   }
 
   async rawBody(encoding?: string, limit?: string): Promise<string>;
-  async rawBody(encoding?: undefined, limit?: string): Promise<Buffer>; 
+  async rawBody(encoding?: undefined, limit?: string): Promise<Buffer>;
   async rawBody(encoding?: undefined, limit?: string): Promise<Buffer | string> {
 
     if (encoding) {
