@@ -1,6 +1,6 @@
 import { isHttpError } from '@curveball/http-errors';
 import { EventEmitter } from 'events';
-import http from 'http';
+import * as http from 'http';
 import BaseContext from './base-context';
 import { Context } from './context';
 import { HeadersInterface, HeadersObject } from './headers';
@@ -17,7 +17,7 @@ import NodeRequest from './node/request';
 import NodeResponse from './node/response';
 import Request from './request';
 import Response from './response';
-import WebSocket from 'ws';
+import * as WebSocket from 'ws';
 import * as net from 'net';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -151,7 +151,6 @@ export default class Application extends EventEmitter {
         }
         res.setHeader('Content-Type', 'text/plain');
         res.end(
-          // @ts-expect-error string error let's ignore
           'Uncaught exception. No middleware was defined to handle it. We got the following HTTP status: ' +
           res.statusCode
         );

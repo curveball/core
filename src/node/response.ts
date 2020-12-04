@@ -1,4 +1,4 @@
-import http from 'http';
+import * as http from 'http';
 import { promisify } from 'util';
 import { invokeMiddlewares, Middleware } from '../application';
 import BaseContext from '../base-context';

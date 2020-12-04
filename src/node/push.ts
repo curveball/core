@@ -1,4 +1,4 @@
-import http2 from 'http2';
+import * as http2 from 'http2';
 import { Context } from '../context';
 import { sendBody } from './http-utils';
 

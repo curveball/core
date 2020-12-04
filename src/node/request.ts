@@ -1,4 +1,4 @@
-import rawBody from 'raw-body';
+import * as rawBody from 'raw-body';
 import { Readable } from 'stream';
 import { Headers } from '../headers';
 import Request from '../request';

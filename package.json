@@ -37,7 +37,7 @@
     "@types/chai": "^4.2.14",
     "@types/co-body": "^5.1.0",
     "@types/mocha": "^8.0.4",
-    "@types/node": "^10.17.48",
+    "@types/node": "^12.19.8",
     "@types/node-fetch": "^2.5.7",
     "@types/sinon": "^9.0.9",
     "@typescript-eslint/eslint-plugin": "^4.9.0",

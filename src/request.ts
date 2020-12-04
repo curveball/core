@@ -1,7 +1,7 @@
-import accepts from 'accepts';
-import http from 'http';
+import * as accepts from 'accepts';
+import * as http from 'http';
 import { Readable } from 'stream';
-import url from 'url';
+import * as url from 'url';
 import { is, parsePrefer } from './header-helpers';
 import { HeadersInterface } from './headers';
 import { Headers } from './headers';
