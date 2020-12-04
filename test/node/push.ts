@@ -1,8 +1,8 @@
 /* eslint no-console:0 */
 
 import { expect } from 'chai';
-import Emitter from 'events';
-import http2 from 'http2';
+import { EventEmitter } from 'events';
+import * as http2 from 'http2';
 import fetch from 'node-fetch';
 import { Application, BaseContext, MemoryRequest, MemoryResponse } from '../../src';
 import push from '../../src/node/push';
@@ -256,7 +256,7 @@ describe('NodeResponse http/2 push', () => {
     let data = '';
     let responseHeaders;
 
-    await new Promise((res, rej) => {
+    await new Promise<void>((res, rej) => {
 
 
       client.on('stream', (pushedStream, requestHeaders) => {
@@ -377,7 +377,7 @@ describe('push() function', () => {
 
     it('should not error', async () => {
 
-      class FakeStream extends Emitter {
+      class FakeStream extends EventEmitter {
 
         rstCode?: number;
         respond() {
@@ -418,7 +418,7 @@ describe('push() function', () => {
 
     it('should bubble', async () => {
 
-      class FakeStream extends Emitter {
+      class FakeStream extends EventEmitter {
 
         respond() {
 
