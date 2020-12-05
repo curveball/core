@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.15.0 (2020-12-05)
+-------------------
+
+* Curveball now required Node 12.
+* `esModuleInterop` flag is no longer required to use curveball.
+
+
 0.14.3 (2020-09-23)
 -------------------
 
