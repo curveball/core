@@ -3,7 +3,7 @@ import { Context } from './context';
 import { HeadersInterface, HeadersObject } from './headers';
 import Request from './request';
 import Response from './response';
-import WebSocket from 'ws';
+import * as WebSocket from 'ws';
 
 /**
  * The Context object encapsulates a single HTTP request.

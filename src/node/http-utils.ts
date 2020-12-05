@@ -1,6 +1,6 @@
-import http from 'http';
-import http2 from 'http2';
-import Readable from 'stream';
+import * as http from 'http';
+import * as http2 from 'http2';
+import { Readable } from 'stream';
 
 /**
  * A node.js Http request
@@ -27,16 +27,13 @@ export function sendBody(res: NodeHttpResponse | http2.Http2Stream, body: Buffer
     res.end();
     return;
   } else if (typeof body === 'string') {
-    // @ts-expect-error - not sure why this line fails
     res.end(body);
   } else if (body instanceof Buffer) {
-    // @ts-expect-error - not sure why this line fails
     res.end(body);
   } else if (body instanceof Readable) {
     // @ts-expect-error - not sure why this line fails
     body.pipe(res);
   } else if (typeof body === 'object') {
-    // @ts-expect-error - not sure why this line fails
     res.end(JSON.stringify(body));
   } else {
     throw new TypeError('Unsupported type for body: ' + typeof body);

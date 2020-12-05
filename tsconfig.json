@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "esModuleInterop": true,
         "target": "es2019",
 
         "strict": true,
@@ -19,12 +18,7 @@
             ]
         },
         "lib": [
-          "DOM",
-          "ES5",
-          "ES2015",
-          "ES2016",
-          "ES2017",
-          "ESNext.bigint"
+          "ES2019"
         ],
         "declaration": true
     },

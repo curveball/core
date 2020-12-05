@@ -2,7 +2,7 @@ import { Middleware } from './application';
 import { HeadersInterface, HeadersObject } from './headers';
 import Request from './request';
 import Response from './response';
-import WebSocket from 'ws';
+import * as WebSocket from 'ws';
 
 export interface Context<ReqT = any, ResT = any> {
 
