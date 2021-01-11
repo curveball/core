@@ -1,6 +1,15 @@
 Changelog
 =========
 
+0.16.0-beta.0 (2021-01-10)
+--------------------------
+
+* BC Break: `Request.body` is now typed as `unknown` instead of `any`. This
+  forces users to either validate the body, or cast to `any`.
+* It's now possible to write directly to response streams by setting
+  response.body to a callback.
+
+
 0.15.0 (2020-12-05)
 -------------------
 
