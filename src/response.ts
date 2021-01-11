@@ -2,11 +2,21 @@ import { Middleware } from './application';
 import { is } from './header-helpers';
 import { HeadersInterface, HeadersObject } from './headers';
 import { Headers } from './headers';
+import { Readable, Writable } from 'stream';
+
+export type Body =
+  Buffer |
+  Record<string, any> |
+  string |
+  null |
+  Readable |
+  ((writeable: Writable) => void);
+
 
 /**
  * This interface represents an incoming server request.
  */
-export abstract class Response<T = any> {
+export abstract class Response<T = Body> {
 
   constructor() {
 

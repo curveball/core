@@ -6,6 +6,8 @@ import { is, parsePrefer } from './header-helpers';
 import { HeadersInterface } from './headers';
 import { Headers } from './headers';
 
+export type Encoding = 'utf-8' | 'ascii' | 'hex';
+
 /**
  * This interface represents an incoming server request.
  */
@@ -89,7 +91,7 @@ export abstract class Request<T = unknown> {
    * You can only call this function once. Most likely you'll want a single
    * middleware that calls this function and then sets `body`.
    */
-  abstract rawBody(encoding: string, limit?: string): Promise<string>;
+  abstract rawBody(encoding: Encoding, limit?: string): Promise<string>;
   abstract rawBody(encoding?: undefined, limit?: string): Promise<Buffer>;
 
   /**

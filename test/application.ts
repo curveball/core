@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import fetch from 'node-fetch';
 import { Application, middlewareCall, MemoryRequest, Context } from '../src';
 import * as fs from 'fs';
+import { Writable } from 'stream';
 
 describe('Application', () => {
   it('should instantiate', () => {
@@ -80,6 +81,29 @@ describe('Application', () => {
     const body = await response.text();
 
     expect(body.substring(0, 6)).to.equal('import');
+    expect(response.headers.get('server')).to.equal(
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      'curveball/' + require('../package.json').version
+    );
+    expect(response.status).to.equal(200);
+
+    server.close();
+  });
+
+  it('should work with a callback resonse body', async () => {
+    const application = new Application();
+    application.use((ctx, next) => {
+      ctx.response.body = (stream: Writable) => {
+        stream.write('hi');
+        stream.end();
+      };
+    });
+    const server = application.listen(5555);
+
+    const response = await fetch('http://localhost:5555');
+    const body = await response.text();
+
+    expect(body).to.equal('hi');
     expect(response.headers.get('server')).to.equal(
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       'curveball/' + require('../package.json').version

@@ -1,7 +1,7 @@
 import { Headers } from './headers';
-import Response from './response';
+import { Response, Body } from './response';
 
-export class MemoryResponse<T> extends Response<T> {
+export class MemoryResponse<T = Body> extends Response<T> {
 
   constructor() {
 
