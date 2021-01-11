@@ -11,7 +11,7 @@ export type Encoding = 'utf-8' | 'ascii' | 'hex';
 /**
  * This interface represents an incoming server request.
  */
-export abstract class Request<T = any> {
+export abstract class Request<T = unknown> {
 
   constructor(method: string, requestTarget: string) {
     this.method = method;
