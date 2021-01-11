@@ -1,6 +1,6 @@
 import { Readable } from 'stream';
 import { Headers, HeadersInterface, HeadersObject } from './headers';
-import Request from './request';
+import { Request, Encoding } from './request';
 
 export class MemoryRequest<T> extends Request<T> {
 
@@ -50,9 +50,9 @@ export class MemoryRequest<T> extends Request<T> {
    * You can only call this function once. Most likely you'll want a single
    * middleware that calls this function and then sets `body`.
    */
-  rawBody(encoding?: string, limit?: string): Promise<string>;
+  rawBody(encoding?: Encoding, limit?: string): Promise<string>;
   rawBody(encoding?: undefined, limit?: string): Promise<Buffer>;
-  async rawBody(encoding?: undefined|string, limit?: string): Promise<Buffer|string> {
+  async rawBody(encoding?: undefined|Encoding, limit?: string): Promise<Buffer|string> {
 
     return this.getBody(encoding);
 
@@ -72,7 +72,7 @@ export class MemoryRequest<T> extends Request<T> {
 
   }
 
-  private getBody(encoding?: string) {
+  private getBody(encoding?: Encoding) {
 
     if (!this.originalBody) {
       // Memoizing the null case

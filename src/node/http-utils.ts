@@ -1,6 +1,7 @@
 import * as http from 'http';
 import * as http2 from 'http2';
-import { Readable } from 'stream';
+import { Readable, Writable } from 'stream';
+import { Body } from '../response';
 
 /**
  * A node.js Http request
@@ -21,7 +22,7 @@ export function isHttp2Response(response: NodeHttpResponse): response is http2.H
 
 }
 
-export function sendBody(res: NodeHttpResponse | http2.Http2Stream, body: Buffer | Record<string, any> | string | null) {
+export function sendBody(res: NodeHttpResponse | http2.Http2Stream, body: Body): void {
 
   if (body === null) {
     res.end();
@@ -31,10 +32,11 @@ export function sendBody(res: NodeHttpResponse | http2.Http2Stream, body: Buffer
   } else if (body instanceof Buffer) {
     res.end(body);
   } else if (body instanceof Readable) {
-    // @ts-expect-error - not sure why this line fails
-    body.pipe(res);
+    body.pipe(res as Writable);
   } else if (typeof body === 'object') {
     res.end(JSON.stringify(body));
+  } else if (typeof body === 'function') {
+    body(res as Writable);
   } else {
     throw new TypeError('Unsupported type for body: ' + typeof body);
   }
