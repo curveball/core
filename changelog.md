@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.16.1 (2021-02-01)
+-------------------
+
+* Request.body is no longer optional, which will help with typing. It can
+  still be explicitly set to `null`.
+
+
 0.16.0 (2021-01-30)
 -------------------
 
