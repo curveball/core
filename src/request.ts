@@ -80,7 +80,7 @@ export abstract class Request<T = unknown> {
    * Contains a parsed, stored representation of the body. It's up to
    * middlewares to do the actual parsing.
    */
-  body?: T;
+  body!: T;
 
   /**
    * This function returns the request body.
