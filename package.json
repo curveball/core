@@ -58,7 +58,7 @@
     ]
   },
   "dependencies": {
-    "@curveball/http-errors": "^0.3.0",
+    "@curveball/http-errors": "^0.4.0",
     "@types/ws": "^7.2.9",
     "accepts": "^1.3.7",
     "raw-body": "^2.4.1",
