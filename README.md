@@ -79,7 +79,7 @@ Many Node.js HTTP frameworks don't easily allow doing internal sub-requests.
 Instead, they recommend doing a real HTTP request. These requests are more
 expensive though, as it has to go through the network stack.
 
-Curveball allows you do do an internal request with 'mock' request and
+Curveball allows you to do an internal request with 'mock' request and
 response objects.
 
 Suggested use-cases:
