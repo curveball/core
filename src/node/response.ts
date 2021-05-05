@@ -90,10 +90,10 @@ export class NodeResponse<T> implements Response<T> {
     let outHeaders: HeadersObject = {};
 
     if (typeof headers !== 'undefined') {
-      if ((<HeadersInterface> headers).getAll !== undefined) {
-        outHeaders = (<HeadersInterface> headers).getAll();
+      if (headers.getAll !== undefined) {
+        outHeaders = (headers as HeadersInterface).getAll();
       } else {
-        outHeaders = <HeadersObject> headers;
+        outHeaders = headers as HeadersObject;
       }
     }
 

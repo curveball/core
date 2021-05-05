@@ -41,7 +41,7 @@ type MiddlewareFunction = (
 ) => Promise<void> | void;
 
 type MiddlewareObject = {
-  [middlewareCall]: MiddlewareFunction
+  [middlewareCall]: MiddlewareFunction;
 };
 
 export type Middleware = MiddlewareFunction | MiddlewareObject;
@@ -58,7 +58,7 @@ export async function invokeMiddlewares(
   const mw: Middleware = fns[0];
   let mwFunc: MiddlewareFunction;
   if (isMiddlewareObject(mw)) {
-    mwFunc = (<MiddlewareObject> mw)[middlewareCall].bind(fns[0]);
+    mwFunc = mw[middlewareCall].bind(fns[0]);
   } else {
     mwFunc = mw;
   }
@@ -69,7 +69,7 @@ export async function invokeMiddlewares(
 }
 
 function isMiddlewareObject(input: Middleware): input is MiddlewareObject {
-  return ((<MiddlewareObject> input)[middlewareCall] !== undefined);
+  return (input as MiddlewareObject)[middlewareCall] !== undefined;
 }
 
 export default class Application extends EventEmitter {
@@ -197,9 +197,9 @@ export default class Application extends EventEmitter {
     let request: Request;
 
     if (typeof arg1 === 'string') {
-      request = new MemoryRequest(<string> arg1, path!, headers, body);
+      request = new MemoryRequest(arg1, path!, headers, body);
     } else {
-      request = <Request> arg1;
+      request = arg1;
     }
 
     const context = new BaseContext(request, new MemoryResponse());

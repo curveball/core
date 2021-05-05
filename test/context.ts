@@ -160,7 +160,7 @@ describe('BaseContext', () => {
     it('should call the ip() method on the request if it\'s socket-based', () => {
 
       const request = new Request('GET', '/foo');
-      (<any> request).ip = () => '127.0.0.1';
+      (request as any).ip = () => '127.0.0.1';
       const response = new Response();
 
       const context = new BaseContext(
