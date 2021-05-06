@@ -106,7 +106,7 @@ export abstract class Request<T = unknown> {
    */
   get query(): { [s: string]: string } {
 
-    return <any> url.parse(this.requestTarget, true).query;
+    return url.parse(this.requestTarget, true).query as any;
 
   }
 
@@ -145,7 +145,7 @@ export abstract class Request<T = unknown> {
       }
     };
 
-    const result = <string|false> accepts(<http.IncomingMessage> mockRequestObj).type(types);
+    const result = accepts(mockRequestObj as http.IncomingMessage).type(types) as string|false;
     return result === false ? null : result;
 
   }

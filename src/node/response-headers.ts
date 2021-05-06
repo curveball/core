@@ -109,7 +109,7 @@ export default class NodeHeaders implements HeadersInterface {
     if (!Array.isArray(oldValue)) {
       oldValue = [oldValue.toString()];
     }
-    this.inner.setHeader(name, oldValue.concat(<string|string[]> value));
+    this.inner.setHeader(name, oldValue.concat(value as string[]|string));
 
   }
 

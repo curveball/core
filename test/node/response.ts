@@ -9,7 +9,7 @@ import headersInterfaceTests from '../headers-interface-tests';
 
 function getRes() {
 
-  const request = new http.IncomingMessage(<any> null);
+  const request = new http.IncomingMessage(null as any);
   const inner = new http.ServerResponse(request);
 
   inner.setHeader('Content-Type', 'text/html; charset=utf-8');
