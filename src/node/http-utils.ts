@@ -18,7 +18,7 @@ export type NodeHttpResponse = http.ServerResponse | http2.Http2ServerResponse;
  */
 export function isHttp2Response(response: NodeHttpResponse): response is http2.Http2ServerResponse {
 
-  return (<http2.Http2ServerResponse> response).stream !== undefined;
+  return (response as http2.Http2ServerResponse).stream !== undefined;
 
 }
 

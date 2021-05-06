@@ -103,8 +103,8 @@ describe('NodeResponse http/2 push', () => {
       ':path': '/bar',
       ':scheme': 'http',
     });
-    expect((<any> pushResponseHeaders)[':status']).to.eql(200);
-    expect((<any> responseHeaders)[':status']).to.eql(200);
+    expect((pushResponseHeaders as any)[':status']).to.eql(200);
+    expect((responseHeaders as any)[':status']).to.eql(200);
 
   });
   it('should still work when the pushed resource uses query parameters', async () => {
@@ -189,8 +189,8 @@ describe('NodeResponse http/2 push', () => {
       ':path': '/bar?sup',
       ':scheme': 'http',
     });
-    expect((<any> pushResponseHeaders)[':status']).to.eql(200);
-    expect((<any> responseHeaders)[':status']).to.eql(200);
+    expect((pushResponseHeaders as any)[':status']).to.eql(200);
+    expect((responseHeaders as any)[':status']).to.eql(200);
 
   });
 
@@ -282,18 +282,18 @@ describe('NodeResponse http/2 push', () => {
     client.close();
 
     expect(data).to.equal('Hello world A');
-    expect((<any> responseHeaders)[':status']).to.eql(200);
+    expect((responseHeaders)[':status']).to.eql(200) as any;
     expect(notCalled).to.eql(true);
     expect(notCalled2).to.eql(true);
 
   });
   it('should throw an error when no path was set', async () => {
 
-    const response = new NodeResponse(<any> {
+    const response = new NodeResponse({
       stream: {
         pushAllowed: true
       }
-    });
+    } as any);
 
     let err;
     try {
@@ -308,20 +308,20 @@ describe('NodeResponse http/2 push', () => {
     }
 
     expect(err).to.be.an.instanceof(Error);
-    expect((<Error> err).message).to.equal('The "path" must be set in the push context\'s request');
+    expect((err as Error).message).to.equal('The "path" must be set in the push context\'s request');
 
   });
 
   it('should handle stream errors', async () => {
 
-    const response = new NodeResponse(<any> {
+    const response = new NodeResponse({
       stream: {
         pushStream(headers: any, callback: any) {
           callback(new Error('hi'));
         },
         pushAllowed: true
       }
-    });
+    } as any);
 
     let err;
     try {
@@ -341,7 +341,7 @@ describe('NodeResponse http/2 push', () => {
     }
 
     expect(err).to.be.an.instanceof(Error);
-    expect((<Error> err).message).to.equal('hi');
+    expect((err as Error).message).to.equal('hi');
 
   });
 });
@@ -356,13 +356,13 @@ describe('push() function', () => {
       const stream = {
         pushStream: () => {
           const error = new Error('HTTP/2 client has disabled push');
-          (<any> error).code = 'ERR_HTTP2_PUSH_DISABLED';
+          (error as any).code = 'ERR_HTTP2_PUSH_DISABLED';
           throw error;
         }
       };
 
       await push(
-        <any> stream,
+        stream as any,
         new BaseContext(
           new MemoryRequest('GET', '/push-resource'),
           new MemoryResponse()
@@ -402,7 +402,7 @@ describe('push() function', () => {
       };
 
       await push(
-        <any> stream,
+        stream as any,
         new BaseContext(
           new MemoryRequest('GET', '/push-resource'),
           new MemoryResponse()
@@ -439,7 +439,7 @@ describe('push() function', () => {
 
       try {
         await push(
-          <any> stream,
+          stream as any,
           new BaseContext(
             new MemoryRequest('GET', '/push-resource'),
             new MemoryResponse()

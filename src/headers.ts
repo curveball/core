@@ -57,13 +57,13 @@ export interface HeadersInterface {
  * Headers class.
  */
 export type HeadersObject = {
-  [headerName: string]: string | string[] | number
+  [headerName: string]: string | string[] | number;
 };
 
 export class Headers implements HeadersInterface {
 
   private store: {
-    [name: string]: [string, string | string[] | number]
+    [name: string]: [string, string | string[] | number];
   };
 
   constructor(headersObj: HeadersObject = {}) {
@@ -171,8 +171,8 @@ export class Headers implements HeadersInterface {
       return;
     }
 
-    const oldArray: string[] = Array.isArray(this.store[lowerName][1]) ? <string[]> this.store[lowerName][1] : [this.store[lowerName][1].toString()];
-    this.store[lowerName][1] = oldArray.concat(<string|string[]> value);
+    const oldArray: string[] = Array.isArray(this.store[lowerName][1]) ? this.store[lowerName][1] as string[] : [this.store[lowerName][1].toString()];
+    this.store[lowerName][1] = oldArray.concat(value as string|string[]);
 
   }
 

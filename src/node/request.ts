@@ -38,9 +38,9 @@ export class NodeRequest<T> extends Request<T> {
   rawBody(encoding?: undefined|string, limit?: string): Promise<Buffer|string> {
 
     const options: {
-      encoding?: string,
-      limit?: string,
-      length?: string
+      encoding?: string;
+      limit?: string;
+      length?: string;
     } = {};
     if (limit) {
       options.limit = limit;

@@ -18,10 +18,10 @@ export class MemoryRequest<T> extends Request<T> {
   constructor(method: string, requestTarget: string, headers?: HeadersInterface | HeadersObject, body: any = null) {
 
     super(method, requestTarget);
-    if (headers && (<HeadersInterface> headers).get !== undefined) {
-      this.headers = <HeadersInterface> headers;
+    if (headers && (headers as HeadersInterface).get !== undefined) {
+      this.headers = headers as HeadersInterface;
     } else {
-      this.headers = new Headers(<HeadersObject> headers);
+      this.headers = new Headers(headers as HeadersObject);
     }
     this.originalBody = body;
     // @ts-expect-error Typescript doesn't like null here because it might be

@@ -32,7 +32,7 @@ export default class BaseContext<ReqT = any, ResT = any> implements Context<ReqT
    * in this property for other middlewares to use.
    */
   state: {
-    [s: string]: any
+    [s: string]: any;
   };
 
   constructor(req: Request<ReqT>, res: Response<ResT>) {
@@ -153,8 +153,8 @@ export default class BaseContext<ReqT = any, ResT = any> implements Context<ReqT
    */
   ip(trustProxy = false): null | string {
 
-    if ((<any> this.request).ip !== undefined) {
-      return (<any> this.request).ip(trustProxy);
+    if ((this.request as any).ip !== undefined) {
+      return (this.request as any).ip(trustProxy);
     }
     return null;
 

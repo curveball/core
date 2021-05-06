@@ -26,7 +26,7 @@ export interface Context<ReqT = unknown, ResT = any> {
    * in this property for other middlewares to use.
    */
   state: {
-    [s: string]: any
+    [s: string]: any;
   };
 
   /**
@@ -110,7 +110,7 @@ export interface Context<ReqT = unknown, ResT = any> {
    *
    * @see https://github.com/websockets/ws#simple-server
    */
-  webSocket?: WebSocket
+  webSocket?: WebSocket;
 }
 
 /**
@@ -126,6 +126,6 @@ export interface WsContext extends Context<unknown, any> {
    *
    * @see https://github.com/websockets/ws#simple-server
    */
-  webSocket: WebSocket
+  webSocket: WebSocket;
 
 }
