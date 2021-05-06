@@ -4,7 +4,7 @@ Changelog
 0.16.3 (2021-05-06)
 -------------------
 
-* ESLint rule change
+* Updated lint rules
 * Make file update
 * Updated dependencies
 
