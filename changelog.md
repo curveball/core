@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.16.3 (2021-05-06)
+-------------------
+
+* Updated lint rules
+* Make file update
+* Updated dependencies
+
 0.16.2 (2021-02-18)
 -------------------
 
