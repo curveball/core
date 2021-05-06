@@ -1,4 +1,3 @@
-export PATH:=./node_modules/.bin:$(PATH)
 SOURCE_FILES:=$(shell find src/ -type f -name '*.ts')
 
 .PHONY:all
@@ -9,22 +8,22 @@ build: dist/build
 
 .PHONY:test
 test:
-	nyc mocha
-	
+	node_modules/.bin/nyc node_modules/.bin/mocha
+
 .PHONY:lint
 lint:
-	eslint --quiet 'src/**/*.ts' 'test/**/*.ts'
+	node_modules/.bin/eslint --quiet 'src/*.ts' 'test/*.ts'
 
 .PHONY:lint-fix
 lint-fix: fix
 
 .PHONY:fix
 fix:
-	eslint --quiet 'src/**/*.ts' 'test/**/*.ts' --fix
+	node_modules/.bin/eslint --quiet 'src/**/*.ts' 'test/**/*.ts' --fix
 
 .PHONY:watch
 watch:
-	tsc --watch
+	node_modules/.bin/tsc --watch
 
 .PHONY:start
 start: build
@@ -34,6 +33,6 @@ clean:
 	rm -r dist
 
 dist/build: $(SOURCE_FILES)
-	tsc
+	node_modules/.bin/tsc
 	@# Creating a small file to keep track of the last build time
 	touch dist/build
