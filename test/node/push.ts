@@ -302,7 +302,7 @@ describe('NodeResponse http/2 push', () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
       });
 
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
       err = e;
     }
@@ -335,7 +335,7 @@ describe('NodeResponse http/2 push', () => {
         pushCtx.request.path = '/foo';
       });
 
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
       err = e;
     }
@@ -445,7 +445,7 @@ describe('push() function', () => {
             new MemoryResponse()
           )
         );
-      } catch (e) {
+      } catch (e: any) {
         caught = true;
       }
 

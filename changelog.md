@@ -7,6 +7,7 @@ Changelog
 * Update all dependencies and ensure compatibility with latest Typescript
   changes.
 
+
 0.16.3 (2021-05-06)
 -------------------
 
