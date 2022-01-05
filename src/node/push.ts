@@ -19,7 +19,7 @@ export default async function push(stream: http2.ServerHttp2Stream, pushCtx: Con
       stream,
       requestHeaders,
     );
-  } catch (err) {
+  } catch (err: any) {
     if (err.code === 'ERR_HTTP2_PUSH_DISABLED') {
       // HTTP/2 disabled pusing after all
       return;

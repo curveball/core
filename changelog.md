@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.16.4 (2022-01-05)
+-------------------
+
+* Update all dependencies and ensure compatibility with latest Typescript
+  changes.
+
 0.16.3 (2021-05-06)
 -------------------
 
