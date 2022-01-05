@@ -191,7 +191,7 @@ export default class BaseContext<ReqT = any, ResT = any> implements Context<ReqT
    *
    * @see https://github.com/websockets/ws#simple-server
    */
-  webSocket?: WebSocket
+  webSocket?: WebSocket;
 
 }
 
