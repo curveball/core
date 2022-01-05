@@ -15,7 +15,7 @@ class NoHandler extends Error implements HttpProblem {
 
   detail: string;
   httpStatus: number;
-  instance: null;
+  instance: null = null;
   title: string;
   type: string;
 

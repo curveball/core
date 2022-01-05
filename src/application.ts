@@ -140,7 +140,7 @@ export default class Application extends EventEmitter {
         const ctx = this.buildContextFromHttp(req, res);
         await this.handle(ctx);
         sendBody(res, ctx.response.body);
-      } catch (err) {
+      } catch (err: any) {
         // eslint-disable-next-line no-console
         console.error(err);
 
@@ -206,7 +206,7 @@ export default class Application extends EventEmitter {
 
     try {
       await this.handle(context);
-    } catch (err) {
+    } catch (err: any) {
     // eslint-disable-next-line no-console
       console.error(err);
       if (this.listenerCount('error')) {
