@@ -1,6 +1,15 @@
 Changelog
 =========
 
+0.17.0 (2022-02-08)
+-------------------
+
+* `listen()` now starts a WebSocket service on the same port by default.
+* `listenWs()` is now deprecated, and will be removed in a future version.
+* JSON is now pretty-printed by default.
+
+Happy birthday Mom!
+
 0.16.4 (2022-01-05)
 -------------------
 
