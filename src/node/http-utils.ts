@@ -34,7 +34,7 @@ export function sendBody(res: NodeHttpResponse | http2.Http2Stream, body: Body):
   } else if (body instanceof Readable) {
     body.pipe(res as Writable);
   } else if (typeof body === 'object') {
-    res.end(JSON.stringify(body));
+    res.end(JSON.stringify(body, null , 2));
   } else if (typeof body === 'function') {
     body(res as Writable);
   } else {

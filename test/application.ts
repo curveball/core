@@ -123,7 +123,7 @@ describe('Application', () => {
     const response = await fetch('http://localhost:5555');
     const body = await response.text();
 
-    expect(body).to.equal('{"foo":"bar"}');
+    expect(body).to.equal('{\n  "foo": "bar"\n}');
     expect(response.headers.get('server')).to.equal(
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       'curveball/' + require('../package.json').version
@@ -259,7 +259,7 @@ describe('Application', () => {
       application.use((ctx, next) => {
         throw new Error('hi');
       });
-      let error;
+      let error: any;
       application.on('error', err => {
         error = err;
       });
@@ -268,7 +268,6 @@ describe('Application', () => {
       await fetch('http://localhost:5555');
 
       expect(error).to.be.an.instanceof(Error);
-      // @ts-expect-error: TS complains about error possibly being undefined.
       expect(error.message).to.equal('hi');
 
       server.close();

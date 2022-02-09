@@ -80,7 +80,7 @@ export class MemoryRequest<T> extends Request<T> {
     }
     if (typeof this.originalBody === 'object' && !(this.originalBody instanceof Buffer)) {
       // Memoizing the JSON object case.
-      this.originalBody = JSON.stringify(this.originalBody);
+      this.originalBody = JSON.stringify(this.originalBody, null, 2);
     }
 
     if (this.originalBody instanceof Buffer) {

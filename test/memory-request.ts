@@ -171,7 +171,7 @@ describe('MemoryRequest', () => {
       );
 
       const body = await req.rawBody('utf-8');
-      expect(body).to.deep.equal('{"foo":"bar"}');
+      expect(body).to.deep.equal('{\n  "foo": "bar"\n}');
 
     });
 
