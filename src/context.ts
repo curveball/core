@@ -41,7 +41,7 @@ export interface Context<ReqT = unknown, ResT = any> {
    *
    * Shortcut for request.method
    */
-   method: string;
+  method: string;
 
   /**
    * This object contains parsed query string parameters.

@@ -103,9 +103,18 @@ export default class Application extends EventEmitter {
   listen(port: number, host?: string): http.Server {
     const server = http.createServer(this.callback());
     server.on('upgrade', this.upgradeCallback.bind(this));
+
     return server.listen(port, host);
   }
 
+  /**
+   * Starts a Websocket-only server on the specified port.
+   *
+   * Note that this is now deprecated. The listen() function already starts
+   * a websocket on the main HTTP port, so this is somewhat redundant.
+   *
+   * @deprecated
+   */
   listenWs(port: number, host?: string): WebSocket.Server {
 
     const wss = new WebSocket.Server({
@@ -171,6 +180,14 @@ export default class Application extends EventEmitter {
     if (!this.wss) {
       // We don't have an existing Websocket server. Lets make one.
       this.wss = new WebSocket.Server({ noServer: true });
+      this.wss.on('connection', async(ws, req) => {
+        const request = new NodeRequest(req);
+        const response = new MemoryResponse();
+        const context = new BaseContext(request, response);
+
+        context.webSocket = ws;
+        await this.handle(context);
+      });
     }
     this.wss.handleUpgrade(request, socket, head, (ws: WebSocket) => {
       this.wss!.emit('connection', ws, request);
