@@ -194,3 +194,17 @@ export class Context<ReqT = any, ResT = any> {
 
 }
 
+/**
+ * WsContext always has a 'webSocket' property defined.
+ */
+export type WsContext = Context & {
+
+  /**
+   * WebSocket object.
+   *
+   * If the current request is a websocket request, this proprerty will be set
+   *
+   * @see https://github.com/websockets/ws#simple-server
+   */
+  webSocket: WebSocket;
+};
