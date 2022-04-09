@@ -1,6 +1,10 @@
-import { isHttpError } from '@curveball/http-errors';
 import { EventEmitter } from 'events';
 import * as http from 'http';
+import * as WebSocket from 'ws';
+import * as net from 'net';
+
+import { isHttpError } from '@curveball/http-errors';
+
 import { Context } from './context';
 import { HeadersInterface, HeadersObject } from './headers';
 import MemoryRequest from './memory-request';
@@ -13,11 +17,15 @@ import {
   sendBody
 } from './node/http-utils';
 import NodeRequest from './node/request';
-import NodeResponse from './node/response';
-import Request from './request';
-import Response from './response';
-import * as WebSocket from 'ws';
-import * as net from 'net';
+import { createContextFromNode } from './node/http-utils';
+import { Request as CurveballRequest } from './request';
+import { Response as CurveballResponse } from './response';
+import {
+  curveballResponseToFetchResponse,
+  fetchRequestToCurveballRequest
+} from './fetch-util';
+
+
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pkg = require('../package.json');
@@ -107,6 +115,25 @@ export default class Application extends EventEmitter {
   }
 
   /**
+   * Executes a request on the server using the standard browser Request and
+   * Response objects from the fetch() standard.
+   *
+   * Node will probably provide these out of the box in Node 18. If you're on
+   * an older version, you'll need a polyfill.
+   *
+   * A use-case for this is allowing test frameworks to make fetch-like
+   * requests without actually having to go over the network.
+   */
+  async fetch(request: Request): Promise<Response> {
+
+    const response = await this.subRequest(
+      await fetchRequestToCurveballRequest(request)
+    );
+    return curveballResponseToFetchResponse(response);
+
+  }
+
+  /**
    * Starts a Websocket-only server on the specified port.
    *
    * Note that this is now deprecated. The listen() function already starts
@@ -145,9 +172,9 @@ export default class Application extends EventEmitter {
       res: NodeHttpResponse
     ): Promise<void> => {
       try {
-        const ctx = this.buildContextFromHttp(req, res);
+        const ctx = createContextFromNode(req, res);
         await this.handle(ctx);
-        sendBody(res, ctx.response.body);
+        sendBody(res, ctx.response.body as any);
       } catch (err: any) {
         // eslint-disable-next-line no-console
         console.error(err);
@@ -202,15 +229,15 @@ export default class Application extends EventEmitter {
     path: string,
     headers?: HeadersInterface | HeadersObject,
     body?: any
-  ): Promise<Response>;
-  async subRequest(request: Request): Promise<Response>;
+  ): Promise<CurveballResponse>;
+  async subRequest(request: CurveballRequest): Promise<CurveballResponse>;
   async subRequest(
-    arg1: string | Request,
+    arg1: string | CurveballRequest,
     path?: string,
     headers?: HeadersInterface | HeadersObject,
     body: any = ''
-  ): Promise<Response> {
-    let request: Request;
+  ): Promise<CurveballResponse> {
+    let request: CurveballRequest;
 
     if (typeof arg1 === 'string') {
       request = new MemoryRequest(arg1, path!, headers, body);
@@ -238,18 +265,6 @@ export default class Application extends EventEmitter {
         context.response.status;
     }
     return context.response;
-  }
-
-  /**
-   * Creates a Context object based on a node.js request and response object.
-   */
-  public buildContextFromHttp(
-    req: NodeHttpRequest,
-    res: NodeHttpResponse
-  ): Context {
-    const context = new Context(new NodeRequest(req), new NodeResponse(res));
-
-    return context;
   }
 
 }

@@ -2,6 +2,9 @@ import * as http from 'http';
 import * as http2 from 'http2';
 import { Readable, Writable } from 'stream';
 import { Body } from '../response';
+import { Context } from '../context';
+import { NodeRequest as CurveballNodeRequest } from './request';
+import { NodeResponse as CurveballNodeResponse } from './response';
 
 /**
  * A node.js Http request
@@ -42,6 +45,16 @@ export function sendBody(res: NodeHttpResponse | http2.Http2Stream, body: Body):
   }
 
 }
+
+/**
+ * This function takes the request and response objects from a Node http,
+ * https or http2 server and returns a curveball compatible Context.
+ */
+export function createContextFromNode(req: NodeHttpRequest, res: NodeHttpResponse) {
+  const context = new Context(new CurveballNodeRequest(req), new CurveballNodeResponse(res));
+  return context;
+}
+
 
 /**
  * The HttpCallback is the function that is passed as a request listener to
