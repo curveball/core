@@ -1,6 +1,21 @@
 Changelog
 =========
 
+0.18.0.alpha.0 (2022-04-09)
+---------------------------
+
+* The `Context` interface has been removed, and the `BaseContext` class is
+  renamed to `Context`. This is a BC break, but should only be an issue if
+  you used the `Context` interface directly. `BaseContext` is still
+  exported but simply aliased to `Context`. This alias will be removed from
+  a future version. This change should make ite asier to use interface
+  declaration merging to extend Context.
+* The `ws` dependency has been updated to version 8. There are some [breaking
+  changes][ws8] in this release. The most likely you'll hit is that incoming
+  messages are now of type `Buffer` instead of `string`. Check out the
+  [ws changelog][ws8] for more details.
+
+
 0.17.0 (2022-02-08)
 -------------------
 
@@ -333,3 +348,5 @@ Happy birthday Mom!
 ------------------
 
 * First published on npm.js to claim package name.
+
+[ws8]: https://github.com/websockets/ws/releases/tag/8.0.0
