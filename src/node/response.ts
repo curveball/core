@@ -1,7 +1,7 @@
 import * as http from 'http';
 import { promisify } from 'util';
 import { invokeMiddlewares, Middleware } from '../application';
-import BaseContext from '../base-context';
+import { Context } from '../context';
 import { HeadersInterface, HeadersObject } from '../headers';
 import MemoryRequest from '../memory-request';
 import MemoryResponse from '../memory-response';
@@ -148,7 +148,7 @@ export class NodeResponse<T> implements Response<T> {
       return;
     }
 
-    const pushCtx = new BaseContext(
+    const pushCtx = new Context(
       new MemoryRequest('GET', '|||DELIBERATELY_INVALID|||'),
       new MemoryResponse()
     );

@@ -1,7 +1,6 @@
 import { isHttpError } from '@curveball/http-errors';
 import { EventEmitter } from 'events';
 import * as http from 'http';
-import BaseContext from './base-context';
 import { Context } from './context';
 import { HeadersInterface, HeadersObject } from './headers';
 import MemoryRequest from './memory-request';
@@ -125,7 +124,7 @@ export default class Application extends EventEmitter {
 
       const request = new NodeRequest(req);
       const response = new MemoryResponse();
-      const context = new BaseContext(request, response);
+      const context = new Context(request, response);
 
       context.webSocket = ws;
 
@@ -183,7 +182,7 @@ export default class Application extends EventEmitter {
       this.wss.on('connection', async(ws, req) => {
         const request = new NodeRequest(req);
         const response = new MemoryResponse();
-        const context = new BaseContext(request, response);
+        const context = new Context(request, response);
 
         context.webSocket = ws;
         await this.handle(context);
@@ -219,7 +218,7 @@ export default class Application extends EventEmitter {
       request = arg1;
     }
 
-    const context = new BaseContext(request, new MemoryResponse());
+    const context = new Context(request, new MemoryResponse());
 
     try {
       await this.handle(context);
@@ -248,7 +247,7 @@ export default class Application extends EventEmitter {
     req: NodeHttpRequest,
     res: NodeHttpResponse
   ): Context {
-    const context = new BaseContext(new NodeRequest(req), new NodeResponse(res));
+    const context = new Context(new NodeRequest(req), new NodeResponse(res));
 
     return context;
   }
