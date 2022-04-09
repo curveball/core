@@ -24,7 +24,7 @@ describe('Websocket support', () => {
       const ws = new WebSocket('ws://localhost:57001');
       ws.on('message', (msg) => {
 
-        expect(msg).to.equal('Hello');
+        expect(msg.toString()).to.equal('Hello');
         ws.close();
         wss.close();
         res();
@@ -55,7 +55,7 @@ describe('Websocket support', () => {
       const ws = new WebSocket('ws://localhost:57001');
       ws.on('message', (msg) => {
 
-        expect(msg).to.equal('Hello');
+        expect(msg.toString()).to.equal('Hello');
         ws.close();
         wss.close();
         res();
@@ -87,7 +87,7 @@ describe('Websocket support', () => {
       const ws = new WebSocket('ws://0.0.0.0:57001');
       ws.on('message', (msg) => {
 
-        expect(msg).to.equal('Hello');
+        expect(msg.toString()).to.equal('Hello');
         ws.close();
         wss.close();
         res();
