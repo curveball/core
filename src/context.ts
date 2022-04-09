@@ -4,7 +4,12 @@ import Request from './request';
 import Response from './response';
 import * as WebSocket from 'ws';
 
-export interface Context<ReqT = unknown, ResT = any> {
+/**
+ * The Context object encapsulates a single HTTP request.
+ *
+ * It has references to the internal request and response object.
+ */
+export class Context<ReqT = any, ResT = any> {
 
   /**
    * HTTP Request
@@ -29,26 +34,46 @@ export interface Context<ReqT = unknown, ResT = any> {
     [s: string]: any;
   };
 
+  constructor(req: Request<ReqT>, res: Response<ResT>) {
+
+    this.request = req;
+    this.response = res;
+    this.state = {};
+
+  }
+
   /**
    * The Request path.
    *
    * Shortcut for request.path
    */
-  path: string;
+  get path(): string {
+
+    return this.request.path;
+
+  }
 
   /**
    * HTTP method
    *
    * Shortcut for request.method
    */
-  method: string;
+  get method(): string {
+
+    return this.request.method;
+
+  }
 
   /**
    * This object contains parsed query string parameters.
    *
    * This is a shortcut for request.query
    */
-  query: { [s: string]: string };
+  get query(): { [s: string]: string } {
+
+    return this.request.query;
+
+  }
 
   /**
    * accepts is used for negotation the Content-Type with a client.
@@ -64,21 +89,44 @@ export interface Context<ReqT = unknown, ResT = any> {
    *
    * This is a shortcut to request.accepts()
    */
-  accepts(...types: string[]): null | string;
+  accepts(...types: string[]): null | string {
+
+    return this.request.accepts(...types);
+
+  }
 
   /**
    * HTTP status code.
    *
    * This is a shortcut for response.status
    */
-  status: number;
+  get status(): number {
+
+    return this.response.status;
+
+  }
+
+  /**
+   * Sets the HTTP response status code.
+   *
+   * This is a shortcut for response.status.
+   */
+  set status(value: number) {
+
+    this.response.status = value;
+
+  }
 
   /**
    * Sends an informational (1xx status code) response.
    *
    * This is a shortcut for response.sendInformational()
    */
-  sendInformational(status: number, headers?: HeadersInterface | HeadersObject): Promise<void>;
+  sendInformational(status: number, headers?: HeadersInterface | HeadersObject): Promise<void> {
+
+    return this.response.sendInformational(status, headers);
+
+  }
 
   /**
    * Sends a HTTP/2 push.
@@ -88,7 +136,11 @@ export interface Context<ReqT = unknown, ResT = any> {
    *
    * This is a shortcut for response.push()
    */
-  push(callback: Middleware): Promise<void>;
+  push(callback: Middleware): Promise<void> {
+
+    return this.response.push(callback);
+
+  }
 
   /**
    * returns the ip address of the client that's trying to connect.
@@ -98,10 +150,38 @@ export interface Context<ReqT = unknown, ResT = any> {
    *
    * If there was no real HTTP client, this method will return null.
    */
-  ip(trustProxy?: boolean): null | string;
+  ip(trustProxy = false): null | string {
+
+    if ((this.request as any).ip !== undefined) {
+      return (this.request as any).ip(trustProxy);
+    }
+    return null;
+
+  }
 
   redirect(address: string): void;
   redirect(status: number, address: string): void;
+  /**
+   * redirect redirects the response with an optionally provided HTTP status
+   * code in the first position to the location provided in address. If no status
+   * is provided, 303 See Other is used.
+   *
+   * It is a wrapper method for the underlying Response.redirect function.
+   *
+   * @param {(string|number)} addrOrStatus if passed a string, the string will
+   * be used to set the Location header of the response object and the default status
+   * of 303 See Other will be used. If a number, an addressed must be passed in the second
+   * argument.
+   * @param {string} address If addrOrStatus is passed a status code, this value is
+   * set as the value of the response's Location header.
+   */
+  redirect(addrOrStatus: string|number, address = ''): void {
+    if (typeof(addrOrStatus) === 'number') {
+      return this.response.redirect(addrOrStatus, address);
+    } else {
+      return this.response.redirect(addrOrStatus);
+    }
+  }
 
   /**
    * WebSocket object.
@@ -111,21 +191,6 @@ export interface Context<ReqT = unknown, ResT = any> {
    * @see https://github.com/websockets/ws#simple-server
    */
   webSocket?: WebSocket;
-}
-
-/**
- * WebSocket Context
- *
- * This is the Context that will be passed in case a WebSocket request was
- * initiated.
- */
-export interface WsContext extends Context<unknown, any> {
-
-  /**
-   * WebSocket object.
-   *
-   * @see https://github.com/websockets/ws#simple-server
-   */
-  webSocket: WebSocket;
 
 }
+
