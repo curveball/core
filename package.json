@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "prepublishOnly": "make build",
-    "test": "make lint test",
+    "test": "make test",
+    "lint": "make lint",
     "tsc": "tsc"
   },
   "repository": {
