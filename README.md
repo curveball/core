@@ -53,23 +53,35 @@ app.listen(4000);
 Middlewares you might want
 --------------------------
 
-* [Router](https://github.com/curveball/router).
-* [Body Parser](https://github.com/curveball/bodyparser).
-* [Controller][controller].
-* [Access Logs](https://github.com/curveball/accesslog).
-* [Sessions](https://github.com/curveball/session).
-* [Generating application/problem+json responses](https://github.com/curveball/problem).
+* [Router](https://github.com/curveball/router)
+* [Body Parser](https://github.com/curveball/bodyparser)
+* [Controller][controller]
+* [Access Logs](https://github.com/curveball/accesslog)
+* [Sessions](https://github.com/curveball/session)
+* [Generating application/problem+json responses](https://github.com/curveball/problem)
+* [CORS](https://github.com/curveball/cors)
+* [Hypermedia Links](https://github.com/curveball/links)
+* [Server-rendered React support](https://github.com/curveball/react)
+* [Serving static files](https://github.com/curveball/static)
+* [JSON-Schema validation](https://github.com/curveball/validator)
 
-AWS Lambda support
--------------------
 
-See [aws-lambda](https://github.com/curveball/aws-lambda).
-
-Project status
+Authentication
 --------------
 
-The project is currently in beta. It might go through a few more changes, but
-the project is mostly stable. It's ready for production.
+* [OAuth2](https://github.com/curveball/oauth2)
+* [OAuth2 add-on to let regular browsers log in](https://github.com/curveball/browser-to-bearer)
+
+You might like [a12n-server](https://github.com/curveball/a12n-server), a full
+OAuth2 authorization server, written in Curveball and works well with the
+OAuth2 middleware.
+
+
+AWS Lambda support / 'Serverless'
+---------------------------------
+
+* [aws-lambda](https://github.com/curveball/aws-lambda).
+* [Azure functions](https://github.com/curveball/azure-function)
 
 
 Doing internal subrequests
