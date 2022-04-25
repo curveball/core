@@ -16,6 +16,8 @@ Changelog
   `Response` classes now have an extra constructor argument. This means
   if you ever manually constructed any of these, there's a small change
   you'll need to make. Typescript should point all these problems!
+* If `CURVEBALL_TRUSTPROXY` is set, `request.ip()` will trust proxies
+  by default, and return the ip of the real client instead of the proxy.
 
 
 0.18.0 (2022-04-16)

@@ -315,6 +315,11 @@ properties and methods:
 * `origin` - The 'origin' for the request, for example:
    `http://my-api:8008`.
 * `absoluteUrl` - The absolute URL for the request.
+* `ip()` - Returns the ip address of the client. This may be ipv4 or ipv6.
+  If `CURVEBALL_TRUSTPROXY` is set in the environment and truthy, this will
+  use the information from the `X-Forwarded-For` header (if available).
+
+
 
 ### The Response interface
 
