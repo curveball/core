@@ -261,6 +261,10 @@ It has the following methods
   an internal HTTP request and return the result.
 * `subRequest(request: Request)` - Run an internal HTTP request and return the
   result.
+* `origin` - Sets the 'origin' for the application. This is used to determine
+  absolute URIs. You can set the `origin` directly on the application, but
+  you can also set a `CURVEBALL_ORIGIN` environment variable. If nothing is
+  set this value will default to `http://localhost`.
 
 
 ### The Context class
@@ -283,6 +287,7 @@ The Context object has the following properties:
 * `push(callback: Middleware)` - Do a HTTP/2 push.
 * `redirect(status, location)` - Send a redirect status code and set a
   `Location` header.
+* `absoluteUrl` - The absolute URL for the request.
 
 
 ### The Request interface
@@ -307,6 +312,13 @@ properties and methods:
   request matches the argument. If your `Content-Type` is
   `application/hal+json` it will return true for `application/hal+json`,
   `hal+json` and `json`.
+* `origin` - The 'origin' for the request, for example:
+   `http://my-api:8008`.
+* `absoluteUrl` - The absolute URL for the request.
+* `ip()` - Returns the ip address of the client. This may be ipv4 or ipv6.
+  If `CURVEBALL_TRUSTPROXY` is set in the environment and truthy, this will
+  use the information from the `X-Forwarded-For` header (if available).
+
 
 
 ### The Response interface
@@ -328,6 +340,9 @@ properties and methods:
   `hal+json` and `json`.
 * `redirect(status, location)` - Send a redirect status code and set a
   `Location` header.
+* `origin` - The 'origin' for the request, for example:
+   `http://my-api:8008`.
+
 
 ### The Headers interface
 

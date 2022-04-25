@@ -18,11 +18,11 @@ export type Body =
  */
 export abstract class Response<T = Body> {
 
-  constructor(publicBaseUrl: string) {
+  constructor(origin: string) {
 
     this.headers = new Headers();
     this.status = 200;
-    this.publicBaseUrl = publicBaseUrl;
+    this.origin = origin;
 
   }
 
@@ -140,7 +140,7 @@ export abstract class Response<T = Body> {
    *
    * This will be used to determine the absoluteUrl
    */
-  readonly publicBaseUrl: string;
+  readonly origin: string;
 }
 
 export default Response;
