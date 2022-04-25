@@ -18,10 +18,11 @@ export type Body =
  */
 export abstract class Response<T = Body> {
 
-  constructor() {
+  constructor(publicBaseUrl: string) {
 
     this.headers = new Headers();
     this.status = 200;
+    this.publicBaseUrl = publicBaseUrl;
 
   }
 
@@ -134,6 +135,12 @@ export abstract class Response<T = Body> {
     this.headers.set('Location', addr);
   }
 
+  /**
+   * Public base URL
+   *
+   * This will be used to determine the absoluteUrl
+   */
+  readonly publicBaseUrl: string;
 }
 
 export default Response;

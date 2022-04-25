@@ -36,7 +36,7 @@ describe('Header helpers', () => {
 
       it(`should return ${test[2]} for a Content-Type of ${test[0]} and an argument ${test[1]}`, () => {
 
-        const request = new MemoryRequest('GET', '/');
+        const request = new MemoryRequest('GET', '/', 'http://localhost');
         request.headers.set('Content-Type', test[0]);
         expect(is(request, test[1])).to.eql(test[2]);
 
@@ -46,7 +46,7 @@ describe('Header helpers', () => {
 
     it('should return false when no Content-Type was set', () => {
 
-      const request = new MemoryRequest('GET', '/');
+      const request = new MemoryRequest('GET', '/', 'http://localhost');
       expect(is(request, 'json')).to.eql(false);
 
     });

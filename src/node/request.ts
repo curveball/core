@@ -11,9 +11,9 @@ export class NodeRequest<T> extends Request<T> {
    */
   private inner: NodeHttpRequest;
 
-  constructor(inner: NodeHttpRequest) {
+  constructor(inner: NodeHttpRequest, publicBaseUrl: string) {
 
-    super(inner.method!, inner.url!);
+    super(inner.method!, inner.url!, publicBaseUrl);
     this.inner = inner;
     // @ts-expect-error ignoring that headers might be undefined
     this.headers = new Headers(this.inner.headers);

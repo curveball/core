@@ -53,6 +53,13 @@ export class Context<ReqT = any, ResT = any> {
 
   }
 
+  get absoluteUrl(): string {
+
+    return this.request.absoluteUrl;
+
+  }
+
+
   /**
    * HTTP method
    *
