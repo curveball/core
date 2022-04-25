@@ -213,7 +213,10 @@ describe('NodeRequest', () => {
       });
 
       server.close();
-      expect(ip).to.eql('::ffff:127.0.0.1');
+      expect(ip).to.be.oneOf([
+        '::ffff:127.0.0.1',
+        '::1',
+      ]);
 
     });
 
@@ -264,7 +267,10 @@ describe('NodeRequest', () => {
       });
 
       server.close();
-      expect(ip).to.eql('::ffff:127.0.0.1');
+      expect(ip).to.be.oneOf([
+        '::ffff:127.0.0.1',
+        '::1',
+      ]);
 
     });
 
@@ -289,7 +295,12 @@ describe('NodeRequest', () => {
       });
 
       server.close();
-      expect(ip).to.eql('::ffff:127.0.0.1');
+
+
+      expect(ip).to.be.oneOf([
+        '::ffff:127.0.0.1',
+        '::1',
+      ]);
 
     });
   });

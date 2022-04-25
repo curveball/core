@@ -72,10 +72,15 @@ export class NodeRequest<T> extends Request<T> {
    *
    * If trustProxy is set to true, it means this server is running behind a
    * proxy, and the X-Forwarded-For header should be used instead.
+   *
+   * If trustProxy is not set, it defaults to false unless the
+   * CURVEBALL_TRUSTPROXY environment variable is set. Using an environment
+   * variable is a good idea for this as having a proxy may be environment
+   * dependent.
    */
   ip(trustProxy: boolean = false): string {
 
-    if (trustProxy) {
+    if (trustProxy ?? process.env.CURVEBALL_TRUSTPROXY) {
       const forwardedForHeader = this.headers.get('X-Forwarded-For');
       if (forwardedForHeader) {
         return forwardedForHeader.split(',')[0].trim();
