@@ -314,6 +314,7 @@ describe('Application', () => {
       const request = new MemoryRequest(
         'POST',
         '/',
+        application.publicBaseUrl,
         { foo: 'bar' },
         'request-body'
       );

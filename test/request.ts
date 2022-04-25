@@ -8,7 +8,7 @@ class FakeRequest extends Request {
 
   constructor(method: string, path: string, headers: HeadersObject, body: any = '') {
 
-    super(method, path);
+    super(method, path, 'http://localhost');
     this.headers = new Headers(headers);
     this.body = Buffer.from(body);
 

@@ -15,9 +15,9 @@ export class MemoryRequest<T> extends Request<T> {
    */
   body: T;
 
-  constructor(method: string, requestTarget: string, headers?: HeadersInterface | HeadersObject, body: any = null) {
+  constructor(method: string, requestTarget: string, publicBaseUrl: string, headers?: HeadersInterface | HeadersObject, body: any = null, absoluteUrl?: string) {
 
-    super(method, requestTarget);
+    super(method, requestTarget, publicBaseUrl);
     if (headers?.get !== undefined) {
       this.headers = headers as HeadersInterface;
     } else {
