@@ -18,7 +18,7 @@ describe('conditionals', () => {
     for (const [status, method, header] of tests) {
       it(`should return ${status} when doing ${method} with If-Match: ${header}`, () => {
 
-        const request = new MemoryRequest(method, '/foo', { 'If-Match': header });
+        const request = new MemoryRequest(method, '/foo', 'http://localhost', { 'If-Match': header });
         expect(conditionalCheck(request, null, '"a"')).to.eql(status);
 
       });
@@ -38,7 +38,7 @@ describe('conditionals', () => {
     for (const [status, method, header] of tests) {
       it(`should return ${status} when doing ${method} with If-Match: ${header}`, () => {
 
-        const request = new MemoryRequest(method, '/foo', { 'If-Match': header });
+        const request = new MemoryRequest(method, '/foo', 'http://localhost', { 'If-Match': header });
         expect(conditionalCheck(request, null, null)).to.eql(status);
 
       });
@@ -63,7 +63,7 @@ describe('conditionals', () => {
     for (const [status, method, header] of tests) {
       it(`should return ${status} when doing ${method} with If-None-Match: ${header}`, () => {
 
-        const request = new MemoryRequest(method, '/foo', { 'If-None-Match': header });
+        const request = new MemoryRequest(method, '/foo', 'http://localhost', { 'If-None-Match': header });
         expect(conditionalCheck(request, null, '"a"')).to.eql(status);
 
       });
@@ -83,7 +83,7 @@ describe('conditionals', () => {
     for (const [status, method, header] of tests) {
       it(`should return ${status} when doing ${method} with If-None-Match: ${header}`, () => {
 
-        const request = new MemoryRequest(method, '/foo', { 'If-None-Match': header });
+        const request = new MemoryRequest(method, '/foo', 'http://localhost', { 'If-None-Match': header });
         expect(conditionalCheck(request, null, null)).to.eql(status);
 
       });
@@ -103,7 +103,7 @@ describe('conditionals', () => {
     for (const [status, method, headerDate] of tests) {
       it(`should return ${status} when doing ${method} with If-Modified-Since: ${headerDate}`, () => {
 
-        const request = new MemoryRequest(method, '/foo', { 'If-Modified-Since': headerDate });
+        const request = new MemoryRequest(method, '/foo', 'http://localhost', { 'If-Modified-Since': headerDate });
         expect(conditionalCheck(request, new Date('2020-03-06 00:00:00'), null)).to.eql(status);
 
       });
@@ -115,7 +115,7 @@ describe('conditionals', () => {
 
     it('should return 200', () => {
 
-      const request = new MemoryRequest('GET', '/foo', { 'If-Modified-Since': 'Thu, 7 Mar 2019 14:49:00 GMT' });
+      const request = new MemoryRequest('GET', '/foo', 'http://localhost', { 'If-Modified-Since': 'Thu, 7 Mar 2019 14:49:00 GMT' });
       expect(conditionalCheck(request, null, null)).to.eql(200);
 
     });
@@ -134,7 +134,7 @@ describe('conditionals', () => {
     for (const [status, method, headerDate] of tests) {
       it(`should return ${status} when doing ${method} with If-Unmodified-Since: ${headerDate}`, () => {
 
-        const request = new MemoryRequest(method, '/foo', { 'If-Unmodified-Since': headerDate });
+        const request = new MemoryRequest(method, '/foo', 'http://localhost', { 'If-Unmodified-Since': headerDate });
         expect(conditionalCheck(request, new Date('2020-03-06 00:00:00'), null)).to.eql(status);
 
       });
@@ -146,7 +146,7 @@ describe('conditionals', () => {
 
     it('should return 412', () => {
 
-      const request = new MemoryRequest('GET', '/foo', { 'If-Unmodified-Since': 'Thu, 7 Mar 2019 14:49:00 GMT' });
+      const request = new MemoryRequest('GET', '/foo', 'http://localhost', { 'If-Unmodified-Since': 'Thu, 7 Mar 2019 14:49:00 GMT' });
       expect(conditionalCheck(request, null, null)).to.eql(412);
 
     });

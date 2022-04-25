@@ -7,8 +7,8 @@ describe('Context', () => {
 
   it('should instantiate correctly', () => {
 
-    const request = new Request('GET', '/');
-    const response = new Response();
+    const request = new Request('GET', '/', 'http://localhost');
+    const response = new Response('http://localhost');
 
     const context = new Context(
       request,
@@ -22,8 +22,8 @@ describe('Context', () => {
 
   it('should forward the "method" property to the request', () => {
 
-    const request = new Request('GET', '/');
-    const response = new Response();
+    const request = new Request('GET', '/', 'http://localhost');
+    const response = new Response('http://localhost');
 
     const context = new Context(
       request,
@@ -36,8 +36,8 @@ describe('Context', () => {
 
   it('should forward the "path" property to the request', () => {
 
-    const request = new Request('GET', '/foo');
-    const response = new Response();
+    const request = new Request('GET', '/foo', 'http://localhost');
+    const response = new Response('http://localhost');
 
     const context = new Context(
       request,
@@ -49,8 +49,8 @@ describe('Context', () => {
   });
   it('should forward the "query" property to the request', () => {
 
-    const request = new Request('GET', '/foo?a=b');
-    const response = new Response();
+    const request = new Request('GET', '/foo?a=b', 'http://localhost');
+    const response = new Response('http://localhost');
 
     const context = new Context(
       request,
@@ -63,8 +63,8 @@ describe('Context', () => {
 
   it('should forward the "accepts" method to the request', () => {
 
-    const request = new Request('GET', '/foo', {Accept: 'text/html'});
-    const response = new Response();
+    const request = new Request('GET', '/foo', 'http://localhost', {Accept: 'text/html'});
+    const response = new Response('http://localhost');
 
     const context = new Context(
       request,
@@ -77,8 +77,8 @@ describe('Context', () => {
 
   it('should forward the "status" property to the response', () => {
 
-    const request = new Request('GET', '/foo');
-    const response = new Response();
+    const request = new Request('GET', '/foo', 'http://localhost');
+    const response = new Response('http://localhost');
     response.status = 414;
 
     const context = new Context(
@@ -97,8 +97,8 @@ describe('Context', () => {
   it('should forward the "push" method to the response', () => {
 
     let called = false;
-    const request = new Request('GET', '/foo');
-    const response = new Response();
+    const request = new Request('GET', '/foo', 'http://localhost');
+    const response = new Response('http://localhost');
     response.push = () => {
 
       called = true;
@@ -123,8 +123,8 @@ describe('Context', () => {
   it('should forward the "sendInformational" method to the response', () => {
 
     let called = false;
-    const request = new Request('GET', '/foo');
-    const response = new Response();
+    const request = new Request('GET', '/foo', 'http:/localhost');
+    const response = new Response('http://localhost');
     response.sendInformational = () => {
 
       called = true;
@@ -147,8 +147,8 @@ describe('Context', () => {
 
     it('should return null if the underlying request isn\'t socket-based', () => {
 
-      const request = new Request('GET', '/foo');
-      const response = new Response();
+      const request = new Request('GET', '/foo', 'http://localhost');
+      const response = new Response('http://localhost');
 
       const context = new Context(
         request,
@@ -159,9 +159,9 @@ describe('Context', () => {
     });
     it('should call the ip() method on the request if it\'s socket-based', () => {
 
-      const request = new Request('GET', '/foo');
+      const request = new Request('GET', '/foo', 'http://localhost');
       (request as any).ip = () => '127.0.0.1';
-      const response = new Response();
+      const response = new Response('http://localhost');
 
       const context = new Context(
         request,
@@ -179,8 +179,8 @@ describe('Context', () => {
       const newTarget = '/bar';
       const defaultStatus = 303;
 
-      const request = new Request('GET', originalTarget);
-      const response = new Response();
+      const request = new Request('GET', originalTarget, 'http://localhost');
+      const response = new Response('http://localhost');
 
       const context = new Context(
         request,
@@ -199,8 +199,8 @@ describe('Context', () => {
       const newTarget = '/bar';
       const newStatus = 301;
 
-      const request = new Request('GET', originalTarget);
-      const response = new Response();
+      const request = new Request('GET', originalTarget, 'http://localhost');
+      const response = new Response('http://localhost');
 
       const context = new Context(
         request,

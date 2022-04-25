@@ -122,8 +122,8 @@ export default class Application extends EventEmitter {
     });
     wss.on('connection', async(ws, req) => {
 
-      const request = new NodeRequest(req);
-      const response = new MemoryResponse();
+      const request = new NodeRequest(req, this.publicBaseUrl);
+      const response = new MemoryResponse(this.publicBaseUrl);
       const context = new Context(request, response);
 
       context.webSocket = ws;
@@ -180,8 +180,8 @@ export default class Application extends EventEmitter {
       // We don't have an existing Websocket server. Lets make one.
       this.wss = new WebSocket.Server({ noServer: true });
       this.wss.on('connection', async(ws, req) => {
-        const request = new NodeRequest(req);
-        const response = new MemoryResponse();
+        const request = new NodeRequest(req, this.publicBaseUrl);
+        const response = new MemoryResponse(this.publicBaseUrl);
         const context = new Context(request, response);
 
         context.webSocket = ws;
@@ -213,12 +213,12 @@ export default class Application extends EventEmitter {
     let request: Request;
 
     if (typeof arg1 === 'string') {
-      request = new MemoryRequest(arg1, path!, headers, body);
+      request = new MemoryRequest(arg1, path!, this.publicBaseUrl, headers, body);
     } else {
       request = arg1;
     }
 
-    const context = new Context(request, new MemoryResponse());
+    const context = new Context(request, new MemoryResponse(this.publicBaseUrl));
 
     try {
       await this.handle(context);
@@ -247,9 +247,43 @@ export default class Application extends EventEmitter {
     req: NodeHttpRequest,
     res: NodeHttpResponse
   ): Context {
-    const context = new Context(new NodeRequest(req), new NodeResponse(res));
+    const context = new Context(
+      new NodeRequest(req, this.publicBaseUrl),
+      new NodeResponse(res, this.publicBaseUrl)
+    );
 
     return context;
+  }
+
+  private _publicBaseUrl?: string;
+
+  /**
+   * The public base url of the application.
+   *
+   * This can be auto-detected, but will often be wrong when your server is
+   * running behind a reverse proxy or load balancer.
+   *
+   * To provide this, set the process.env.PUBLIC_URI property.
+   */
+  get publicBaseUrl(): string {
+
+    if (this._publicBaseUrl) {
+      return this._publicBaseUrl;
+    }
+
+    if (process.env.PUBLIC_URI) {
+      return process.env.PUBLIC_URI;
+    }
+
+    const port = process.env.PORT ? +process.env.PORT : 80;
+    return 'http://localhost' + (port?':' + port : '');
+
+  }
+
+  set publicBaseUrl(baseUrl: string) {
+
+    this._publicBaseUrl = new URL(baseUrl).origin;
+
   }
 
 }

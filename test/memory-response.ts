@@ -3,7 +3,7 @@ import { MemoryResponse } from '../src/memory-response';
 
 function getRes() {
 
-  const response = new MemoryResponse();
+  const response = new MemoryResponse('http://localhost');
   response.headers.set('Content-Type', 'text/html; charset=utf-8');
   response.status = 200;
 
