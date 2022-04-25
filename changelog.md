@@ -1,6 +1,23 @@
 Changelog
 =========
 
+0.19.0 (2022-04-25)
+-------------------
+
+* Now requires Node 14.
+* `Application`, `Context`, `Request` and `Response` now have a `origin`
+  property. This defaults defaults to `http://localhost`. This can be
+  overridden by setting `Application.origin`, or setting a
+  `CURVEBALL_ORIGIN` environment variable. `PUBLIC_URI` also works, but
+  it's mainly a fallback for earlier examples and recommendations.
+* `Request` and `Context` now have a `absoluteUrl` property. This is
+  calculated based on the request path and the `origin`.
+* BC Break: Due to the new `origin` property, all `Request` and
+  `Response` classes now have an extra constructor argument. This means
+  if you ever manually constructed any of these, there's a small change
+  you'll need to make. Typescript should point all these problems!
+
+
 0.18.0 (2022-04-16)
 -------------------
 

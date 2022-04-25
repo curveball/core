@@ -13,11 +13,11 @@ export type Encoding = 'utf-8' | 'ascii' | 'hex';
  */
 export abstract class Request<T = unknown> {
 
-  constructor(method: string, requestTarget: string, publicBaseUrl: string) {
+  constructor(method: string, requestTarget: string, origin: string) {
     this.method = method;
     this.requestTarget = requestTarget;
     this.headers = new Headers();
-    this.publicBaseUrl = publicBaseUrl;
+    this.origin = origin;
   }
 
   /**
@@ -216,11 +216,11 @@ export abstract class Request<T = unknown> {
    *
    * This may not always be correct, because it's based on a best guess.
    * If you have a reverse proxy in front of your curveball server, you may
-   * need to provide a 'publicBaseUrl' argument when constructing the server.
+   * need to provide a 'origin' argument when constructing the server.
    */
   get absoluteUrl(): string {
 
-    return this.publicBaseUrl + this.requestTarget;
+    return this.origin + this.requestTarget;
 
   }
 
@@ -229,7 +229,7 @@ export abstract class Request<T = unknown> {
    *
    * This will be used to determine the absoluteUrl
    */
-  readonly publicBaseUrl: string;
+  readonly origin: string;
 }
 
 export default Request;

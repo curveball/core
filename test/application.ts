@@ -314,7 +314,7 @@ describe('Application', () => {
       const request = new MemoryRequest(
         'POST',
         '/',
-        application.publicBaseUrl,
+        application.origin,
         { foo: 'bar' },
         'request-body'
       );
@@ -370,4 +370,53 @@ describe('Application', () => {
       server.close();
     });
   });
+
+  describe('Origin', async() => {
+
+    it('should default to http://localhost', () => {
+
+      const app = new Application();
+      expect(app.origin).to.equal('http://localhost');
+
+    });
+
+    it('should use the PORT variable too if set', () => {
+
+      process.env.PORT = '81';
+      const app = new Application();
+      expect(app.origin).to.equal('http://localhost:81');
+      delete process.env.PORT;
+
+    });
+
+    it('should use CURVEBALL_ORIGIN if set', () => {
+
+      process.env.CURVEBALL_ORIGIN = 'https://curveballjs.org';
+      const app = new Application();
+      expect(app.origin).to.equal('https://curveballjs.org');
+      delete process.env.CURVEBALL_ORIGIN;
+
+    });
+
+    it('should use PUBLIC_URI if set', () => {
+
+      process.env.PUBLIC_URI = 'https://curveballjs.org';
+      const app = new Application();
+      expect(app.origin).to.equal('https://curveballjs.org');
+      delete process.env.PUBLIC_URI;
+
+    });
+
+    it('should ignore PUBLIC_URI if origin was manually set', () => {
+
+      process.env.PUBLIC_URI = 'https://curveballjs.org';
+      const app = new Application();
+      app.origin = 'http://foo-bar.com';
+      expect(app.origin).to.equal('http://foo-bar.com');
+      delete process.env.PUBLIC_URI;
+
+    });
+
+  });
+
 });

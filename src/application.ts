@@ -122,8 +122,8 @@ export default class Application extends EventEmitter {
     });
     wss.on('connection', async(ws, req) => {
 
-      const request = new NodeRequest(req, this.publicBaseUrl);
-      const response = new MemoryResponse(this.publicBaseUrl);
+      const request = new NodeRequest(req, this.origin);
+      const response = new MemoryResponse(this.origin);
       const context = new Context(request, response);
 
       context.webSocket = ws;
@@ -180,8 +180,8 @@ export default class Application extends EventEmitter {
       // We don't have an existing Websocket server. Lets make one.
       this.wss = new WebSocket.Server({ noServer: true });
       this.wss.on('connection', async(ws, req) => {
-        const request = new NodeRequest(req, this.publicBaseUrl);
-        const response = new MemoryResponse(this.publicBaseUrl);
+        const request = new NodeRequest(req, this.origin);
+        const response = new MemoryResponse(this.origin);
         const context = new Context(request, response);
 
         context.webSocket = ws;
@@ -213,17 +213,16 @@ export default class Application extends EventEmitter {
     let request: Request;
 
     if (typeof arg1 === 'string') {
-      request = new MemoryRequest(arg1, path!, this.publicBaseUrl, headers, body);
+      request = new MemoryRequest(arg1, path!, this.origin, headers, body);
     } else {
       request = arg1;
     }
 
-    const context = new Context(request, new MemoryResponse(this.publicBaseUrl));
+    const context = new Context(request, new MemoryResponse(this.origin));
 
     try {
       await this.handle(context);
     } catch (err: any) {
-    // eslint-disable-next-line no-console
       console.error(err);
       if (this.listenerCount('error')) {
         this.emit('error', err);
@@ -248,14 +247,14 @@ export default class Application extends EventEmitter {
     res: NodeHttpResponse
   ): Context {
     const context = new Context(
-      new NodeRequest(req, this.publicBaseUrl),
-      new NodeResponse(res, this.publicBaseUrl)
+      new NodeRequest(req, this.origin),
+      new NodeResponse(res, this.origin)
     );
 
     return context;
   }
 
-  private _publicBaseUrl?: string;
+  private _origin?: string;
 
   /**
    * The public base url of the application.
@@ -265,24 +264,28 @@ export default class Application extends EventEmitter {
    *
    * To provide this, set the process.env.PUBLIC_URI property.
    */
-  get publicBaseUrl(): string {
+  get origin(): string {
 
-    if (this._publicBaseUrl) {
-      return this._publicBaseUrl;
+    if (this._origin) {
+      return this._origin;
+    }
+
+    if (process.env.CURVEBALL_ORIGIN) {
+      return process.env.CURVEBALL_ORIGIN;
     }
 
     if (process.env.PUBLIC_URI) {
-      return process.env.PUBLIC_URI;
+      return new URL(process.env.PUBLIC_URI).origin;
     }
 
     const port = process.env.PORT ? +process.env.PORT : 80;
-    return 'http://localhost' + (port?':' + port : '');
+    return 'http://localhost' + (port!==81?':' + port : '');
 
   }
 
-  set publicBaseUrl(baseUrl: string) {
+  set origin(baseUrl: string) {
 
-    this._publicBaseUrl = new URL(baseUrl).origin;
+    this._origin = new URL(baseUrl).origin;
 
   }
 
