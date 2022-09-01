@@ -1,23 +1,20 @@
-import { isHttpError } from '@curveball/http-errors';
 import { EventEmitter } from 'events';
-import * as http from 'http';
+
+import { isHttpError } from '@curveball/http-errors';
+
 import { Context } from './context';
 import { HeadersInterface, HeadersObject } from './headers';
 import MemoryRequest from './memory-request';
 import MemoryResponse from './memory-response';
 import NotFoundMw from './middleware/not-found';
+import { Request as CurveballRequest } from './request';
+import { Response as CurveballResponse } from './response';
 import {
-  HttpCallback,
-  NodeHttpRequest,
-  NodeHttpResponse,
-  sendBody
-} from './node/http-utils';
-import NodeRequest from './node/request';
-import NodeResponse from './node/response';
-import Request from './request';
-import Response from './response';
-import * as WebSocket from 'ws';
-import * as net from 'net';
+  curveballResponseToFetchResponse,
+  fetchRequestToCurveballRequest
+} from './fetch-util';
+
+
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pkg = require('../package.json');
@@ -75,8 +72,6 @@ export default class Application extends EventEmitter {
 
   middlewares: Middleware[] = [];
 
-  private wss: WebSocket.Server | undefined;
-
   /**
    * Add a middleware to the application.
    *
@@ -95,102 +90,23 @@ export default class Application extends EventEmitter {
     await invokeMiddlewares(ctx, [...this.middlewares, NotFoundMw]);
   }
 
-
   /**
-   * Starts a HTTP server on the specified port.
-   */
-  listen(port: number, host?: string): http.Server {
-    const server = http.createServer(this.callback());
-    server.on('upgrade', this.upgradeCallback.bind(this));
-
-    return server.listen(port, host);
-  }
-
-  /**
-   * Starts a Websocket-only server on the specified port.
+   * Executes a request on the server using the standard browser Request and
+   * Response objects from the fetch() standard.
    *
-   * Note that this is now deprecated. The listen() function already starts
-   * a websocket on the main HTTP port, so this is somewhat redundant.
+   * Node will probably provide these out of the box in Node 18. If you're on
+   * an older version, you'll need a polyfill.
    *
-   * @deprecated
+   * A use-case for this is allowing test frameworks to make fetch-like
+   * requests without actually having to go over the network.
    */
-  listenWs(port: number, host?: string): WebSocket.Server {
+  async fetch(request: Request): Promise<Response> {
 
-    const wss = new WebSocket.Server({
-      port,
-      host
-    });
-    wss.on('connection', async(ws, req) => {
+    const response = await this.subRequest(
+      await fetchRequestToCurveballRequest(request, this.origin)
+    );
+    return curveballResponseToFetchResponse(response);
 
-      const request = new NodeRequest(req, this.origin);
-      const response = new MemoryResponse(this.origin);
-      const context = new Context(request, response);
-
-      context.webSocket = ws;
-
-      await this.handle(context);
-
-    });
-    return wss;
-
-  }
-
-  /**
-   * This function is a callback that can be used for Node's http.Server,
-   * https.Server, or http2.Server.
-   */
-  callback(): HttpCallback {
-    return async (
-      req: NodeHttpRequest,
-      res: NodeHttpResponse
-    ): Promise<void> => {
-      try {
-        const ctx = this.buildContextFromHttp(req, res);
-        await this.handle(ctx);
-        sendBody(res, ctx.response.body);
-      } catch (err: any) {
-        // eslint-disable-next-line no-console
-        console.error(err);
-
-        if (isHttpError(err)) {
-          res.statusCode = err.httpStatus;
-        } else {
-          res.statusCode = 500;
-        }
-        res.setHeader('Content-Type', 'text/plain');
-        res.end(
-          'Uncaught exception. No middleware was defined to handle it. We got the following HTTP status: ' +
-          res.statusCode
-        );
-
-        if (this.listenerCount('error')) {
-          this.emit('error', err);
-        }
-      }
-    };
-  }
-
-  /**
-   * This callback can be used to tie to the Node.js Http(s/2) server 'upgrade' event'.
-   *
-   * It's used to facilitate incoming Websocket requests
-   */
-  upgradeCallback(request: http.IncomingMessage, socket: net.Socket, head: Buffer) {
-    if (!this.wss) {
-      // We don't have an existing Websocket server. Lets make one.
-      this.wss = new WebSocket.Server({ noServer: true });
-      this.wss.on('connection', async(ws, req) => {
-        const request = new NodeRequest(req, this.origin);
-        const response = new MemoryResponse(this.origin);
-        const context = new Context(request, response);
-
-        context.webSocket = ws;
-        await this.handle(context);
-      });
-    }
-    this.wss.handleUpgrade(request, socket, head, (ws: WebSocket) => {
-      this.wss!.emit('connection', ws, request);
-    });
   }
 
   /**
@@ -202,15 +118,15 @@ export default class Application extends EventEmitter {
     path: string,
     headers?: HeadersInterface | HeadersObject,
     body?: any
-  ): Promise<Response>;
-  async subRequest(request: Request): Promise<Response>;
+  ): Promise<CurveballResponse>;
+  async subRequest(request: CurveballRequest): Promise<CurveballResponse>;
   async subRequest(
-    arg1: string | Request,
+    arg1: string | CurveballRequest,
     path?: string,
     headers?: HeadersInterface | HeadersObject,
     body: any = ''
-  ): Promise<Response> {
-    let request: Request;
+  ): Promise<CurveballResponse> {
+    let request: CurveballRequest;
 
     if (typeof arg1 === 'string') {
       request = new MemoryRequest(arg1, path!, this.origin, headers, body);
@@ -237,21 +153,6 @@ export default class Application extends EventEmitter {
         context.response.status;
     }
     return context.response;
-  }
-
-  /**
-   * Creates a Context object based on a node.js request and response object.
-   */
-  public buildContextFromHttp(
-    req: NodeHttpRequest,
-    res: NodeHttpResponse
-  ): Context {
-    const context = new Context(
-      new NodeRequest(req, this.origin),
-      new NodeResponse(res, this.origin)
-    );
-
-    return context;
   }
 
   private _origin?: string;

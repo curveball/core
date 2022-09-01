@@ -1,23 +1,23 @@
 import { expect } from 'chai';
-import fetch from 'node-fetch';
 import { Application, middlewareCall, MemoryRequest, Context } from '../src';
 import * as fs from 'fs';
 import { Writable } from 'stream';
 
 describe('Application', () => {
   it('should instantiate', () => {
-    const application = new Application();
-    expect(application).to.be.an.instanceof(Application);
+    const app = new Application();
+    expect(app).to.be.an.instanceof(Application);
   });
 
   it('should respond to HTTP requests', async () => {
-    const application = new Application();
-    application.use((ctx, next) => {
+    const app = new Application();
+    app.use((ctx, next) => {
       ctx.response.body = 'hi';
     });
-    const server = application.listen(5555);
 
-    const response = await fetch('http://localhost:5555');
+    const response = await app.fetch(
+      new Request('http://localhost:5555')
+    );
     const body = await response.text();
 
     expect(body).to.equal('hi');
@@ -27,17 +27,15 @@ describe('Application', () => {
     );
     expect(response.status).to.equal(200);
 
-    server.close();
   });
 
   it('should accept hostname', async () => {
-    const application = new Application();
-    application.use((ctx, next) => {
+    const app = new Application();
+    app.use((ctx, next) => {
       ctx.response.body = 'hi';
     });
-    const server = application.listen(5555, '0.0.0.0');
 
-    const response = await fetch('http://0.0.0.0:5555');
+    const response = await app.fetch(new Request('http://0.0.0.0:5555'));
     const body = await response.text();
 
     expect(body).to.equal('hi');
@@ -47,17 +45,15 @@ describe('Application', () => {
     );
     expect(response.status).to.equal(200);
 
-    server.close();
   });
 
   it('should work with Buffer responses', async () => {
-    const application = new Application();
-    application.use((ctx, next) => {
+    const app = new Application();
+    app.use((ctx, next) => {
       ctx.response.body = Buffer.from('hi');
     });
-    const server = application.listen(5555);
 
-    const response = await fetch('http://localhost:5555');
+    const response = await app.fetch(new Request('http://0.0.0.0:5555'));
     const body = await response.text();
 
     expect(body).to.equal('hi');
@@ -67,17 +63,15 @@ describe('Application', () => {
     );
     expect(response.status).to.equal(200);
 
-    server.close();
   });
 
   it('should work with Readable stream responses', async () => {
-    const application = new Application();
-    application.use((ctx, next) => {
+    const app = new Application();
+    app.use((ctx, next) => {
       ctx.response.body = fs.createReadStream(__filename);
     });
-    const server = application.listen(5555);
 
-    const response = await fetch('http://localhost:5555');
+    const response = await app.fetch(new Request('http://0.0.0.0:5555'));
     const body = await response.text();
 
     expect(body.substring(0, 6)).to.equal('import');
@@ -87,20 +81,18 @@ describe('Application', () => {
     );
     expect(response.status).to.equal(200);
 
-    server.close();
   });
 
   it('should work with a callback resonse body', async () => {
-    const application = new Application();
-    application.use((ctx, next) => {
+    const app = new Application();
+    app.use((ctx, next) => {
       ctx.response.body = (stream: Writable) => {
         stream.write('hi');
         stream.end();
       };
     });
-    const server = application.listen(5555);
 
-    const response = await fetch('http://localhost:5555');
+    const response = await app.fetch(new Request('http://0.0.0.0:5555'));
     const body = await response.text();
 
     expect(body).to.equal('hi');
@@ -110,17 +102,14 @@ describe('Application', () => {
     );
     expect(response.status).to.equal(200);
 
-    server.close();
   });
 
   it('should automatically JSON-encode objects', async () => {
-    const application = new Application();
-    application.use((ctx, next) => {
+    const app = new Application();
+    app.use((ctx, next) => {
       ctx.response.body = { foo: 'bar' };
     });
-    const server = application.listen(5555);
-
-    const response = await fetch('http://localhost:5555');
+    const response = await app.fetch(new Request('http://0.0.0.0:5555'));
     const body = await response.text();
 
     expect(body).to.equal('{\n  "foo": "bar"\n}');
@@ -130,17 +119,15 @@ describe('Application', () => {
     );
     expect(response.status).to.equal(200);
 
-    server.close();
   });
 
   it('should handle "null" bodies', async () => {
-    const application = new Application();
-    application.use((ctx, next) => {
+    const app = new Application();
+    app.use((ctx, next) => {
       ctx.response.body = null;
     });
-    const server = application.listen(5555);
 
-    const response = await fetch('http://localhost:5555');
+    const response = await app.fetch(new Request('http://localhost:5555'));
     const body = await response.text();
 
     expect(body).to.equal('');
@@ -150,70 +137,62 @@ describe('Application', () => {
     );
     expect(response.status).to.equal(200);
 
-    server.close();
   });
 
   it('should throw an exception for unsupported bodies', async () => {
-    const application = new Application();
-    application.use((ctx, next) => {
+    const app = new Application();
+    app.use((ctx, next) => {
       ctx.response.body = 5;
     });
-    const server = application.listen(5555);
 
-    const response = await fetch('http://localhost:5555');
-    const body = await response.text();
+    let caughtErr = null;
+    try {
+      await app.fetch(new Request('http://localhost:5555'));
+    } catch (err) {
+      caughtErr = err;
+    }
 
-    expect(body).to.include(': 500');
-    expect(response.headers.get('server')).to.equal(
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      'curveball/' + require('../package.json').version
-    );
-    expect(response.status).to.equal(500);
+    expect(caughtErr).to.be.instanceof(TypeError);
 
-    server.close();
   });
 
   it('should work with multiple calls to middlewares', async () => {
-    const application = new Application();
-    application.use(async (ctx, next) => {
+    const app = new Application();
+    app.use(async (ctx, next) => {
       ctx.response.body = 'hi';
       await next();
     });
-    application.use((ctx, next) => {
+    app.use((ctx, next) => {
       ctx.response.headers.set('X-Foo', 'bar');
     });
-    const server = application.listen(5555);
-    const response = await fetch('http://localhost:5555');
+    const response = await app.fetch(new Request('http://localhost:5555'));
     const body = await response.text();
 
     expect(body).to.equal('hi');
     expect(response.headers.get('X-Foo')).to.equal('bar');
     expect(response.status).to.equal(200);
 
-    server.close();
   });
   it('should work with multiple middlewares as arguments', async () => {
-    const application = new Application();
-    application.use(async (ctx, next) => {
+    const app = new Application();
+    app.use(async (ctx, next) => {
       ctx.response.body = 'hi';
       await next();
     }),
-    application.use((ctx, next) => {
+    app.use((ctx, next) => {
       ctx.response.headers.set('X-Foo', 'bar');
     });
-    const server = application.listen(5555);
-    const response = await fetch('http://localhost:5555');
+    const response = await app.fetch(new Request('http://localhost:5555'));
     const body = await response.text();
 
     expect(body).to.equal('hi');
     expect(response.headers.get('X-Foo')).to.equal('bar');
     expect(response.status).to.equal(200);
 
-    server.close();
   });
 
   it('should work with object-middlewares', async () => {
-    const application = new Application();
+    const app = new Application();
 
     const myMw = {
       // eslint-disable-next-line @typescript-eslint/ban-types
@@ -222,80 +201,38 @@ describe('Application', () => {
       }
     };
 
-    application.use(myMw);
+    app.use(myMw);
 
-    const server = application.listen(5555);
-    const response = await fetch('http://localhost:5555');
+    const response = await app.fetch(new Request('http://localhost:5555'));
     const body = await response.text();
 
     expect(body).to.equal('hi');
     expect(response.status).to.equal(200);
 
-    server.close();
   });
 
   it('should not call sequential middlewares if next is not called', async () => {
-    const application = new Application();
-    application.use((ctx, next) => {
+    const app = new Application();
+    app.use((ctx, next) => {
       ctx.response.body = 'hi';
     });
-    application.use((ctx, next) => {
+    app.use((ctx, next) => {
       ctx.response.headers.set('X-Foo', 'bar');
     });
-    const server = application.listen(5555);
-    const response = await fetch('http://localhost:5555');
+    const response = await app.fetch(new Request('http://localhost:5555'));
     const body = await response.text();
 
     expect(body).to.equal('hi');
     expect(response.headers.get('X-Foo')).to.equal(null);
     expect(response.status).to.equal(200);
 
-    server.close();
-  });
-
-  describe('When an uncaught exception happens', () => {
-    it('should trigger an "error" event', async () => {
-      const application = new Application();
-      application.use((ctx, next) => {
-        throw new Error('hi');
-      });
-      let error: any;
-      application.on('error', err => {
-        error = err;
-      });
-      const server = application.listen(5555);
-
-      await fetch('http://localhost:5555');
-
-      expect(error).to.be.an.instanceof(Error);
-      expect(error.message).to.equal('hi');
-
-      server.close();
-    });
-
-    it('should return an error message in the response body.', async () => {
-      const application = new Application();
-      application.use((ctx, next) => {
-        throw new Error('hi');
-      });
-      const server = application.listen(5555);
-
-      const response = await fetch('http://localhost:5555');
-      const body = await response.text();
-      expect(body).to.include(': 500');
-
-      server.close();
-    });
   });
 
   describe('When no middlewares are defined', () => {
     it('should do nothing', async () => {
-      const application = new Application();
-      const server = application.listen(5555);
+      const app = new Application();
+      await app.fetch(new Request('http://localhost:5555'));
 
-      await fetch('http://localhost:5555');
-
-      server.close();
     });
   });
 
@@ -303,8 +240,8 @@ describe('Application', () => {
     it('should work with a Request object', async () => {
       let innerRequest;
 
-      const application = new Application();
-      application.use(ctx => {
+      const app = new Application();
+      app.use(ctx => {
         innerRequest = ctx.request;
         ctx.response.status = 201;
         ctx.response.headers.set('X-Foo', 'bar');
@@ -314,11 +251,11 @@ describe('Application', () => {
       const request = new MemoryRequest(
         'POST',
         '/',
-        application.origin,
+        app.origin,
         { foo: 'bar' },
         'request-body'
       );
-      const response = await application.subRequest(request);
+      const response = await app.subRequest(request);
 
       expect(response.status).to.equal(201);
       expect(response.headers.get('X-Foo')).to.equal('bar');
@@ -327,14 +264,14 @@ describe('Application', () => {
     });
 
     it('should work without a Request object', async () => {
-      const application = new Application();
-      application.use(ctx => {
+      const app = new Application();
+      app.use(ctx => {
         ctx.response.status = 201;
         ctx.response.headers.set('X-Foo', 'bar');
         ctx.response.body = 'hello world';
       });
 
-      const response = await application.subRequest(
+      const response = await app.subRequest(
         'POST',
         '/',
         { foo: 'bar' },
@@ -353,21 +290,17 @@ describe('Application', () => {
       app.use(ctx => {
         ctx.response.body = 'hi';
       });
-      const server = app.listen(5555);
 
-      const response = await fetch('http://localhost:5555');
+      const response = await app.fetch(new Request('http://localhost:5555'));
       expect(response.status).to.equal(200);
 
-      server.close();
     });
     it('should return 404 when no body was set', async () => {
       const app = new Application();
-      const server = app.listen(5555);
 
-      const response = await fetch('http://localhost:5555');
+      const response = await app.fetch(new Request('http://localhost:5555'));
       expect(response.status).to.equal(404);
 
-      server.close();
     });
   });
 
