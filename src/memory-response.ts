@@ -3,9 +3,9 @@ import { Response, Body } from './response';
 
 export class MemoryResponse<T = Body> extends Response<T> {
 
-  constructor() {
+  constructor(origin: string) {
 
-    super();
+    super(origin);
     this.headers = new Headers();
     this.status = 200;
     (this.body as any) = null;

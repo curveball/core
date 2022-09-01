@@ -3,7 +3,7 @@ import { Response as CurveballResponse } from './response';
 import { Headers as CurveballHeaders } from './headers';
 import { PassThrough, Readable, Writable } from 'stream';
 
-export async function fetchRequestToCurveballRequest(request: Request): Promise<CurveballRequest<unknown>> {
+export async function fetchRequestToCurveballRequest(request: Request, origin: string): Promise<CurveballRequest<unknown>> {
 
   const headers = new CurveballHeaders();
   // @ts-expect-error apparently our types don't have an 'entries' on headers, but it's there!
@@ -21,6 +21,7 @@ export async function fetchRequestToCurveballRequest(request: Request): Promise<
   return new CurveballRequest(
     request.method,
     relativeUrl,
+    origin,
     headers,
     await request.arrayBuffer()
   );

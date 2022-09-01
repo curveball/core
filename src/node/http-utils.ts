@@ -5,6 +5,8 @@ import { Body } from '../response';
 import { Context } from '../context';
 import { NodeRequest as CurveballNodeRequest } from './request';
 import { NodeResponse as CurveballNodeResponse } from './response';
+import Application from '../application';
+import { isHttpError } from '@curveball/http-errors';
 
 /**
  * A node.js Http request
@@ -25,6 +27,47 @@ export function isHttp2Response(response: NodeHttpResponse): response is http2.H
 
 }
 
+/**
+ * Returns a callback that can be used with Node's http.Server, http2.Server, https.Server.
+ *
+ * Normally you want to pass this to the constructor of each of these classes.
+ */
+export function nodeHttpServerCallback(app: Application): HttpCallback {
+
+  return async (
+    req: NodeHttpRequest,
+    res: NodeHttpResponse
+  ): Promise<void> => {
+    try {
+      const ctx = createContextFromNode(req, res, app.origin);
+      await app.handle(ctx);
+      sendBody(res, ctx.response.body as any);
+    } catch (err: any) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+
+      if (isHttpError(err)) {
+        res.statusCode = err.httpStatus;
+      } else {
+        res.statusCode = 500;
+      }
+      res.setHeader('Content-Type', 'text/plain');
+      res.end(
+        'Uncaught exception. No middleware was defined to handle it. We got the following HTTP status: ' +
+        res.statusCode
+      );
+
+      if (app.listenerCount('error')) {
+        app.emit('error', err);
+      }
+    }
+  };
+
+}
+
+/**
+ * Emits a 'body' from a Curveball response to a Node HTTP stream/socket
+ */
 export function sendBody(res: NodeHttpResponse | http2.Http2Stream, body: Body): void {
 
   if (body === null) {
@@ -46,14 +89,19 @@ export function sendBody(res: NodeHttpResponse | http2.Http2Stream, body: Body):
 
 }
 
+
 /**
  * This function takes the request and response objects from a Node http,
  * https or http2 server and returns a curveball compatible Context.
  */
-export function createContextFromNode(req: NodeHttpRequest, res: NodeHttpResponse) {
-  const context = new Context(new CurveballNodeRequest(req), new CurveballNodeResponse(res));
+export function createContextFromNode(req: NodeHttpRequest, res: NodeHttpResponse, origin:string) {
+  const context = new Context(
+    new CurveballNodeRequest(req, origin),
+    new CurveballNodeResponse(res, origin)
+  );
   return context;
 }
+
 
 
 /**

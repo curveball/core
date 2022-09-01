@@ -289,11 +289,14 @@ describe('NodeResponse http/2 push', () => {
   });
   it('should throw an error when no path was set', async () => {
 
-    const response = new NodeResponse({
-      stream: {
-        pushAllowed: true
-      }
-    } as any);
+    const response = new NodeResponse(
+      {
+        stream: {
+          pushAllowed: true
+        }
+      } as any,
+      'http://localhost',
+    );
 
     let err;
     try {
@@ -314,14 +317,17 @@ describe('NodeResponse http/2 push', () => {
 
   it('should handle stream errors', async () => {
 
-    const response = new NodeResponse({
-      stream: {
-        pushStream(headers: any, callback: any) {
-          callback(new Error('hi'));
+    const response = new NodeResponse(
+      {
+        stream: {
+          pushStream(headers: any, callback: any) {
+            callback(new Error('hi'));
+          },
+          pushAllowed: true
         },
-        pushAllowed: true
-      }
-    } as any);
+      } as any,
+      'http://localhost'
+    );
 
     let err;
     try {
@@ -364,8 +370,8 @@ describe('push() function', () => {
       await push(
         stream as any,
         new Context(
-          new MemoryRequest('GET', '/push-resource'),
-          new MemoryResponse()
+          new MemoryRequest('GET', '/push-resource', 'http://localhost'),
+          new MemoryResponse('http://localhost')
         )
       );
 
@@ -404,8 +410,8 @@ describe('push() function', () => {
       await push(
         stream as any,
         new Context(
-          new MemoryRequest('GET', '/push-resource'),
-          new MemoryResponse()
+          new MemoryRequest('GET', '/push-resource', 'http://localhost'),
+          new MemoryResponse('http://localhost')
         )
       );
 
@@ -441,8 +447,8 @@ describe('push() function', () => {
         await push(
           stream as any,
           new Context(
-            new MemoryRequest('GET', '/push-resource'),
-            new MemoryResponse()
+            new MemoryRequest('GET', '/push-resource', 'http://localhost'),
+            new MemoryResponse('http://localhost')
           )
         );
       } catch (e: any) {

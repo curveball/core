@@ -10,13 +10,14 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  test:
+    name: Run tests
 
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [14.x, 16.x, 18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -28,3 +29,17 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+
+  lint:
+    name: Lint
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 18.x
+    - run: npm ci
+    - run: npm run lint

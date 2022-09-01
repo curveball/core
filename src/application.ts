@@ -14,10 +14,10 @@ import {
   HttpCallback,
   NodeHttpRequest,
   NodeHttpResponse,
-  sendBody
+  nodeHttpServerCallback,
 } from './node/http-utils';
 import NodeRequest from './node/request';
-import { createContextFromNode } from './node/http-utils';
+import NodeResponse from './node/response';
 import { Request as CurveballRequest } from './request';
 import { Response as CurveballResponse } from './response';
 import {
@@ -127,7 +127,7 @@ export default class Application extends EventEmitter {
   async fetch(request: Request): Promise<Response> {
 
     const response = await this.subRequest(
-      await fetchRequestToCurveballRequest(request)
+      await fetchRequestToCurveballRequest(request, this.origin)
     );
     return curveballResponseToFetchResponse(response);
 
@@ -149,8 +149,8 @@ export default class Application extends EventEmitter {
     });
     wss.on('connection', async(ws, req) => {
 
-      const request = new NodeRequest(req);
-      const response = new MemoryResponse();
+      const request = new NodeRequest(req, this.origin);
+      const response = new MemoryResponse(this.origin);
       const context = new Context(request, response);
 
       context.webSocket = ws;
@@ -163,38 +163,14 @@ export default class Application extends EventEmitter {
   }
 
   /**
-   * This function is a callback that can be used for Node's http.Server,
-   * https.Server, or http2.Server.
+   * Returns a callback that can be used with Node's http.Server, http2.Server, https.Server.
+   *
+   * Normally you want to pass this to the constructor of each of these classes.
    */
   callback(): HttpCallback {
-    return async (
-      req: NodeHttpRequest,
-      res: NodeHttpResponse
-    ): Promise<void> => {
-      try {
-        const ctx = createContextFromNode(req, res);
-        await this.handle(ctx);
-        sendBody(res, ctx.response.body as any);
-      } catch (err: any) {
-        // eslint-disable-next-line no-console
-        console.error(err);
 
-        if (isHttpError(err)) {
-          res.statusCode = err.httpStatus;
-        } else {
-          res.statusCode = 500;
-        }
-        res.setHeader('Content-Type', 'text/plain');
-        res.end(
-          'Uncaught exception. No middleware was defined to handle it. We got the following HTTP status: ' +
-          res.statusCode
-        );
+    return nodeHttpServerCallback(this);
 
-        if (this.listenerCount('error')) {
-          this.emit('error', err);
-        }
-      }
-    };
   }
 
   /**
@@ -207,8 +183,8 @@ export default class Application extends EventEmitter {
       // We don't have an existing Websocket server. Lets make one.
       this.wss = new WebSocket.Server({ noServer: true });
       this.wss.on('connection', async(ws, req) => {
-        const request = new NodeRequest(req);
-        const response = new MemoryResponse();
+        const request = new NodeRequest(req, this.origin);
+        const response = new MemoryResponse(this.origin);
         const context = new Context(request, response);
 
         context.webSocket = ws;
@@ -240,17 +216,16 @@ export default class Application extends EventEmitter {
     let request: CurveballRequest;
 
     if (typeof arg1 === 'string') {
-      request = new MemoryRequest(arg1, path!, headers, body);
+      request = new MemoryRequest(arg1, path!, this.origin, headers, body);
     } else {
       request = arg1;
     }
 
-    const context = new Context(request, new MemoryResponse());
+    const context = new Context(request, new MemoryResponse(this.origin));
 
     try {
       await this.handle(context);
     } catch (err: any) {
-    // eslint-disable-next-line no-console
       console.error(err);
       if (this.listenerCount('error')) {
         this.emit('error', err);
@@ -265,6 +240,56 @@ export default class Application extends EventEmitter {
         context.response.status;
     }
     return context.response;
+  }
+
+  /**
+   * Creates a Context object based on a node.js request and response object.
+   */
+  public buildContextFromHttp(
+    req: NodeHttpRequest,
+    res: NodeHttpResponse
+  ): Context {
+    const context = new Context(
+      new NodeRequest(req, this.origin),
+      new NodeResponse(res, this.origin)
+    );
+
+    return context;
+  }
+
+  private _origin?: string;
+
+  /**
+   * The public base url of the application.
+   *
+   * This can be auto-detected, but will often be wrong when your server is
+   * running behind a reverse proxy or load balancer.
+   *
+   * To provide this, set the process.env.PUBLIC_URI property.
+   */
+  get origin(): string {
+
+    if (this._origin) {
+      return this._origin;
+    }
+
+    if (process.env.CURVEBALL_ORIGIN) {
+      return process.env.CURVEBALL_ORIGIN;
+    }
+
+    if (process.env.PUBLIC_URI) {
+      return new URL(process.env.PUBLIC_URI).origin;
+    }
+
+    const port = process.env.PORT ? +process.env.PORT : 80;
+    return 'http://localhost' + (port!==80?':' + port : '');
+
+  }
+
+  set origin(baseUrl: string) {
+
+    this._origin = new URL(baseUrl).origin;
+
   }
 
 }

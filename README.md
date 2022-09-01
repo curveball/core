@@ -53,23 +53,35 @@ app.listen(4000);
 Middlewares you might want
 --------------------------
 
-* [Router](https://github.com/curveball/router).
-* [Body Parser](https://github.com/curveball/bodyparser).
-* [Controller][controller].
-* [Access Logs](https://github.com/curveball/accesslog).
-* [Sessions](https://github.com/curveball/session).
-* [Generating application/problem+json responses](https://github.com/curveball/problem).
+* [Router](https://github.com/curveball/router)
+* [Body Parser](https://github.com/curveball/bodyparser)
+* [Controller][controller]
+* [Access Logs](https://github.com/curveball/accesslog)
+* [Sessions](https://github.com/curveball/session)
+* [Generating application/problem+json responses](https://github.com/curveball/problem)
+* [CORS](https://github.com/curveball/cors)
+* [Hypermedia Links](https://github.com/curveball/links)
+* [Server-rendered React support](https://github.com/curveball/react)
+* [Serving static files](https://github.com/curveball/static)
+* [JSON-Schema validation](https://github.com/curveball/validator)
 
-AWS Lambda support
--------------------
 
-See [aws-lambda](https://github.com/curveball/aws-lambda).
-
-Project status
+Authentication
 --------------
 
-The project is currently in beta. It might go through a few more changes, but
-the project is mostly stable. It's ready for production.
+* [OAuth2](https://github.com/curveball/oauth2)
+* [OAuth2 add-on to let regular browsers log in](https://github.com/curveball/browser-to-bearer)
+
+You might like [a12n-server](https://github.com/curveball/a12n-server), a full
+OAuth2 authorization server, written in Curveball and works well with the
+OAuth2 middleware.
+
+
+AWS Lambda support / 'Serverless'
+---------------------------------
+
+* [aws-lambda](https://github.com/curveball/aws-lambda).
+* [Azure functions](https://github.com/curveball/azure-function)
 
 
 Doing internal subrequests
@@ -261,6 +273,10 @@ It has the following methods
   an internal HTTP request and return the result.
 * `subRequest(request: Request)` - Run an internal HTTP request and return the
   result.
+* `origin` - Sets the 'origin' for the application. This is used to determine
+  absolute URIs. You can set the `origin` directly on the application, but
+  you can also set a `CURVEBALL_ORIGIN` environment variable. If nothing is
+  set this value will default to `http://localhost`.
 
 
 ### The Context class
@@ -283,6 +299,7 @@ The Context object has the following properties:
 * `push(callback: Middleware)` - Do a HTTP/2 push.
 * `redirect(status, location)` - Send a redirect status code and set a
   `Location` header.
+* `absoluteUrl` - The absolute URL for the request.
 
 
 ### The Request interface
@@ -307,6 +324,13 @@ properties and methods:
   request matches the argument. If your `Content-Type` is
   `application/hal+json` it will return true for `application/hal+json`,
   `hal+json` and `json`.
+* `origin` - The 'origin' for the request, for example:
+   `http://my-api:8008`.
+* `absoluteUrl` - The absolute URL for the request.
+* `ip()` - Returns the ip address of the client. This may be ipv4 or ipv6.
+  If `CURVEBALL_TRUSTPROXY` is set in the environment and truthy, this will
+  use the information from the `X-Forwarded-For` header (if available).
+
 
 
 ### The Response interface
@@ -328,6 +352,9 @@ properties and methods:
   `hal+json` and `json`.
 * `redirect(status, location)` - Send a redirect status code and set a
   `Location` header.
+* `origin` - The 'origin' for the request, for example:
+   `http://my-api:8008`.
+
 
 ### The Headers interface
 

@@ -15,7 +15,7 @@ function getRes() {
   inner.setHeader('Content-Type', 'text/html; charset=utf-8');
   inner.statusCode = 200;
 
-  const outer = new NodeResponse(inner);
+  const outer = new NodeResponse(inner, 'http://localhost');
   return outer;
 
 }

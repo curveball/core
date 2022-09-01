@@ -17,7 +17,7 @@ export class NodeResponse<T> implements Response<T> {
   private bodyValue!: T;
   private explicitStatus: boolean;
 
-  constructor(inner: NodeHttpResponse) {
+  constructor(inner: NodeHttpResponse, origin: string) {
 
     // The default response status is 404.
     this.inner = inner;
@@ -27,6 +27,7 @@ export class NodeResponse<T> implements Response<T> {
     this.body = null;
     this.status = 404;
     this.explicitStatus = false;
+    this.origin = origin;
 
   }
 
@@ -149,8 +150,8 @@ export class NodeResponse<T> implements Response<T> {
     }
 
     const pushCtx = new Context(
-      new MemoryRequest('GET', '|||DELIBERATELY_INVALID|||'),
-      new MemoryResponse()
+      new MemoryRequest('GET', '|||DELIBERATELY_INVALID|||', this.origin),
+      new MemoryResponse(this.origin)
     );
 
     await invokeMiddlewares(pushCtx, [callback]);
@@ -231,6 +232,13 @@ export class NodeResponse<T> implements Response<T> {
     this.status = status;
     this.headers.set('Location', addr);
   }
+
+  /**
+   * Public base URL
+   *
+   * This will be used to determine the absoluteUrl
+   */
+  readonly origin: string;
 
 }
 

@@ -7,6 +7,7 @@ function getReq() {
   return new MemoryRequest(
     'POST',
     '/foo?a=1&b=2',
+    'http://localhost',
     {
       'X-FOO': 'BAR',
       'Accept': 'text/html',
@@ -48,7 +49,7 @@ describe('MemoryRequest', () => {
     it('should work with HeadersInterface', async () => {
 
       const headers = new Headers();
-      const request = new MemoryRequest('GET', '/', headers);
+      const request = new MemoryRequest('GET', '/', 'http://localhost', headers);
 
       expect(request.headers).to.equal(headers);
 
@@ -125,6 +126,7 @@ describe('MemoryRequest', () => {
       const req = new MemoryRequest(
         'POST',
         '/',
+        'http://localhost',
         {},
         'hello'
       );
@@ -139,6 +141,7 @@ describe('MemoryRequest', () => {
       const req = new MemoryRequest(
         'POST',
         '/',
+        'http://localhost',
         {},
         'hello'
       );
@@ -153,6 +156,7 @@ describe('MemoryRequest', () => {
       const req = new MemoryRequest(
         'POST',
         '/',
+        'http://localhost',
         {}
       );
 
@@ -166,6 +170,7 @@ describe('MemoryRequest', () => {
       const req = new MemoryRequest(
         'POST',
         '/',
+        'http://localhost',
         {},
         { foo: 'bar' },
       );
@@ -180,6 +185,7 @@ describe('MemoryRequest', () => {
       const req = new MemoryRequest(
         'POST',
         '/',
+        'http://localhost',
         {},
         Buffer.from('hello')
       );
@@ -195,6 +201,7 @@ describe('MemoryRequest', () => {
       const req = new MemoryRequest(
         'POST',
         '/',
+        'http://localhost',
         {},
         buffer
       );
@@ -213,6 +220,7 @@ describe('MemoryRequest', () => {
       const req = new MemoryRequest(
         'POST',
         '/',
+        'http://localhost',
         {},
         'hello'
       );
