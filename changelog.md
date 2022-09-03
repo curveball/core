@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.20.0 (2022-09-03)
+------------------
+
+* Most of the internal plumbing has moved to `@curveball/kernel`.
+  `@curveball/core` still contains all of the Node-specific code, but
+  this allows curveball to run on Bun.
+
+
 0.20.0-alpha.0 (2022-09-01)
 ---------------------------
 
