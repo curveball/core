@@ -1,12 +1,14 @@
 import * as http from 'http';
 import * as http2 from 'http2';
 import { Readable, Writable } from 'stream';
-import { Body } from '../response';
-import { Context } from '../context';
 import { NodeRequest as CurveballNodeRequest } from './request';
 import { NodeResponse as CurveballNodeResponse } from './response';
-import Application from '../application';
 import { isHttpError } from '@curveball/http-errors';
+import {
+  Application,
+  Body,
+  Context,
+} from '@curveball/kernel';
 
 /**
  * A node.js Http request

@@ -1,7 +1,10 @@
 import * as rawBody from 'raw-body';
 import { Readable } from 'stream';
-import { Headers } from '../headers';
-import Request from '../request';
+
+import {
+  Headers,
+  Request
+} from '@curveball/kernel';
 import { NodeHttpRequest } from './http-utils';
 
 export class NodeRequest<T> extends Request<T> {
