@@ -1,6 +1,10 @@
-import { isHttpError } from '@curveball/http-errors';
 import { EventEmitter } from 'events';
 import * as http from 'http';
+import * as WebSocket from 'ws';
+import * as net from 'net';
+
+import { isHttpError } from '@curveball/http-errors';
+
 import { Context } from './context';
 import { HeadersInterface, HeadersObject } from './headers';
 import MemoryRequest from './memory-request';
@@ -10,14 +14,18 @@ import {
   HttpCallback,
   NodeHttpRequest,
   NodeHttpResponse,
-  sendBody
+  nodeHttpServerCallback,
 } from './node/http-utils';
 import NodeRequest from './node/request';
 import NodeResponse from './node/response';
-import Request from './request';
-import Response from './response';
-import * as WebSocket from 'ws';
-import * as net from 'net';
+import { Request as CurveballRequest } from './request';
+import { Response as CurveballResponse } from './response';
+import {
+  curveballResponseToFetchResponse,
+  fetchRequestToCurveballRequest
+} from './fetch-util';
+
+
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pkg = require('../package.json');
@@ -107,6 +115,25 @@ export default class Application extends EventEmitter {
   }
 
   /**
+   * Executes a request on the server using the standard browser Request and
+   * Response objects from the fetch() standard.
+   *
+   * Node will probably provide these out of the box in Node 18. If you're on
+   * an older version, you'll need a polyfill.
+   *
+   * A use-case for this is allowing test frameworks to make fetch-like
+   * requests without actually having to go over the network.
+   */
+  async fetch(request: Request): Promise<Response> {
+
+    const response = await this.subRequest(
+      await fetchRequestToCurveballRequest(request, this.origin)
+    );
+    return curveballResponseToFetchResponse(response);
+
+  }
+
+  /**
    * Starts a Websocket-only server on the specified port.
    *
    * Note that this is now deprecated. The listen() function already starts
@@ -136,38 +163,14 @@ export default class Application extends EventEmitter {
   }
 
   /**
-   * This function is a callback that can be used for Node's http.Server,
-   * https.Server, or http2.Server.
+   * Returns a callback that can be used with Node's http.Server, http2.Server, https.Server.
+   *
+   * Normally you want to pass this to the constructor of each of these classes.
    */
   callback(): HttpCallback {
-    return async (
-      req: NodeHttpRequest,
-      res: NodeHttpResponse
-    ): Promise<void> => {
-      try {
-        const ctx = this.buildContextFromHttp(req, res);
-        await this.handle(ctx);
-        sendBody(res, ctx.response.body);
-      } catch (err: any) {
-        // eslint-disable-next-line no-console
-        console.error(err);
 
-        if (isHttpError(err)) {
-          res.statusCode = err.httpStatus;
-        } else {
-          res.statusCode = 500;
-        }
-        res.setHeader('Content-Type', 'text/plain');
-        res.end(
-          'Uncaught exception. No middleware was defined to handle it. We got the following HTTP status: ' +
-          res.statusCode
-        );
+    return nodeHttpServerCallback(this);
 
-        if (this.listenerCount('error')) {
-          this.emit('error', err);
-        }
-      }
-    };
   }
 
   /**
@@ -202,15 +205,15 @@ export default class Application extends EventEmitter {
     path: string,
     headers?: HeadersInterface | HeadersObject,
     body?: any
-  ): Promise<Response>;
-  async subRequest(request: Request): Promise<Response>;
+  ): Promise<CurveballResponse>;
+  async subRequest(request: CurveballRequest): Promise<CurveballResponse>;
   async subRequest(
-    arg1: string | Request,
+    arg1: string | CurveballRequest,
     path?: string,
     headers?: HeadersInterface | HeadersObject,
     body: any = ''
-  ): Promise<Response> {
-    let request: Request;
+  ): Promise<CurveballResponse> {
+    let request: CurveballRequest;
 
     if (typeof arg1 === 'string') {
       request = new MemoryRequest(arg1, path!, this.origin, headers, body);
