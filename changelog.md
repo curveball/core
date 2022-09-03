@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.20.0-alpha.0 (2022-09-01)
+---------------------------
+
+* Added support for `fetch()`, which lets you make requests in an a
+  Curveball application using the native `Request` and `Response` objects.
+
+
 0.19.0 (2022-04-25)
 -------------------
 
