@@ -1,5 +1,7 @@
 import Application from './application';
+
 export default Application;
+export { Application };
 
 export {
   conditionalCheck,
