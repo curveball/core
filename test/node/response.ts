@@ -3,7 +3,7 @@ import * as http from 'http';
 import * as http2 from 'http2';
 import * as sinon from 'sinon';
 import Application from '../../src/application';
-import { Headers } from '../../src/headers';
+import { Headers } from '../../src';
 import { NodeResponse } from '../../src/node/response';
 import headersInterfaceTests from '../headers-interface-tests';
 

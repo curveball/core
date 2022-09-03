@@ -1,6 +1,21 @@
 Changelog
 =========
 
+0.20.0 (2022-09-03)
+------------------
+
+* Most of the internal plumbing has moved to `@curveball/kernel`.
+  `@curveball/core` still contains all of the Node-specific code, but
+  this allows curveball to run on Bun.
+
+
+0.20.0-alpha.0 (2022-09-01)
+---------------------------
+
+* Added support for `fetch()`, which lets you make requests in an a
+  Curveball application using the native `Request` and `Response` objects.
+
+
 0.19.0 (2022-04-25)
 -------------------
 

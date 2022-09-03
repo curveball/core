@@ -1,4 +1,4 @@
-import { HeadersInterface, HeadersObject } from '../headers';
+import { HeadersInterface, HeadersObject } from '@curveball/kernel';
 import { NodeHttpResponse } from './http-utils';
 
 /**

@@ -1,15 +1,20 @@
 import * as http from 'http';
 import { promisify } from 'util';
-import { invokeMiddlewares, Middleware } from '../application';
-import { Context } from '../context';
-import { HeadersInterface, HeadersObject } from '../headers';
-import MemoryRequest from '../memory-request';
-import MemoryResponse from '../memory-response';
-import Response from '../response';
 import { isHttp2Response, NodeHttpResponse } from './http-utils';
 import push from './push';
 import NodeHeaders from './response-headers';
-import { is } from './../header-helpers';
+import {
+  Context,
+  Response,
+  MemoryRequest,
+  MemoryResponse,
+  HeadersInterface,
+  HeadersObject,
+  invokeMiddlewares,
+  Middleware,
+  headerHelpers,
+} from '@curveball/kernel';
+
 
 export class NodeResponse<T> implements Response<T> {
 
@@ -201,7 +206,7 @@ export class NodeResponse<T> implements Response<T> {
    */
   is(type: string): boolean {
 
-    return is(this, type);
+    return headerHelpers.is(this, type);
 
   }
 

@@ -4,6 +4,10 @@ import { Application, middlewareCall, MemoryRequest, Context } from '../src';
 import * as fs from 'fs';
 import { Writable } from 'stream';
 
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const curveballServerStr = 'curveball/' + require('@curveball/kernel/package.json').version;
+
 describe('Application', () => {
   it('should instantiate', () => {
     const application = new Application();
@@ -21,10 +25,7 @@ describe('Application', () => {
     const body = await response.text();
 
     expect(body).to.equal('hi');
-    expect(response.headers.get('server')).to.equal(
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      'curveball/' + require('../package.json').version
-    );
+    expect(response.headers.get('server')).to.equal(curveballServerStr);
     expect(response.status).to.equal(200);
 
     server.close();
@@ -41,10 +42,7 @@ describe('Application', () => {
     const body = await response.text();
 
     expect(body).to.equal('hi');
-    expect(response.headers.get('server')).to.equal(
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      'curveball/' + require('../package.json').version
-    );
+    expect(response.headers.get('server')).to.equal(curveballServerStr);
     expect(response.status).to.equal(200);
 
     server.close();
@@ -61,10 +59,7 @@ describe('Application', () => {
     const body = await response.text();
 
     expect(body).to.equal('hi');
-    expect(response.headers.get('server')).to.equal(
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      'curveball/' + require('../package.json').version
-    );
+    expect(response.headers.get('server')).to.equal(curveballServerStr);
     expect(response.status).to.equal(200);
 
     server.close();
@@ -81,10 +76,7 @@ describe('Application', () => {
     const body = await response.text();
 
     expect(body.substring(0, 6)).to.equal('import');
-    expect(response.headers.get('server')).to.equal(
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      'curveball/' + require('../package.json').version
-    );
+    expect(response.headers.get('server')).to.equal(curveballServerStr);
     expect(response.status).to.equal(200);
 
     server.close();
@@ -104,10 +96,7 @@ describe('Application', () => {
     const body = await response.text();
 
     expect(body).to.equal('hi');
-    expect(response.headers.get('server')).to.equal(
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      'curveball/' + require('../package.json').version
-    );
+    expect(response.headers.get('server')).to.equal(curveballServerStr);
     expect(response.status).to.equal(200);
 
     server.close();
@@ -124,10 +113,7 @@ describe('Application', () => {
     const body = await response.text();
 
     expect(body).to.equal('{\n  "foo": "bar"\n}');
-    expect(response.headers.get('server')).to.equal(
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      'curveball/' + require('../package.json').version
-    );
+    expect(response.headers.get('server')).to.equal(curveballServerStr);
     expect(response.status).to.equal(200);
 
     server.close();
@@ -144,10 +130,7 @@ describe('Application', () => {
     const body = await response.text();
 
     expect(body).to.equal('');
-    expect(response.headers.get('server')).to.equal(
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      'curveball/' + require('../package.json').version
-    );
+    expect(response.headers.get('server')).to.equal(curveballServerStr);
     expect(response.status).to.equal(200);
 
     server.close();
@@ -164,10 +147,7 @@ describe('Application', () => {
     const body = await response.text();
 
     expect(body).to.include(': 500');
-    expect(response.headers.get('server')).to.equal(
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      'curveball/' + require('../package.json').version
-    );
+    expect(response.headers.get('server')).to.equal(curveballServerStr);
     expect(response.status).to.equal(500);
 
     server.close();

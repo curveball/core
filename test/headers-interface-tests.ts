@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { HeadersInterface } from '../src/headers';
+import { HeadersInterface } from '@curveball/kernel';
 
 /**
  * This function builds new tests based on an implementation of

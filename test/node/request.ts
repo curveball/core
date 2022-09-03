@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import fetch from 'node-fetch';
 import Application from '../../src/application';
-import { Request } from '../../src/request';
+import { Request } from '../../src';
 
 async function getReq() {
 

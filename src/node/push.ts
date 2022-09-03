@@ -1,5 +1,5 @@
 import * as http2 from 'http2';
-import { Context } from '../context';
+import { Context } from '@curveball/kernel';
 import { sendBody } from './http-utils';
 
 /**
