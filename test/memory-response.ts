@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { MemoryResponse } from '../src/memory-response';
+import { MemoryResponse } from '../src';
 
 function getRes() {
 

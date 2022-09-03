@@ -1,7 +1,6 @@
 import { expect } from 'chai';
-import { Headers } from '../src/headers';
-import { Request } from '../src/request';
-import { HeadersObject } from '../src/headers';
+import { Headers, Request } from '../src';
+import { HeadersObject } from '@curveball/kernel';
 import { Readable } from 'stream';
 
 class FakeRequest extends Request {
