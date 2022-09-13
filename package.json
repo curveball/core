@@ -59,7 +59,7 @@
   },
   "dependencies": {
     "@curveball/http-errors": "^0.4.0",
-    "@curveball/kernel": "^0.20.0-alpha.0",
+    "@curveball/kernel": "^0.20.0",
     "@types/ws": "^8.5.3",
     "raw-body": "^2.4.1",
     "ws": "^8.5.0"
