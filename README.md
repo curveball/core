@@ -10,6 +10,7 @@ This web framework has the following goals:
 * Completely written in and for [TypeScript][3].
 * Modern Ecmascript features.
 * Async/await-based middleware.
+* Support for Node, [Bun](#Bun%20support), AWS Lambda, Azure functions.
 * Native support for HTTP/2, including easy access to HTTP/2 Push.
 * Native, deeply integrated Websocket.
 * Native support for modern HTTP features, such as [`103 Early Hints`][http-103].
@@ -83,6 +84,29 @@ AWS Lambda support / 'Serverless'
 * [aws-lambda](https://github.com/curveball/aws-lambda).
 * [Azure functions](https://github.com/curveball/azure-function)
 
+
+Bun support
+-----------
+
+To use Curveball with [Bun](https://bun.sh/), use the kernel package:
+
+```typescript
+import { Application } from '@curveball/kernel';
+
+const app = new Application();
+
+// Add all your middlewares here!
+app.use( ctx => {
+  ctx.response.body = {msg: 'hello world!'};
+});
+
+export default {
+  port: 3000,
+  fetch: app.fetch.bind(app)
+};
+```
+
+Some more details can be found in this [article](https://evertpot.com/bun-curveball-framework/).
 
 Doing internal subrequests
 --------------------------
@@ -405,3 +429,6 @@ way to indicate that all all conditions have passed.
 [http-103]: https://tools.ietf.org/html/rfc8297 "RFC8297: 103 Early Hints"
 [ws]: https://github.com/websockets/ws
 [controller]: https://github.com/curveball/controller
+[bun]: https://github.com/curveball/bun
+[lambda]: https://github.com/curveball/bun
+
