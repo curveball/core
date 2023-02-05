@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "target": "es2020",
+
+        "strict": true,
+        "noFallthroughCasesInSwitch": true,
+        "experimentalDecorators": true,
+        "noUnusedLocals": true,
+
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "outDir": "cjs",
+        "baseUrl": ".",
+        "paths": {
+            "*": [
+                "src/types/*"
+            ]
+        },
+        "lib": [
+          "DOM",
+          "ES2020"
+        ],
+        "declaration": true
+    },
+    "include": [
+        "**/*.ts"
+    ]
+}

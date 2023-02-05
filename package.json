@@ -34,6 +34,7 @@
   },
   "homepage": "https://github.com/curveball/core#readme",
   "devDependencies": {
+    "@curveball/kernel": ">=0.21.0-beta.11 <1",
     "@types/chai": "^4.2.15",
     "@types/co-body": "^6.1.0",
     "@types/mocha": "^9.0.0",
@@ -59,7 +60,6 @@
   },
   "dependencies": {
     "@curveball/http-errors": "^0.4.0",
-    "@curveball/kernel": "^0.20.0",
     "@types/ws": "^8.5.3",
     "raw-body": "^2.4.1",
     "ws": "^8.5.0"
@@ -75,5 +75,8 @@
       "js",
       "tsx"
     ]
+  },
+  "peerDependencies": {
+    "@curveball/kernel": ">=0.21.0-beta.11 <1"
   }
 }

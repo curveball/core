@@ -9,3 +9,6 @@
 
 # nyc
 /.nyc_output
+
+# bun!
+/bun.lockb
