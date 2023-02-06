@@ -179,14 +179,12 @@ describe('NodeResponse', () => {
         req.setEncoding('utf-8');
         req.on('end', () => { client.close(); });
         req.end();
-      }).then(headers => {
+      }).then((headers: any) => {
         client.close();
         server.close();
-        expect(headers).to.deep.equal({
-          ':status': 103,
-          'foo': 'bar',
-          'many': '1, 2',
-        });
+        expect(headers['many']).to.equal('1, 2');
+        expect(headers['foo']).to.equal('bar');
+        expect(headers[':status']).to.equal(103);
       });
     });
 

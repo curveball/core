@@ -1,5 +1,5 @@
 import * as http from 'node:http';
-import * as WebSocket from 'ws';
+import { WebSocket, WebSocketServer } from 'ws';
 import * as net from 'node:net';
 
 import {
@@ -22,7 +22,7 @@ export default class Application extends BaseApplication {
 
   middlewares: Middleware[] = [];
 
-  private wss: WebSocket.Server | undefined;
+  private wss: WebSocketServer | undefined;
 
   /**
    * Starts a HTTP server on the specified port.
@@ -42,9 +42,9 @@ export default class Application extends BaseApplication {
    *
    * @deprecated
    */
-  listenWs(port: number, host?: string): WebSocket.Server {
+  listenWs(port: number, host?: string): WebSocketServer {
 
-    const wss = new WebSocket.Server({
+    const wss = new WebSocketServer({
       port,
       host
     });
@@ -82,7 +82,7 @@ export default class Application extends BaseApplication {
   upgradeCallback(request: http.IncomingMessage, socket: net.Socket, head: Buffer) {
     if (!this.wss) {
       // We don't have an existing Websocket server. Lets make one.
-      this.wss = new WebSocket.Server({ noServer: true });
+      this.wss = new WebSocketServer({ noServer: true });
       this.wss.on('connection', async(ws, req) => {
         const request = new NodeRequest(req, this.origin);
         const response = new MemoryResponse(this.origin);

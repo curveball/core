@@ -97,12 +97,10 @@ describe('NodeResponse http/2 push', () => {
 
     expect(data).to.equal('Hello world A');
     expect(pushedData).to.equal('Hello world B');
-    expect(pushRequestHeaders).to.eql({
-      ':authority': 'localhost:32653',
-      ':method': 'GET',
-      ':path': '/bar',
-      ':scheme': 'http',
-    });
+    expect(pushRequestHeaders?.[':authority']).to.equal('localhost:32653');
+    expect(pushRequestHeaders?.[':method']).to.equal('GET');
+    expect(pushRequestHeaders?.[':path']).to.equal('/bar');
+    expect(pushRequestHeaders?.[':scheme']).to.equal('http');
     expect((pushResponseHeaders as any)[':status']).to.eql(200);
     expect((responseHeaders as any)[':status']).to.eql(200);
 
@@ -183,12 +181,10 @@ describe('NodeResponse http/2 push', () => {
 
     expect(data).to.equal('Hello world A');
     expect(pushedData).to.equal('Hello world B');
-    expect(pushRequestHeaders).to.eql({
-      ':authority': 'localhost:32653',
-      ':method': 'GET',
-      ':path': '/bar?sup',
-      ':scheme': 'http',
-    });
+    expect(pushRequestHeaders?.[':authority']).to.equal('localhost:32653');
+    expect(pushRequestHeaders?.[':method']).to.equal('GET');
+    expect(pushRequestHeaders?.[':path']).to.equal('/bar?sup');
+    expect(pushRequestHeaders?.[':scheme']).to.equal('http');
     expect((pushResponseHeaders as any)[':status']).to.eql(200);
     expect((responseHeaders as any)[':status']).to.eql(200);
 

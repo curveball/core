@@ -1,4 +1,4 @@
-import * as rawBody from 'raw-body';
+import * as ImpRawBody from 'raw-body';
 import { Readable } from 'node:stream';
 
 import {
@@ -6,6 +6,9 @@ import {
   Request
 } from '@curveball/kernel';
 import { NodeHttpRequest } from './http-utils';
+
+// @ts-expect-error ESM / CommonJS interop weirdness.
+const rawBody = ImpRawBody.default ?? ImpRawBody;
 
 export class NodeRequest<T> extends Request<T> {
 

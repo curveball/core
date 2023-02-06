@@ -1,8 +1,7 @@
 import { expect } from 'chai';
 import fetch from 'node-fetch';
 import { Application, middlewareCall, MemoryRequest, Context } from '../src/index.js';
-import * as fs from 'node:fs';
-import { Writable } from 'node:stream';
+import { Readable, Writable } from 'node:stream';
 
 describe('Application', () => {
   it('should instantiate', () => {
@@ -64,14 +63,14 @@ describe('Application', () => {
   it('should work with Readable stream responses', async () => {
     const application = new Application();
     application.use((ctx, next) => {
-      ctx.response.body = fs.createReadStream(__filename);
+      ctx.response.body = Readable.from(Buffer.from('Hello!'));
     });
     const server = application.listen(5555);
 
     const response = await fetch('http://localhost:5555');
     const body = await response.text();
 
-    expect(body.substring(0, 6)).to.equal('import');
+    expect(body.substring(0, 6)).to.equal('Hello!');
     expect(response.headers.get('server')).to.match(/Curveball\//);
     expect(response.status).to.equal(200);
 
