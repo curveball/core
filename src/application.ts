@@ -1,15 +1,15 @@
-import * as http from 'http';
+import * as http from 'node:http';
 import * as WebSocket from 'ws';
-import * as net from 'net';
+import * as net from 'node:net';
 
 import {
   HttpCallback,
   NodeHttpRequest,
   NodeHttpResponse,
   nodeHttpServerCallback,
-} from './node/http-utils';
-import NodeRequest from './node/request';
-import NodeResponse from './node/response';
+} from './node/http-utils.js';
+import NodeRequest from './node/request.js';
+import NodeResponse from './node/response.js';
 
 import {
   Application as BaseApplication,

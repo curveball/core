@@ -1,6 +1,6 @@
-import * as http2 from 'http2';
+import * as http2 from 'node:http2';
 import { Context } from '@curveball/kernel';
-import { sendBody } from './http-utils';
+import { sendBody } from './http-utils.js';
 
 /**
  * This is a utility for helping with HTTP/2 Push for node servers.

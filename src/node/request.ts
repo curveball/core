@@ -1,5 +1,5 @@
 import * as rawBody from 'raw-body';
-import { Readable } from 'stream';
+import { Readable } from 'node:stream';
 
 import {
   Headers,

@@ -1,11 +1,10 @@
 import { expect } from 'chai';
-import * as http from 'http';
-import * as http2 from 'http2';
+import * as http from 'node:http';
+import * as http2 from 'node:http2';
 import * as sinon from 'sinon';
-import Application from '../../src/application';
-import { Headers } from '../../src';
-import { NodeResponse } from '../../src/node/response';
-import headersInterfaceTests from '../headers-interface-tests';
+import { Application, Headers } from '../../src/index.js';
+import { NodeResponse } from '../../src/node/response.js';
+import headersInterfaceTests from '../headers-interface-tests.js';
 
 function getRes() {
 

@@ -1,8 +1,8 @@
-import * as http from 'http';
-import * as http2 from 'http2';
-import { Readable, Writable } from 'stream';
-import { NodeRequest as CurveballNodeRequest } from './request';
-import { NodeResponse as CurveballNodeResponse } from './response';
+import * as http from 'node:http';
+import * as http2 from 'node:http2';
+import { Readable, Writable } from 'node:stream';
+import { NodeRequest as CurveballNodeRequest } from './request.js';
+import { NodeResponse as CurveballNodeResponse } from './response.js';
 import { isHttpError } from '@curveball/http-errors';
 import {
   Application,

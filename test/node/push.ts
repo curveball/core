@@ -1,12 +1,12 @@
 /* eslint no-console:0 */
 
 import { expect } from 'chai';
-import { EventEmitter } from 'events';
-import * as http2 from 'http2';
+import { EventEmitter } from 'node:events';
+import * as http2 from 'node:http2';
 import fetch from 'node-fetch';
-import { Application, Context, MemoryRequest, MemoryResponse } from '../../src';
-import push from '../../src/node/push';
-import NodeResponse from '../../src/node/response';
+import { Application, Context, MemoryRequest, MemoryResponse } from '../../src/index.js';
+import push from '../../src/node/push.js';
+import NodeResponse from '../../src/node/response.js';
 
 describe('NodeResponse http/2 push', () => {
 
