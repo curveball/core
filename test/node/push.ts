@@ -3,7 +3,6 @@
 import { expect } from 'chai';
 import { EventEmitter } from 'node:events';
 import * as http2 from 'node:http2';
-import fetch from 'node-fetch';
 import { Application, Context, MemoryRequest, MemoryResponse } from '../../src/index.js';
 import push from '../../src/node/push.js';
 import NodeResponse from '../../src/node/response.js';

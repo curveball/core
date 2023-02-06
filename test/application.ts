@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import fetch from 'node-fetch';
 import { Application, middlewareCall, MemoryRequest, Context } from '../src/index.js';
 import { Readable, Writable } from 'node:stream';
 

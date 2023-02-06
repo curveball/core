@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import fetch from 'node-fetch';
 import { Application, Request } from '../../src/index.js';
 
 async function getReq() {
