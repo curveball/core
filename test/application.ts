@@ -2,6 +2,11 @@ import { expect } from 'chai';
 import { Application, middlewareCall, MemoryRequest, Context } from '../src/index.js';
 import { Readable, Writable } from 'node:stream';
 
+let lastPort = 5555;
+const getPort = () => {
+  return lastPort++;
+};
+
 describe('Application', () => {
   it('should instantiate', () => {
     const application = new Application();
@@ -11,14 +16,16 @@ describe('Application', () => {
   it('should respond to HTTP requests', async () => {
     const application = new Application();
     application.use((ctx, next) => {
-      ctx.response.body = 'hi';
+      ctx.response.body = 'string';
     });
-    const server = application.listen(5555);
 
-    const response = await fetch('http://localhost:5555');
+    const port = getPort();
+    const server = application.listen(port);
+
+    const response = await fetch('http://localhost:' + port);
     const body = await response.text();
 
-    expect(body).to.equal('hi');
+    expect(body).to.equal('string');
     expect(response.headers.get('server')).to.match(/Curveball\//);
     expect(response.status).to.equal(200);
 
@@ -28,14 +35,16 @@ describe('Application', () => {
   it('should accept hostname', async () => {
     const application = new Application();
     application.use((ctx, next) => {
-      ctx.response.body = 'hi';
+      ctx.response.body = 'also string';
     });
-    const server = application.listen(5555, '0.0.0.0');
 
-    const response = await fetch('http://0.0.0.0:5555');
+    const port = getPort();
+    const server = application.listen(port, '0.0.0.0');
+
+    const response = await fetch('http://localhost:' + port);
     const body = await response.text();
 
-    expect(body).to.equal('hi');
+    expect(body).to.equal('also string');
     expect(response.headers.get('server')).to.match(/Curveball\//);
     expect(response.status).to.equal(200);
 
@@ -45,14 +54,17 @@ describe('Application', () => {
   it('should work with Buffer responses', async () => {
     const application = new Application();
     application.use((ctx, next) => {
-      ctx.response.body = Buffer.from('hi');
+      ctx.response.body = Buffer.from('buffer');
     });
-    const server = application.listen(5555);
 
-    const response = await fetch('http://localhost:5555');
+    const port = getPort();
+    const server = application.listen(port);
+
+
+    const response = await fetch('http://localhost:'+port);
     const body = await response.text();
 
-    expect(body).to.equal('hi');
+    expect(body).to.equal('buffer');
     expect(response.headers.get('server')).to.match(/Curveball\//);
     expect(response.status).to.equal(200);
 
@@ -62,14 +74,16 @@ describe('Application', () => {
   it('should work with Readable stream responses', async () => {
     const application = new Application();
     application.use((ctx, next) => {
-      ctx.response.body = Readable.from(Buffer.from('Hello!'));
+      ctx.response.body = Readable.from(Buffer.from('stream'));
     });
-    const server = application.listen(5555);
 
-    const response = await fetch('http://localhost:5555');
+    const port = getPort();
+    const server = application.listen(port);
+
+    const response = await fetch('http://localhost:'+port);
     const body = await response.text();
 
-    expect(body.substring(0, 6)).to.equal('Hello!');
+    expect(body.substring(0, 6)).to.equal('stream');
     expect(response.headers.get('server')).to.match(/Curveball\//);
     expect(response.status).to.equal(200);
 
@@ -80,16 +94,17 @@ describe('Application', () => {
     const application = new Application();
     application.use((ctx, next) => {
       ctx.response.body = (stream: Writable) => {
-        stream.write('hi');
+        stream.write('callback');
         stream.end();
       };
     });
-    const server = application.listen(5555);
+    const port = getPort();
+    const server = application.listen(port);
 
-    const response = await fetch('http://localhost:5555');
+    const response = await fetch('http://localhost:'+port);
     const body = await response.text();
 
-    expect(body).to.equal('hi');
+    expect(body).to.equal('callback');
     expect(response.headers.get('server')).to.match(/Curveball\//);
     expect(response.status).to.equal(200);
 
@@ -101,9 +116,10 @@ describe('Application', () => {
     application.use((ctx, next) => {
       ctx.response.body = { foo: 'bar' };
     });
-    const server = application.listen(5555);
+    const port = getPort();
+    const server = application.listen(port);
 
-    const response = await fetch('http://localhost:5555');
+    const response = await fetch('http://localhost:'+port);
     const body = await response.text();
 
     expect(body).to.equal('{\n  "foo": "bar"\n}');
@@ -118,9 +134,10 @@ describe('Application', () => {
     application.use((ctx, next) => {
       ctx.response.body = null;
     });
-    const server = application.listen(5555);
+    const port = getPort();
+    const server = application.listen(port);
 
-    const response = await fetch('http://localhost:5555');
+    const response = await fetch('http://localhost:'+port);
     const body = await response.text();
 
     expect(body).to.equal('');
@@ -135,9 +152,10 @@ describe('Application', () => {
     application.use((ctx, next) => {
       ctx.response.body = 5;
     });
-    const server = application.listen(5555);
+    const port = getPort();
+    const server = application.listen(port);
 
-    const response = await fetch('http://localhost:5555');
+    const response = await fetch('http://localhost:'+port);
     const body = await response.text();
 
     expect(body).to.include(': 500');
@@ -156,8 +174,10 @@ describe('Application', () => {
     application.use((ctx, next) => {
       ctx.response.headers.set('X-Foo', 'bar');
     });
-    const server = application.listen(5555);
-    const response = await fetch('http://localhost:5555');
+    const port = getPort();
+    const server = application.listen(port);
+
+    const response = await fetch('http://localhost:'+port);
     const body = await response.text();
 
     expect(body).to.equal('hi');
@@ -175,8 +195,10 @@ describe('Application', () => {
     application.use((ctx, next) => {
       ctx.response.headers.set('X-Foo', 'bar');
     });
-    const server = application.listen(5555);
-    const response = await fetch('http://localhost:5555');
+    const port = getPort();
+    const server = application.listen(port);
+
+    const response = await fetch('http://localhost:'+port);
     const body = await response.text();
 
     expect(body).to.equal('hi');
@@ -198,8 +220,10 @@ describe('Application', () => {
 
     application.use(myMw);
 
-    const server = application.listen(5555);
-    const response = await fetch('http://localhost:5555');
+    const port = getPort();
+    const server = application.listen(port);
+
+    const response = await fetch('http://localhost:'+port);
     const body = await response.text();
 
     expect(body).to.equal('hi');
@@ -216,8 +240,10 @@ describe('Application', () => {
     application.use((ctx, next) => {
       ctx.response.headers.set('X-Foo', 'bar');
     });
-    const server = application.listen(5555);
-    const response = await fetch('http://localhost:5555');
+    const port = getPort();
+    const server = application.listen(port);
+
+    const response = await fetch('http://localhost:'+port);
     const body = await response.text();
 
     expect(body).to.equal('hi');
@@ -237,9 +263,10 @@ describe('Application', () => {
       application.on('error', err => {
         error = err;
       });
-      const server = application.listen(5555);
+      const port = getPort();
+      const server = application.listen(port);
 
-      await fetch('http://localhost:5555');
+      await fetch('http://localhost:'+port);
 
       expect(error).to.be.an.instanceof(Error);
       expect(error.message).to.equal('hi');
@@ -252,10 +279,12 @@ describe('Application', () => {
       application.use((ctx, next) => {
         throw new Error('hi');
       });
-      const server = application.listen(5555);
+      const port = getPort();
+      const server = application.listen(port);
 
-      const response = await fetch('http://localhost:5555');
+      const response = await fetch('http://localhost:'+port);
       const body = await response.text();
+
       expect(body).to.include(': 500');
 
       server.close();
@@ -265,9 +294,10 @@ describe('Application', () => {
   describe('When no middlewares are defined', () => {
     it('should do nothing', async () => {
       const application = new Application();
-      const server = application.listen(5555);
+      const port = getPort();
+      const server = application.listen(port);
 
-      await fetch('http://localhost:5555');
+      await fetch('http://localhost:'+port);
 
       server.close();
     });
@@ -327,18 +357,20 @@ describe('Application', () => {
       app.use(ctx => {
         ctx.response.body = 'hi';
       });
-      const server = app.listen(5555);
+      const port = getPort();
+      const server = app.listen(port);
 
-      const response = await fetch('http://localhost:5555');
+      const response = await fetch('http://localhost:'+port);
       expect(response.status).to.equal(200);
 
       server.close();
     });
     it('should return 404 when no body was set', async () => {
       const app = new Application();
-      const server = app.listen(5555);
+      const port = getPort();
+      const server = app.listen(port);
 
-      const response = await fetch('http://localhost:5555');
+      const response = await fetch('http://localhost:'+port);
       expect(response.status).to.equal(404);
 
       server.close();

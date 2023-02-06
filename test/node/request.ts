@@ -1,18 +1,24 @@
 import { expect } from 'chai';
 import { Application, Request } from '../../src/index.js';
 
+let lastPort = 6500;
+function getPort() {
+  return lastPort++;
+}
+
 async function getReq() {
 
   let request: Request;
   const app = new Application();
-  const server = app.listen(5555);
+  const port = getPort();
+  const server = app.listen(port);
 
   app.use(async ctx => {
     request = ctx.request;
     ctx.response.body = 'response body';
   });
 
-  await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
+  await fetch('http://localhost:'+port+'/foo/bar?a=1&b=2', {
     method: 'POST',
     headers: {
       'accept': 'text/html',
@@ -82,14 +88,15 @@ describe('NodeRequest', () => {
 
       let body;
       const app = new Application();
-      const server = app.listen(5555);
+      const port = getPort();
+      const server = app.listen(port);
 
       app.use(async ctx => {
         body = await ctx.request.rawBody('utf-8');
         ctx.response.body = 'response body';
       });
 
-      await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
+      await fetch('http://localhost:'+port+'/foo/bar?a=1&b=2', {
         method: 'POST',
         headers: {
           'accept': 'text/html',
@@ -108,14 +115,15 @@ describe('NodeRequest', () => {
 
       let body;
       const app = new Application();
-      const server = app.listen(5555);
+      const port = getPort();
+      const server = app.listen(port);
 
       app.use(async ctx => {
         body = await ctx.request.rawBody();
         ctx.response.body = 'response body';
       });
 
-      await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
+      await fetch('http://localhost:'+port+'/foo/bar?a=1&b=2', {
         method: 'POST',
         headers: {
           'accept': 'text/html',
@@ -134,14 +142,15 @@ describe('NodeRequest', () => {
 
       let body;
       const app = new Application();
-      const server = app.listen(5555);
+      const port = getPort();
+      const server = app.listen(port);
 
       app.use(async ctx => {
         body = await ctx.request.rawBody();
         ctx.response.body = 'response body';
       });
 
-      await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
+      await fetch('http://localhost:'+port+'/foo/bar?a=1&b=2', {
         method: 'GET',
         headers: {
           'accept': 'text/html',
@@ -158,7 +167,8 @@ describe('NodeRequest', () => {
     it('should throw an error when the request body exceeds the limit', async () => {
 
       const app = new Application();
-      const server = app.listen(5555);
+      const port = getPort();
+      const server = app.listen(port);
       let error;
 
       app.use(async ctx => {
@@ -170,7 +180,7 @@ describe('NodeRequest', () => {
         ctx.response.body = 'response body';
       });
 
-      await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
+      await fetch('http://localhost:'+port+'/foo/bar?a=1&b=2', {
         method: 'POST',
         headers: {
           'accept': 'text/html',
@@ -193,14 +203,15 @@ describe('NodeRequest', () => {
     it('should return the ip address of the client that\'s connecting', async () => {
 
       const app = new Application();
-      const server = app.listen(5555);
+      const port = getPort();
+      const server = app.listen(port);
       let ip;
 
       app.use(async ctx => {
         ip = ctx.ip();
       });
 
-      await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
+      await fetch('http://localhost:'+port+'/foo/bar?a=1&b=2', {
         method: 'POST',
         headers: {
           'accept': 'text/html',
@@ -221,14 +232,15 @@ describe('NodeRequest', () => {
     it('should use X-Forwarded-For if trustProxy was true', async () => {
 
       const app = new Application();
-      const server = app.listen(5555);
+      const port = getPort();
+      const server = app.listen(port);
       let ip;
 
       app.use(async ctx => {
         ip = ctx.ip(true);
       });
 
-      await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
+      await fetch('http://localhost:'+port+'/foo/bar?a=1&b=2', {
         method: 'POST',
         headers: {
           'accept': 'text/html',
@@ -246,14 +258,15 @@ describe('NodeRequest', () => {
     it('should not use X-Forwarded-For if trustProxy was false', async () => {
 
       const app = new Application();
-      const server = app.listen(5555);
+      const port = getPort();
+      const server = app.listen(port);
       let ip;
 
       app.use(async ctx => {
         ip = ctx.ip(false);
       });
 
-      await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
+      await fetch('http://localhost:'+port+'/foo/bar?a=1&b=2', {
         method: 'POST',
         headers: {
           'accept': 'text/html',
@@ -276,14 +289,15 @@ describe('NodeRequest', () => {
     it('should use the clients ip if trustProxy was true but there was no XFF header', async () => {
 
       const app = new Application();
-      const server = app.listen(5555);
+      const port = getPort();
+      const server = app.listen(port);
       let ip;
 
       app.use(async ctx => {
         ip = ctx.ip(true);
       });
 
-      await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
+      await fetch('http://localhost:'+port+'/foo/bar?a=1&b=2', {
         method: 'POST',
         headers: {
           'accept': 'text/html',
@@ -308,7 +322,8 @@ describe('NodeRequest', () => {
 
       let outerBody;
       const app = new Application();
-      const server = app.listen(5555);
+      const port = getPort();
+      const server = app.listen(port);
 
       app.use(async ctx => {
         const stream = ctx.request.getStream();
@@ -324,7 +339,7 @@ describe('NodeRequest', () => {
         });
       });
 
-      await fetch('http://localhost:5555/foo/bar?a=1&b=2', {
+      await fetch('http://localhost:'+port+'/foo/bar?a=1&b=2', {
         method: 'POST',
         headers: {
           'accept': 'text/html',
