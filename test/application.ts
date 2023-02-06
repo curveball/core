@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import fetch from 'node-fetch';
-import { Application, middlewareCall, MemoryRequest, Context } from '../src';
-import * as fs from 'fs';
-import { Writable } from 'stream';
+import { Application, middlewareCall, MemoryRequest, Context } from '../src/index.js';
+import * as fs from 'node:fs';
+import { Writable } from 'node:stream';
 
 describe('Application', () => {
   it('should instantiate', () => {

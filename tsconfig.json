@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "esnext",
         "target": "es2020",
 
         "strict": true,
@@ -10,7 +10,7 @@
 
         "moduleResolution": "node",
         "sourceMap": true,
-        "outDir": "dist",
+        "outDir": "esm",
         "baseUrl": ".",
         "paths": {
             "*": [
