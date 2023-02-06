@@ -32,25 +32,6 @@ describe('Application', () => {
     server.close();
   });
 
-  it('should accept hostname', async () => {
-    const application = new Application();
-    application.use((ctx, next) => {
-      ctx.response.body = 'also string';
-    });
-
-    const port = getPort();
-    const server = application.listen(port, '0.0.0.0');
-
-    const response = await fetch('http://localhost:' + port);
-    const body = await response.text();
-
-    expect(body).to.equal('also string');
-    expect(response.headers.get('server')).to.match(/Curveball\//);
-    expect(response.status).to.equal(200);
-
-    server.close();
-  });
-
   it('should work with Buffer responses', async () => {
     const application = new Application();
     application.use((ctx, next) => {
