@@ -15,8 +15,9 @@ test-cjs:
 	mkdir -p cjs-test
 	cd test; npx tsc --module commonjs --outdir ../cjs-test
 	echo '{"type": "commonjs", "dependencies": {"node-fetch": "^2"}}' > cjs-test/package.json
+	cp test/polyfills.cjs cjs-test/
 	cd cjs-test; npm i;
-	cd cjs-test; npx mocha --exit --no-package --r ../test/polyfills.cjs
+	cd cjs-test; npx mocha --exit --no-package --r polyfills.cjs
 
 .PHONY:lint
 lint:
