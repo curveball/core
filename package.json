@@ -74,11 +74,11 @@
     "src"
   ],
   "mocha": {
-    "loader": [
-      "ts-node/esm"
-    ],
     "require": [
       "./test/polyfills.mjs"
+    ],
+    "loader": [
+      "ts-node/esm"
     ],
     "recursive": true,
     "extension": [
