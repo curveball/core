@@ -2,24 +2,16 @@
   "name": "@curveball/core",
   "version": "0.20.0",
   "description": "Curveball is a framework writting in Typescript for Node.js",
-  "main": "dist/index.js",
-  "scripts": {
-    "prepublishOnly": "make build",
-    "test": "make test",
-    "lint": "make lint",
-    "tsc": "tsc"
+  "type": "module",
+  "exports": {
+    "require": "./cjs/index.js",
+    "import": "./esm/index.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/curveball/core.git"
+  "main": "cjs/index.js",
+  "homepage": "https://github.com/curveball/core#readme",
+  "bugs": {
+    "url": "https://github.com/curveball/core/issues"
   },
-  "files": [
-    "package.json",
-    "README.md",
-    "dist",
-    "LICENSE",
-    "src"
-  ],
   "keywords": [
     "http",
     "framework",
@@ -29,14 +21,33 @@
   ],
   "author": "Evert Pot (https://evertpot.com/)",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/curveball/core/issues"
+  "scripts": {
+    "prepublishOnly": "make build",
+    "test": "make test",
+    "lint": "make lint",
+    "fix": "make fix",
+    "tsc": "tsc",
+    "start": "make start"
   },
-  "homepage": "https://github.com/curveball/core#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/curveball/core.git"
+  },
+  "dependencies": {
+    "@curveball/http-errors": "^0.4.0",
+    "@curveball/kernel": ">=0.21.0-beta.11 <1",
+    "@types/ws": "^8.5.3",
+    "raw-body": "^2.4.1",
+    "ws": "^8.5.0"
+  },
+  "peerDependencies": {
+    "@curveball/kernel": ">=0.21.0-beta.11 <1"
+  },
   "devDependencies": {
+    "@curveball/kernel": ">=0.21.0-beta.11 <1",
     "@types/chai": "^4.2.15",
     "@types/co-body": "^6.1.0",
-    "@types/mocha": "^9.0.0",
+    "@types/mocha": "^10.0.1",
     "@types/node": "^14.18.14",
     "@types/node-fetch": "^2.5.8",
     "@types/sinon": "^10.0.6",
@@ -44,36 +55,41 @@
     "@typescript-eslint/parser": "^5.9.0",
     "chai": "^4.3.0",
     "eslint": "^8.6.0",
-    "mocha": "^9.1.3",
-    "node-fetch": "^2.6.1",
+    "mocha": "^10.2.0",
+    "node-fetch": "^3.3.0",
     "nyc": "^15.1.0",
-    "sinon": "^13.0.1",
+    "sinon": "^15.0.1",
     "ts-node": "^10.4.0",
     "typescript": "^4.1.5"
-  },
-  "types": "dist/",
-  "nyc": {
-    "extension": [
-      ".ts"
-    ]
-  },
-  "dependencies": {
-    "@curveball/http-errors": "^0.4.0",
-    "@curveball/kernel": "^0.20.0",
-    "@types/ws": "^8.5.3",
-    "raw-body": "^2.4.1",
-    "ws": "^8.5.0"
   },
   "engines": {
     "node": ">=14.4"
   },
+  "files": [
+    "package.json",
+    "README.md",
+    "esm",
+    "cjs",
+    "LICENSE",
+    "src"
+  ],
   "mocha": {
-    "require": "ts-node/register",
+    "require": [
+      "./test/polyfills.mjs"
+    ],
+    "loader": [
+      "ts-node/esm"
+    ],
     "recursive": true,
     "extension": [
       "ts",
       "js",
       "tsx"
+    ]
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
     ]
   }
 }

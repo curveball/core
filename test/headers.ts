@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { Headers } from '../src';
-import headersInterfaceTests from './headers-interface-tests';
+import { Headers } from '../src/index.js';
+import headersInterfaceTests from './headers-interface-tests.js';
 
 describe('Headers class', () => {
 

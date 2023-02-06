@@ -1,4 +1,4 @@
-import Application from './application';
+import Application from './application.js';
 
 export default Application;
 export { Application };

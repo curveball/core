@@ -1,5 +1,5 @@
 import { HeadersInterface, HeadersObject } from '@curveball/kernel';
-import { NodeHttpResponse } from './http-utils';
+import { NodeHttpResponse } from './http-utils.js';
 
 /**
  * This is a wrapper around the Node Response object, and handles creates a

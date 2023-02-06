@@ -4,35 +4,52 @@ SOURCE_FILES:=$(shell find src/ -type f -name '*.ts')
 all: build
 
 .PHONY:build
-build: dist/build
+build: cjs/build esm/build
 
 .PHONY:test
 test:
-	node_modules/.bin/nyc node_modules/.bin/mocha
+	npx nyc mocha --exit
+
+.PHONY:test-cjs
+test-cjs:
+	mkdir -p cjs-test
+	cd test; npx tsc --module commonjs --outdir ../cjs-test
+	echo '{"type": "commonjs", "dependencies": {"node-fetch": "^2"}}' > cjs-test/package.json
+	cp test/polyfills.cjs cjs-test/
+	cd cjs-test; npm i;
+	cd cjs-test; npx mocha --exit --no-package --r polyfills.cjs
 
 .PHONY:lint
 lint:
-	node_modules/.bin/eslint --quiet 'src/*.ts' 'test/*.ts'
+	npx eslint --quiet 'src/**/*.ts' 'test/**/*.ts'
 
 .PHONY:lint-fix
 lint-fix: fix
 
 .PHONY:fix
 fix:
-	node_modules/.bin/eslint --quiet 'src/**/*.ts' 'test/**/*.ts' --fix
+	npx eslint --quiet 'src/**/*.ts' 'test/**/*.ts' --fix
 
 .PHONY:watch
 watch:
-	node_modules/.bin/tsc --watch
+	npx tsc --watch
 
 .PHONY:start
 start: build
 
 .PHONY:clean
 clean:
-	rm -r dist
+	rm -rf dist esm cjs cjs-test
 
-dist/build: $(SOURCE_FILES)
-	node_modules/.bin/tsc
+cjs/build: $(SOURCE_FILES)
+	npx tsc --module commonjs --outDir cjs/
+	echo '{"type": "commonjs"}' > cjs/package.json
 	@# Creating a small file to keep track of the last build time
-	touch dist/build
+	touch cjs/build
+
+
+esm/build: $(SOURCE_FILES)
+	npx tsc --module es2022 --outDir esm/
+	echo '{"type": "module"}' > esm/package.json
+	@# Creating a small file to keep track of the last build time
+	touch esm/build

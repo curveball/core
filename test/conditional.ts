@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { conditionalCheck, MemoryRequest } from '../src';
+import { conditionalCheck, MemoryRequest } from '../src/index.js';
 
 describe('conditionals', () => {
 

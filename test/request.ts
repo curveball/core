@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { Headers, Request } from '../src';
+import { Headers, Request } from '../src/index.js';
 import { HeadersObject } from '@curveball/kernel';
-import { Readable } from 'stream';
+import { Readable } from 'node:stream';
 
 class FakeRequest extends Request {
 

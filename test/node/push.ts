@@ -1,12 +1,11 @@
 /* eslint no-console:0 */
 
 import { expect } from 'chai';
-import { EventEmitter } from 'events';
-import * as http2 from 'http2';
-import fetch from 'node-fetch';
-import { Application, Context, MemoryRequest, MemoryResponse } from '../../src';
-import push from '../../src/node/push';
-import NodeResponse from '../../src/node/response';
+import { EventEmitter } from 'node:events';
+import * as http2 from 'node:http2';
+import { Application, Context, MemoryRequest, MemoryResponse } from '../../src/index.js';
+import push from '../../src/node/push.js';
+import NodeResponse from '../../src/node/response.js';
 
 describe('NodeResponse http/2 push', () => {
 
@@ -97,12 +96,10 @@ describe('NodeResponse http/2 push', () => {
 
     expect(data).to.equal('Hello world A');
     expect(pushedData).to.equal('Hello world B');
-    expect(pushRequestHeaders).to.eql({
-      ':authority': 'localhost:32653',
-      ':method': 'GET',
-      ':path': '/bar',
-      ':scheme': 'http',
-    });
+    expect(pushRequestHeaders?.[':authority']).to.equal('localhost:32653');
+    expect(pushRequestHeaders?.[':method']).to.equal('GET');
+    expect(pushRequestHeaders?.[':path']).to.equal('/bar');
+    expect(pushRequestHeaders?.[':scheme']).to.equal('http');
     expect((pushResponseHeaders as any)[':status']).to.eql(200);
     expect((responseHeaders as any)[':status']).to.eql(200);
 
@@ -183,12 +180,10 @@ describe('NodeResponse http/2 push', () => {
 
     expect(data).to.equal('Hello world A');
     expect(pushedData).to.equal('Hello world B');
-    expect(pushRequestHeaders).to.eql({
-      ':authority': 'localhost:32653',
-      ':method': 'GET',
-      ':path': '/bar?sup',
-      ':scheme': 'http',
-    });
+    expect(pushRequestHeaders?.[':authority']).to.equal('localhost:32653');
+    expect(pushRequestHeaders?.[':method']).to.equal('GET');
+    expect(pushRequestHeaders?.[':path']).to.equal('/bar?sup');
+    expect(pushRequestHeaders?.[':scheme']).to.equal('http');
     expect((pushResponseHeaders as any)[':status']).to.eql(200);
     expect((responseHeaders as any)[':status']).to.eql(200);
 

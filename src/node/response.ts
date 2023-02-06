@@ -1,8 +1,8 @@
-import * as http from 'http';
-import { promisify } from 'util';
-import { isHttp2Response, NodeHttpResponse } from './http-utils';
-import push from './push';
-import NodeHeaders from './response-headers';
+import * as http from 'node:http';
+import { promisify } from 'node:util';
+import { isHttp2Response, NodeHttpResponse } from './http-utils.js';
+import push from './push.js';
+import NodeHeaders from './response-headers.js';
 import {
   Context,
   Response,

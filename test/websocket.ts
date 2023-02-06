@@ -1,5 +1,5 @@
-import { Application } from '../src';
-import * as WebSocket from 'ws';
+import { Application } from '../src/index.js';
+import { WebSocket } from 'ws';
 import { UpgradeRequired } from '@curveball/http-errors';
 import { expect } from 'chai';
 

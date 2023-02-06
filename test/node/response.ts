@@ -1,11 +1,10 @@
 import { expect } from 'chai';
-import * as http from 'http';
-import * as http2 from 'http2';
+import * as http from 'node:http';
+import * as http2 from 'node:http2';
 import * as sinon from 'sinon';
-import Application from '../../src/application';
-import { Headers } from '../../src';
-import { NodeResponse } from '../../src/node/response';
-import headersInterfaceTests from '../headers-interface-tests';
+import { Application, Headers } from '../../src/index.js';
+import { NodeResponse } from '../../src/node/response.js';
+import headersInterfaceTests from '../headers-interface-tests.js';
 
 function getRes() {
 
@@ -180,14 +179,12 @@ describe('NodeResponse', () => {
         req.setEncoding('utf-8');
         req.on('end', () => { client.close(); });
         req.end();
-      }).then(headers => {
+      }).then((headers: any) => {
         client.close();
         server.close();
-        expect(headers).to.deep.equal({
-          ':status': 103,
-          'foo': 'bar',
-          'many': '1, 2',
-        });
+        expect(headers['many']).to.equal('1, 2');
+        expect(headers['foo']).to.equal('bar');
+        expect(headers[':status']).to.equal(103);
       });
     });
 

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { MemoryRequest, MemoryResponse, Context } from '../src';
+import { MemoryRequest, MemoryResponse, Context } from '../src/index.js';
 
 describe('Context', () => {
 

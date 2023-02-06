@@ -10,10 +10,11 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
-    name: Run tests
+  node-test:
+    name: Node.js tests (ESM)
 
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     strategy:
       matrix:
@@ -29,6 +30,27 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+
+  cjs-test:
+    name: Node.js tests (CommonJS)
+    timeout-minutes: 5
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }} (CommonJS)
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: make test-cjs
 
   lint:
     name: Lint
