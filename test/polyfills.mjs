@@ -1,8 +1,12 @@
-import * as nodeFetch from 'node-fetch';
+import fetch, {
+  Headers,
+  Request,
+  Response,
+} from 'node-fetch'
 
-if (!global.fetch) {
-  global.fetch = nodeFetch;
-  global.Headers = nodeFetch.Headers;
-  global.Request = nodeFetch.Request;
-  global.Response = nodeFetch.Response;
+if (!globalThis.fetch) {
+  globalThis.fetch = fetch
+  globalThis.Headers = Headers
+  globalThis.Request = Request
+  globalThis.Response = Response
 }
