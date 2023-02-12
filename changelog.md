@@ -47,7 +47,7 @@ Changelog
 Identical release as the previous alpha.
 
 
-0.18.0.alpha.0 (2022-04-09)
+0.18.0-alpha.0 (2022-04-09)
 ---------------------------
 
 * The `Context` interface has been removed, and the `BaseContext` class is
