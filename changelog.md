@@ -1,10 +1,11 @@
 Changelog
 =========
 
-0.21.0 (????-??-??)
+0.21.0 (2023-02-14)
 -------------------
 
 * ESM support.
+* Dropped Node 14 support. Use Node 16 or later.
 
 
 0.20.0 (2022-09-03)
