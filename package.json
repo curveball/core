@@ -1,6 +1,6 @@
 {
   "name": "@curveball/core",
-  "version": "0.20.0",
+  "version": "0.21.0",
   "description": "Curveball is a framework writting in Typescript for Node.js",
   "type": "module",
   "exports": {
@@ -34,13 +34,13 @@
     "url": "git+https://github.com/curveball/core.git"
   },
   "dependencies": {
-    "@curveball/kernel": ">=0.21.0 <1",
+    "@curveball/kernel": ">=0.21.1 <1",
     "@types/ws": "^8.5.3",
     "raw-body": "^2.4.1",
     "ws": "^8.5.0"
   },
   "peerDependencies": {
-    "@curveball/kernel": ">=0.21.0 <1"
+    "@curveball/kernel": ">=0.21.1 <1"
   },
   "devDependencies": {
     "@curveball/http-errors": "^0.5.0",

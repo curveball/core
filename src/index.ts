@@ -17,4 +17,6 @@ export {
   Context,
   // For backwards compatibility
   Context as BaseContext,
+
+  VERSION,
 } from '@curveball/kernel';
