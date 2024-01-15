@@ -4,20 +4,11 @@ SOURCE_FILES:=$(shell find src/ -type f -name '*.ts')
 all: build
 
 .PHONY:build
-build: cjs/build esm/build
+build: dist/build
 
 .PHONY:test
 test:
-	npx nyc mocha --exit
-
-.PHONY:test-cjs
-test-cjs:
-	mkdir -p cjs-test
-	cd test; npx tsc --module commonjs --outdir ../cjs-test
-	echo '{"type": "commonjs", "dependencies": {"node-fetch": "^2"}}' > cjs-test/package.json
-	cp test/polyfills.cjs cjs-test/
-	cd cjs-test; npm i;
-	cd cjs-test; npx mocha --exit --no-package --r polyfills.cjs
+	npx nyc mocha
 
 .PHONY:lint
 lint:
@@ -39,17 +30,8 @@ start: build
 
 .PHONY:clean
 clean:
-	rm -rf dist esm cjs cjs-test
+	rm -rf dist
 
-cjs/build: $(SOURCE_FILES)
-	npx tsc --module commonjs --outDir cjs/
-	echo '{"type": "commonjs"}' > cjs/package.json
-	@# Creating a small file to keep track of the last build time
-	touch cjs/build
-
-
-esm/build: $(SOURCE_FILES)
-	npx tsc --module es2022 --outDir esm/
-	echo '{"type": "module"}' > esm/package.json
-	@# Creating a small file to keep track of the last build time
-	touch esm/build
+dist/build: $(SOURCE_FILES)
+	npx tsc
+	touch dist/build

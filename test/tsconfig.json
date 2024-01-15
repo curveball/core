@@ -10,7 +10,7 @@
 
         "moduleResolution": "node",
         "sourceMap": true,
-        "outDir": "cjs",
+        "outDir": "esm",
         "baseUrl": ".",
         "paths": {
             "*": [

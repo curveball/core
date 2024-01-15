@@ -2,7 +2,8 @@
   "env": {
       "browser": true,
       "node": true,
-      "es6": true
+      "es6": true,
+      "mocha": true
   },
   "extends": [
       "eslint:recommended",
@@ -61,7 +62,6 @@
         "args": "none"
       }],
       "@typescript-eslint/prefer-for-of": ["error"],
-      "@typescript-eslint/prefer-optional-chain": ["error"],
       "@typescript-eslint/prefer-ts-expect-error": ["error"]
   }
 }
