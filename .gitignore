@@ -2,8 +2,7 @@
 /node_modules
 
 # typescript output
-/esm
-/cjs
+/dist
 
 # Directory used for running tests in CommonJS mode
 /cjs-test

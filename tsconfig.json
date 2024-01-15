@@ -7,7 +7,6 @@
         "noFallthroughCasesInSwitch": true,
         "noUnusedLocals": true,
 
-        "moduleResolution": "node",
         "sourceMap": true,
         "outDir": "dist",
         "baseUrl": ".",
