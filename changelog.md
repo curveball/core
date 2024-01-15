@@ -134,10 +134,9 @@ Happy birthday Mom!
 -------------------
 
 * #155 - `listen` and `listenWs` now both have a second `host` argument to
-* #145 - `request.headers` and `response.headers` now have a `getMany()`
-
- bind to a specific interface. (@Nicholaiii)  function to get a list of header
-values for a given header name. (@Nicholaiii)
+  bind to a specific interface. (@Nicholaiii)
+* #145 - `request.headers` and `response.head` function to get a list of header
+  values for a given header name. (@Nicholaiii)ers` now have a `getMany()`
 
 
 0.14.2 (2020-07-14)
