@@ -1,16 +1,14 @@
 {
     "compilerOptions": {
-        "module": "esnext",
-        "target": "es2020",
+        "module": "node16",
+        "target": "es2022",
 
         "strict": true,
         "noFallthroughCasesInSwitch": true,
-        "experimentalDecorators": true,
         "noUnusedLocals": true,
 
-        "moduleResolution": "node",
         "sourceMap": true,
-        "outDir": "esm",
+        "outDir": "dist",
         "baseUrl": ".",
         "paths": {
             "*": [
@@ -19,7 +17,7 @@
         },
         "lib": [
           "DOM",
-          "ES2020"
+          "ES2022"
         ],
         "declaration": true
     },

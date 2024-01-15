@@ -1,6 +1,16 @@
 Changelog
 =========
 
+1.0.0 (2024-01-15)
+------------------
+
+* Finally! Curveball v1. Only took 6 years.
+* CommonJS support has been dropped. The previous version of this library
+  supported both CommonJS and ESM. The effort of this no longer feels worth it.
+  ESM is the future, so we're dropping CommonJS.
+* Now requires Node 18.
+
+
 0.21.1 (2023-02-17)
 -------------------
 
@@ -52,6 +62,7 @@ Changelog
 -------------------
 
 Identical release as the previous alpha.
+
 
 
 
@@ -133,8 +144,8 @@ Happy birthday Mom!
 0.14.3 (2020-09-23)
 -------------------
 
-* #155 - `listen` and `listenWs` now both have a second `host` argument to
-  bind to a specific interface. (@Nicholaiii)
+* #155 - `listen` and `listenWs` now both have a second `host` argument to bind
+  to a specific interface. (@Nicholaiii)
 * #145 - `request.headers` and `response.head` function to get a list of header
   values for a given header name. (@Nicholaiii)ers` now have a `getMany()`
 
