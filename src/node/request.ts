@@ -81,7 +81,7 @@ export class NodeRequest<T> extends Request<T> {
    * variable is a good idea for this as having a proxy may be environment
    * dependent.
    */
-  ip(trustProxy: boolean = false): string {
+  ip(trustProxy?: boolean): string {
 
     if (trustProxy ?? process.env.CURVEBALL_TRUSTPROXY) {
       const forwardedForHeader = this.headers.get('X-Forwarded-For');
