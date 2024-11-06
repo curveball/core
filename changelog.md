@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0.2 (????-??-??)
+------------------
+
+* Fixed another bug related to CURVEBALL_TRUSTPROXY
+
+
 1.0.1 (2024-10-30)
 ------------------
 

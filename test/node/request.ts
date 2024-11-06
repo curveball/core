@@ -284,6 +284,34 @@ describe('NodeRequest', () => {
       ]);
 
     });
+    it('should use X-Forwarded-For if CURVEBALL_TRUSTPROXY environment variable was set', async () => {
+
+      const app = new Application();
+      const port = getPort();
+      const server = app.listen(port);
+      let ip;
+
+      process.env.CURVEBALL_TRUSTPROXY = '1';
+      app.use(async ctx => {
+        ip = ctx.ip();
+      });
+
+      await fetch('http://localhost:'+port+'/foo/bar?a=1&b=2', {
+        method: 'POST',
+        headers: {
+          'accept': 'text/html',
+          'content-type': 'text/html; charset=utf-8',
+          'x-forwarded-for': '127.0.0.2',
+
+        },
+        body: 'hello',
+      });
+
+      delete process.env.CURVEBALL_TRUSTPROXY;
+      server.close();
+      expect(ip).to.eql('127.0.0.2');
+
+    });
 
 
     it('should use the clients ip if trustProxy was true but there was no XFF header', async () => {

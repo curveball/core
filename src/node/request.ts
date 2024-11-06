@@ -83,7 +83,7 @@ export class NodeRequest<T> extends Request<T> {
    */
   ip(trustProxy?: boolean): string {
 
-    if (trustProxy ?? process.env.CURVEBALL_TRUSTPROXY) {
+    if (trustProxy===true || process.env.CURVEBALL_TRUSTPROXY) {
       const forwardedForHeader = this.headers.get('X-Forwarded-For');
       if (forwardedForHeader) {
         return forwardedForHeader.split(',')[0].trim();
